@@ -1,10 +1,13 @@
-# volumes:
+volumes:
+  fastapi-fitness-data:
+    external: true
 services:
   fastapi:
     environment:
-      CORS_HOST: http://localhost:3000
+      DATABASE_URL: postgresql://user:password@db/fitness_quest
+      WAIT_HOSTS: db:5432
     build:
-      context: api
+      context: ./api
       dockerfile: Dockerfile.dev
     ports:
       - 8000:8000
@@ -25,3 +28,14 @@ services:
       HOST: "0.0.0.0"
       PUBLIC_URL: http://localhost:3000
       REACT_APP_API_HOST: ${REACT_APP_API_HOST}
+
+  db:
+    image: postgres:14.5-bullseye
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+      POSTGRES_DB: fitness_quest
+    ports:
+      - "15432:5432"
+    volumes:
+      - fastapi-fitness-data:/var/lib/postgresql/data
