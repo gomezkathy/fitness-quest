@@ -6,6 +6,7 @@ services:
     environment:
       DATABASE_URL: postgresql://user:password@db/fitness_quest
       WAIT_HOSTS: db:5432
+      PORT: 8000
     build:
       context: ./api
       dockerfile: Dockerfile.dev
