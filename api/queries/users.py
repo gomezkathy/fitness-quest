@@ -32,7 +32,13 @@ class UserRepository:
                         (%s, %s, %s, %s, %s)
                     RETURNING id;
                     """,
-                    [user.username, user.first_name, user.last_name, user.email, user.created_at]
+                    [
+                        user.username,
+                        user.first_name,
+                        user.last_name,
+                        user.email,
+                        user.created_at
+                    ]
                 )
                 id = result.fetchone()[0]
                 old_data = user.dict()
