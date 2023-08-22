@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import os
-from routers import comments, users
+from routers import comments, users, workouts
 
 app = FastAPI()
 app.include_router(comments.router)
 app.include_router(users.router)
+app.include_router(workouts.router)
 
 app.add_middleware(
     CORSMiddleware,
