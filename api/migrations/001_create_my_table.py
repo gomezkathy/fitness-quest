@@ -14,7 +14,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE users;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -22,20 +22,25 @@ steps = [
         CREATE TABLE exercises (
             id SERIAL NOT NULL PRIMARY KEY,
             user_id INTEGER REFERENCES users(id),
-            name VARCHAR(100) NOT NULL,
-            weight NUMERIC(10, 1),
-            reps INTEGER,
-            sets INTEGER,
+            name VARCHAR(150) NOT NULL,
+            weight SMALLINT,
+            reps SMALLINT,
+            sets SMALLINT,
             picture_url VARCHAR(255),
             description TEXT,
             created_at TIMESTAMP,
-            assigned_date DATE
+            assigned_date DATE,
+            type VARCHAR(100),
+            muscle VARCHAR(100),
+            difficulty VARCHAR(100),
+            equiptment VARCHAR(200),
+            instructions TEXT
         );
         """,
         # "Down" SQL statement
         """
         DROP TABLE exercises;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -50,6 +55,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE comments;
-        """
-    ]
+        """,
+    ],
 ]
+# migration issue, delete the volume, create the volume again to fix *migration issues usually means to destroy the volume
