@@ -16,7 +16,7 @@ def create_comment(
     response: Response,
     repo: CommentRepository = Depends(),
 ):
-    response.status_code = 400
+    response.status_code = 200
     return repo.create(comment)
 
 

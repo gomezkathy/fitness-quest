@@ -5,6 +5,7 @@ from pool import pool
 
 
 class WorkoutIn(BaseModel):
+    user_id: int
     name: str
     weight: Optional[int]
     sets: Optional[int]
@@ -32,14 +33,14 @@ class WorkoutRepository:
                 result = db.execute(
                     """
                     INSERT INTO exercises
-                    (name, weight, sets, reps, picture_url,
+                    (user_id, name, weight, sets, reps, picture_url,
                     description, assigned_date)
                     VALUES
-                        (%s, %s, %s, %s, %s, %s, %s)
+                        (%s, %s, %s, %s, %s, %s, %s, %s)
                     RETURNING id;
-
                     """,
                     [
+                        workout.user_id,
                         workout.name,
                         workout.weight,
                         workout.sets,
@@ -48,7 +49,6 @@ class WorkoutRepository:
                         workout.description,
                         workout.assigned_date
                     ]
-
                 )
                 id = result.fetchone()[0]
                 old_data = workout.dict()

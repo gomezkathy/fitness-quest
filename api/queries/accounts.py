@@ -37,7 +37,6 @@ class AccountRepository:
     def get(self, username: str) -> AccountWithPassword | None:
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                print(username)
                 cur.execute(
                     """
                     SELECT id, username, first_name, last_name,
@@ -52,7 +51,6 @@ class AccountRepository:
                     raise Exception("No account found")
                 else:
                     try:
-                        print
                         return AccountWithPassword(
                             id=ac[0],
                             username=ac[1],
