@@ -44,33 +44,31 @@ class CommentRepository:
                         )
                         result.append(comment)
                     return result
-        except Exception:
-            return {"message": "Could not get all comments"}
+        except Exception as e:
+            print("Error:", e)
+            return e
 
-# needs GET endpoint set up for accounts
     def create(self, comment: CommentIn) -> CommentOut:
-        user_repo = AccountRepository()
-        user = user_repo.get(comment.user_id)
-
-        if not user:
-            raise ValueError('Invalid user_id')
-
-        with pool.connection() as conn:
-            with conn.cursor() as db:
-                result = db.execute(
-                    """
-                    INSERT INTO comments
-                        (user_id, comment, assigned_date)
-                    VALUES
-                        (%s, %s, %s)
-                    RETURNING id;
-                    """,
-                    [
-                        comment.user_id,
-                        comment.comment,
-                        comment.assigned_date
-                    ]
-                )
-                id = result.fetchone()[0]
-                old_data = comment.dict()
-                return CommentOut(id=id, **old_data)
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        INSERT INTO comments
+                            (user_id, comment, assigned_date)
+                        VALUES
+                            (%s, %s, %s)
+                        RETURNING id;
+                        """,
+                        [
+                            comment.user_id,
+                            comment.comment,
+                            comment.assigned_date
+                        ]
+                    )
+                    id = result.fetchone()[0]
+                    old_data = comment.dict()
+                    return CommentOut(id=id, **old_data)
+        except Exception as e:
+            print("Error:", e)
+            return e

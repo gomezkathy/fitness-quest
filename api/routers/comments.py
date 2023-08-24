@@ -16,8 +16,11 @@ def create_comment(
     response: Response,
     repo: CommentRepository = Depends(),
 ):
-    response.status_code = 200
-    return repo.create(comment)
+    successful_repo = repo.create(comment)
+    if isinstance(successful_repo, CommentOut):
+        return successful_repo
+    else:
+        return ("")
 
 
 @router.get("/comments", response_model=Union[Error, List[CommentOut]])
