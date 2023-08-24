@@ -7,6 +7,7 @@ class Error(BaseModel):
     message: str
 
 class WorkoutIn(BaseModel):
+    user_id: int
     name: str
     weight: Optional[int]
     sets: Optional[int]
@@ -18,6 +19,7 @@ class WorkoutIn(BaseModel):
 
 class WorkoutOut(BaseModel):
     id: int
+    user_id: int
     name: str
     weight: Optional[int]
     sets: Optional[int]
@@ -34,7 +36,7 @@ class WorkoutRepository:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-                        SELECT id, name, weight, sets, reps, picture_url, description, assigned_date
+                        SELECT id, user_id, name, weight, sets, reps, picture_url, description, assigned_date
                         FROM exercises
                         ORDER BY assigned_date
                         """
@@ -43,42 +45,50 @@ class WorkoutRepository:
                     for record in db:
                         workout = WorkoutOut(
                             id=record[0],
-                            name=record[1],
-                            weight=record[2],
-                            sets=record[3],
-                            reps=record[4],
-                            picture_url=record[5],
-                            description=record[6],
-                            assigned_date=record[7]
+                            user_id=record[1],
+                            name=record[2],
+                            weight=record[3],
+                            sets=record[4],
+                            reps=record[5],
+                            picture_url=record[6],
+                            description=record[7],
+                            assigned_date=record[8]
                         )
                         result.append(workout)
+                    print("results:", result)
                     return result
-        except Exception:
-            return {"message": "Could not get all comments"}
+        except Exception as e:
+            print('error:', e)
+            return e
 
     def create(self, workout:WorkoutIn) -> WorkoutOut:
-        with pool.connection() as conn:
-            with conn.cursor() as db:
-                result = db.execute(
-                    """
-                    INSERT INTO exercises
-                    (name, weight, sets, reps, picture_url, description, assigned_date)
-                    VALUES
-                        (%s, %s, %s, %s, %s, %s, %s)
-                    RETURNING id;
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        INSERT INTO exercises
+                        (user_id, name, weight, sets, reps, picture_url, description, assigned_date)
+                        VALUES
+                            (%s, %s, %s, %s, %s, %s, %s, %s)
+                        RETURNING id;
 
-                    """,
-                    [
-                        workout.name,
-                        workout.weight,
-                        workout.sets,
-                        workout.reps,
-                        workout.picture_url,
-                        workout.description,
-                        workout.assigned_date
-                    ]
+                        """,
+                        [
+                            workout.user_id,
+                            workout.name,
+                            workout.weight,
+                            workout.sets,
+                            workout.reps,
+                            workout.picture_url,
+                            workout.description,
+                            workout.assigned_date
+                        ]
 
-                )
-                id = result.fetchone()[0]
-                old_data = workout.dict()
-                return WorkoutOut(id=id, **old_data)
+                    )
+                    id = result.fetchone()[0]
+                    old_data = workout.dict()
+                    return WorkoutOut(id=id, **old_data)
+        except Exception as e:
+            print("Error creating workout:", e)
+            return e
