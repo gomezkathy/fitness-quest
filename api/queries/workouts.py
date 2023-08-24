@@ -55,7 +55,6 @@ class WorkoutRepository:
                             assigned_date=record[8]
                         )
                         result.append(workout)
-                    print("results:", result)
                     return result
         except Exception as e:
             print('error:', e)

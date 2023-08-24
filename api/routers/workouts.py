@@ -20,10 +20,10 @@ async def create_workout(
 
 @router.get("/workouts", response_model=Union[Error, List[WorkoutOut]])
 async def get_all(
-    repo: WorkoutRepository = Depends(),
-    account_data: dict = Depends(authenticator.get_current_account_data),
+   account_data: dict = Depends(authenticator.get_current_account_data),
+   repo: WorkoutRepository = Depends(),
 ):
     if account_data:
         return repo.get_all()
     else:
-        raise HTTPException(status_code=401, detail="User is not authenticated.")
+      raise HTTPException(status_code=401, detail="User is not authenticated.")
