@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 from typing import List, Union
 from datetime import date
-from queries.pool import pool
-from users import UserRepository
+from pool import pool
+from queries.accounts import AccountRepository
 
 
 class Error(BaseModel):
@@ -47,9 +47,9 @@ class CommentRepository:
         except Exception:
             return {"message": "Could not get all comments"}
 
-# needs GET endpoint set up for users
+# needs GET endpoint set up for accounts
     def create(self, comment: CommentIn) -> CommentOut:
-        user_repo = UserRepository()
+        user_repo = AccountRepository()
         user = user_repo.get(comment.user_id)
 
         if not user:

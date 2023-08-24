@@ -1,7 +1,8 @@
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime, date
-from queries.pool import pool
+from pool import pool
+
 
 class WorkoutIn(BaseModel):
     name: str
@@ -12,6 +13,7 @@ class WorkoutIn(BaseModel):
     description: Optional[str]
     created_at: Optional[datetime]
     assigned_date: Optional[date]
+
 
 class WorkoutOut(BaseModel):
     id: int
