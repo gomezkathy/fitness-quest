@@ -34,9 +34,9 @@ class WorkoutRepository:
                 result = db.execute(
                     """
                     INSERT INTO exercises
-                    (name, weight, sets, reps, picture_url, description, created_at, assigned_date)
+                    (name, weight, sets, reps, picture_url, description, assigned_date)
                     VALUES
-                        (%s, %s, %s, %s, %s, %s, %s, %s)
+                        (%s, %s, %s, %s, %s, %s, %s)
                     RETURNING id;
 
                     """,
@@ -47,8 +47,7 @@ class WorkoutRepository:
                         workout.reps,
                         workout.picture_url,
                         workout.description,
-                        workout.created_at,
-                         workout.assigned_date
+                        workout.assigned_date
                     ]
 
                 )
