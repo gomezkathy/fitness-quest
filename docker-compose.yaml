@@ -1,12 +1,59 @@
-volumes:
-  fastapi-fitness-data:
-    external: true
+# volumes:
+#   fastapi-fitness-data:
+#     external: true
+# services:
+#   fastapi:
+#     environment:
+#       DATABASE_URL: postgresql://user:password@db/fitness_quest
+#       WAIT_HOSTS: db:5432
+#       PORT: 8000
+#       SIGNING_KEY: 87fe4a3fcfb60092dbaeb854a196bc3d9b190aed7930c734749e85245de698420c25f8e6899c421b4494e99459e01058de5daa9d49584cd62ec975da9aea33da
+#       WAIT_BEFORE: 5
+#       WAIT_TIMEOUT: 60
+#     build:
+#       context: ./api
+#       dockerfile: Dockerfile.dev
+#     ports:
+#       - 8000:8000
+#     volumes:
+#       - ./api:/app
+
+#   ghi:
+#     image: node:lts-bullseye
+#     command: /bin/bash run.sh
+#     working_dir: /app
+#     volumes:
+#       - ./ghi:/app
+#     ports:
+#       - "3000:3000"
+#     environment:
+#       HOST_OS: ${OS}
+#       NODE_ENV: development
+#       HOST: "0.0.0.0"
+#       PUBLIC_URL: http://localhost:3000
+#       REACT_APP_API_HOST: ${REACT_APP_API_HOST}
+
+#   db:
+#     image: postgres:14.5-bullseye
+#     environment:
+#       POSTGRES_PASSWORD: password
+#       POSTGRES_USER: user
+#       POSTGRES_DB: fitness_quest
+#     ports:
+#       - "15432:5432"
+#     volumes:
+#       - fastapi-fitness-data:/var/lib/postgresql/data
+
+version: "3.8"
 services:
   fastapi:
     environment:
       DATABASE_URL: postgresql://user:password@db/fitness_quest
       WAIT_HOSTS: db:5432
       PORT: 8000
+      SIGNING_KEY: 87fe4a3fcfb60092dbaeb854a196bc3d9b190aed7930c734749e85245de698420c25f8e6899c421b4494e99459e01058de5daa9d49584cd62ec975da9aea33da
+      WAIT_BEFORE: 5
+      WAIT_TIMEOUT: 60
     build:
       context: ./api
       dockerfile: Dockerfile.dev
@@ -14,7 +61,9 @@ services:
       - 8000:8000
     volumes:
       - ./api:/app
-
+      - ./api/queries:/app/queries
+      - ./api/routers:/app/routers
+      - ./api/models:/app/models
   ghi:
     image: node:lts-bullseye
     command: /bin/bash run.sh
@@ -29,7 +78,6 @@ services:
       HOST: "0.0.0.0"
       PUBLIC_URL: http://localhost:3000
       REACT_APP_API_HOST: ${REACT_APP_API_HOST}
-
   db:
     image: postgres:14.5-bullseye
     environment:
@@ -40,3 +88,6 @@ services:
       - "15432:5432"
     volumes:
       - fastapi-fitness-data:/var/lib/postgresql/data
+volumes:
+  fastapi-fitness-data:
+    external: true
