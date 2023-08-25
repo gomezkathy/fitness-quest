@@ -34,7 +34,7 @@ class AccountRepository:
                     except Exception as e:
                         raise Exception("Error:", e)
 
-    def get(self, username: str) -> AccountWithPassword | None:
+    def get(self, username: int) -> AccountWithPassword | None:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
@@ -44,8 +44,7 @@ class AccountRepository:
                     FROM accounts
                     WHERE username = %s;
                     """,
-                    [username],
-                )
+                    [username],)
                 ac = cur.fetchone()
                 if ac is None:
                     raise Exception("No account found")

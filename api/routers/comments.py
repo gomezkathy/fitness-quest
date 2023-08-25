@@ -1,11 +1,12 @@
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends, Response, HTTPException
 from typing import List, Union
-from queries.comments import (
+from models.comments import (
     Error,
     CommentIn,
-    CommentRepository,
-    CommentOut,
+    CommentOut
 )
+from queries.comments import CommentRepository
+from authenticator import authenticator
 
 router = APIRouter()
 
@@ -28,3 +29,28 @@ def get_all(
     repo: CommentRepository = Depends(),
 ):
     return repo.get_all()
+
+
+@router.delete("/api/comments/{comment_id}", tags=["Comments"], response_model=bool)
+async def delete_comment(
+    comment_id: int,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+    repo: CommentRepository = Depends()
+) -> bool:
+
+    if account_data:
+        return repo.delete(comment_id)
+    else:
+        raise HTTPException(status_code=401)
+
+
+@router.put("/api/comments/{comment_id}", tags=["Comments"], response_model=Union[CommentOut, Error],)
+def update_comment(
+    comment_id: int, comment: CommentIn,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+    repo: CommentRepository = Depends()
+) -> Union[Error, CommentOut]:
+    if account_data:
+        return repo.update(comment_id, comment)
+    else:
+        raise HTTPException(status_code=401)
