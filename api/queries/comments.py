@@ -29,8 +29,9 @@ class CommentRepository:
                         )
                         result.append(comment)
                     return result
-        except Exception:
-            return {"message": "Could not get all comments"}
+        except Exception as e:
+            print("Error:", e)
+            return e
 
     def create(self, comment: CommentIn) -> CommentOut:
         try:

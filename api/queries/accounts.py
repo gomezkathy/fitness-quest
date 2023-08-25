@@ -50,7 +50,6 @@ class AccountRepository:
                     raise Exception("No account found")
                 else:
                     try:
-                        print
                         return AccountWithPassword(
                             id=ac[0],
                             username=ac[1],

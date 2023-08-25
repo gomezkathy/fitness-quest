@@ -5,6 +5,7 @@ from pool import pool
 
 
 class WorkoutIn(BaseModel):
+    user_id: int
     name: str
     weight: Optional[int]
     sets: Optional[int]
