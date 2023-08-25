@@ -30,6 +30,40 @@ class WorkoutOut(BaseModel):
 
 
 class WorkoutRepository:
+    def update(self, workout_id:int, workout:WorkoutIn) -> Union[WorkoutOut, Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        UPDATE exercises
+                        SET user_id = %s
+                            , name = %s
+                            , weight = %s
+                            , sets = %s
+                            , reps = %s
+                            , picture_url = %s
+                            , description = %s
+                            , assigned_date = %s
+                        WHERE id = %s
+                        """,
+                        [
+                            workout.user_id,
+                            workout.name,
+                            workout.weight,
+                            workout.sets,
+                            workout.reps,
+                            workout.picture_url,
+                            workout.description,
+                            workout.assigned_date,
+                            workout_id
+                        ]
+                    )
+                    return self.workout_in_to_out(workout_id, workout)
+        except Exception as e:
+            print(e)
+            return {"message": "could not update workout"}
+
     def get_all(self) -> Union[Error, List[WorkoutOut]]:
         try:
             with pool.connection() as conn:
@@ -86,8 +120,12 @@ class WorkoutRepository:
 
                     )
                     id = result.fetchone()[0]
-                    old_data = workout.dict()
-                    return WorkoutOut(id=id, **old_data)
+                    return self.workout_in_to_out(id, workout)
         except Exception as e:
             print("Error creating workout:", e)
             return e
+
+
+    def workout_in_to_out(self, id: int, workout: WorkoutIn):
+        old_data = workout.dict()
+        return WorkoutOut(id=id, **old_data)
