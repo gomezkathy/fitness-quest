@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
 
-export default function Library() {
+export default function WorkoutDetails() {
   return null;
 }

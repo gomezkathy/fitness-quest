@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from routers import book_router, rating_router
 import os
-from routers import comments, accounts, workouts
+from routers import comments, accounts, workouts, exercises
 from authenticator import authenticator
 from fastapi import APIRouter
 
@@ -16,6 +16,7 @@ app.include_router(accounts.router)
 app.include_router(workouts.router)
 app.include_router(book_router.router, prefix="/books", tags=["books"])
 app.include_router(rating_router.router, prefix="/ratings", tags=["ratings"])
+app.include_router(exercises.router, prefix="/exercises", tags=["exercises"])
 
 app.add_middleware(
     CORSMiddleware,

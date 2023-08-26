@@ -64,11 +64,22 @@ steps = [
             user_id INTEGER REFERENCES accounts(id),
             workout_name VARCHAR(100) NOT NULL,
             comment TEXT,
-            assigned_date DATE
+            exercise_list INTEGER []
         )
         """,
         """
-        DROP TABLE comments;
+        DROP TABLE workouts;
+        """,
+    ],
+    [
+        """
+        CREATE TABLE workoutVO (
+            assigned_date DATE NOT NULL,
+            workout_id INTEGER NOT NULL REFERENCES workout
+        )
+        """,
+        """
+        DROP TABLE workoutVO;
         """,
     ],
 ]
