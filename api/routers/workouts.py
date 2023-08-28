@@ -12,23 +12,28 @@ async def create_workout(
     # verifies user authentication
     account_data: dict = Depends(authenticator.get_current_account_data),
     # creates an instance of WorkoutRepository
-    repo: WorkoutRepository = Depends()
+    repo: WorkoutRepository = Depends(),
 ):
     # if user is authenticated, creates workout. Otherwise, returns 401 error
     if account_data:
         return repo.create(workout)
     else:
-        raise HTTPException(status_code=401, detail="User is not authenticated.")
+        raise HTTPException(
+            status_code=401, detail="User is not authenticated."
+        )
+
 
 @router.get("/workouts", response_model=Union[Error, List[WorkoutOut]])
 async def get_all(
-   account_data: dict = Depends(authenticator.get_current_account_data),
-   repo: WorkoutRepository = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
+    repo: WorkoutRepository = Depends(),
 ):
     if account_data:
         return repo.get_all()
     else:
-      raise HTTPException(status_code=401, detail="User is not authenticated.")
+        raise HTTPException(
+            status_code=401, detail="User is not authenticated."
+        )
 
 
 @router.put("/workouts/{workout_id}", response_model=Union[WorkoutOut, Error])
@@ -41,4 +46,6 @@ async def update_workout(
     if account_data:
         return repo.update(workout_id, workout)
     else:
-        raise HTTPException(status_code=401, detail="User is not authenticated.")
+        raise HTTPException(
+            status_code=401, detail="User is not authenticated."
+        )
