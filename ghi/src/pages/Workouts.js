@@ -1,7 +1,7 @@
-mport { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export default function Workouts() {
-  return null;
+  return <h1>Workouts Page</h1>;
 }
 
 //use in user info  (next workout, details of one workout)

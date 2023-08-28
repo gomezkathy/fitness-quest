@@ -75,7 +75,7 @@ steps = [
         """
         CREATE TABLE workoutVO (
             assigned_date DATE NOT NULL,
-            workout_id INTEGER NOT NULL REFERENCES workout
+            workout_id INTEGER NOT NULL REFERENCES workouts
         )
         """,
         """
