@@ -1,37 +1,25 @@
-import { useEffect, useState } from "react";
-import Construct from "./Construct.js";
-import ErrorNotification from "./ErrorNotification";
+import React from "react";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
+// import { Box } from "@mui/material";
+import NavBar from "./components/NavBar";
+import Home from "./pages/Home";
+import Workouts from "./pages/Workouts";
+import CreateWorkout from "./pages/CreateWorkout";
+// import UpdateWorkout from "./pages/UpdateWorkout";
 import "./App.css";
-
-function App() {
-  const [launchInfo, setLaunchInfo] = useState([]);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    async function getData() {
-      let url = `${process.env.REACT_APP_API_HOST}/api/launch-details`;
-      console.log("fastapi url: ", url);
-      let response = await fetch(url);
-      console.log("------- hello? -------");
-      let data = await response.json();
-
-      if (response.ok) {
-        console.log("got launch data!");
-        setLaunchInfo(data.launch_details);
-      } else {
-        console.log("drat! something happened");
-        setError(data.message);
-      }
-    }
-    getData();
-  }, []);
-
+export default function App() {
   return (
-    <div>
-      <ErrorNotification error={error} />
-      <Construct info={launchInfo} />
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="Workouts">
+            <Route index element={<Workouts />} />
+            <Route path="Create" element={<CreateWorkout />} />
+          </Route>
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
-
-export default App;
