@@ -1,6 +1,4 @@
-volumes:
-  fastapi-fitness-data:
-    external: true
+version: "3.8"
 services:
   fastapi:
     environment:
@@ -17,7 +15,9 @@ services:
       - 8000:8000
     volumes:
       - ./api:/app
-
+      - ./api/queries:/app/queries
+      - ./api/routers:/app/routers
+      - ./api/models:/app/models
   ghi:
     image: node:lts-bullseye
     command: /bin/bash run.sh
@@ -32,6 +32,7 @@ services:
       HOST: "0.0.0.0"
       PUBLIC_URL: http://localhost:3000
       REACT_APP_API_HOST: ${REACT_APP_API_HOST}
+      REACT_APP_RAPID_API_KEY: "815c299832msh0b249a1cb845e53p1fd419jsn23a216b7cb3b"
 
   db:
     image: postgres:14.5-bullseye
@@ -43,3 +44,6 @@ services:
       - "15432:5432"
     volumes:
       - fastapi-fitness-data:/var/lib/postgresql/data
+volumes:
+  fastapi-fitness-data:
+    external: true

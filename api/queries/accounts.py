@@ -1,6 +1,11 @@
 from psycopg_pool import ConnectionPool
 import os
-from models.accounts import AccountOut, Account, AccountWithPassword, AuthenticationException
+from models.accounts import (
+    AccountOut,
+    Account,
+    AccountWithPassword,
+    AuthenticationException,
+)
 
 pool = ConnectionPool(conninfo=os.environ["DATABASE_URL"])
 
@@ -34,10 +39,9 @@ class AccountRepository:
                     except Exception as e:
                         raise Exception("Error:", e)
 
-    def get(self, username: str) -> AccountWithPassword | None:
+    def get(self, username: int) -> AccountWithPassword | None:
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                print(username)
                 cur.execute(
                     """
                     SELECT id, username, first_name, last_name,
