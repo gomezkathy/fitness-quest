@@ -1,8 +1,12 @@
 from fastapi import APIRouter, Depends, Response, HTTPException
+from fastapi import APIRouter, Depends, Response, HTTPException
 from typing import List, Union
-from models.comments import Error, CommentIn, CommentOut
-from queries.comments import CommentRepository
-from authenticator import authenticator
+from queries.comments import (
+    Error,
+    CommentIn,
+    CommentRepository,
+    CommentOut,
+)
 
 router = APIRouter()
 
