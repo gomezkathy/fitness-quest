@@ -7,7 +7,7 @@ from authenticator import authenticator
 router = APIRouter()
 
 
-@router.post("/comments", response_model=Union[CommentOut, Error])
+@router.post("/api/comments", response_model=Union[CommentOut, Error])
 def create_comment(
     comment: CommentIn,
     response: Response,
@@ -20,7 +20,7 @@ def create_comment(
         return ""
 
 
-@router.get("/comments", response_model=Union[Error, List[CommentOut]])
+@router.get("/api/comments", response_model=Union[Error, List[CommentOut]])
 def get_all(
     repo: CommentRepository = Depends(),
 ):
