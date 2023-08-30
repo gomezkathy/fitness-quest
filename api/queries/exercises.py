@@ -14,7 +14,13 @@ class ExerciseIn(BaseModel):
     reps: Optional[int]
     picture_url: Optional[str]
     description: Optional[str]
+    created_at: Optional[datetime]
     assigned_date: Optional[date]
+    type: Optional[str]
+    muscle: Optional[str]
+    difficulty: Optional[str]
+    equipment: Optional[str]
+    instructions: Optional[str]
 
 
 class ExerciseOut(BaseModel):
@@ -26,7 +32,13 @@ class ExerciseOut(BaseModel):
     reps: Optional[int]
     picture_url: Optional[str]
     description: Optional[str]
+    created_at: Optional[datetime]
     assigned_date: Optional[date]
+    type: Optional[str]
+    muscle: Optional[str]
+    difficulty: Optional[str]
+    equipment: Optional[str]
+    instructions: Optional[str]
 
 
 class ExerciseRepository:
@@ -44,7 +56,13 @@ class ExerciseRepository:
                             , reps
                             , picture_url
                             , description
+                            , created_at
                             , assigned_date
+                            , type
+                            , muscle
+                            , difficulty
+                            , equipment
+                            , instructions
                         FROM exercises
                         WHERE id = %s
                         """,
@@ -90,7 +108,13 @@ class ExerciseRepository:
                             , reps = %s
                             , picture_url = %s
                             , description = %s
+                            , created_at = %s
                             , assigned_date = %s
+                            , type = %s
+                            , muscle = %s
+                            , difficulty = %s
+                            , equipment = %s
+                            , instructions = %s
                         WHERE id = %s
                         """,
                         [
@@ -101,7 +125,13 @@ class ExerciseRepository:
                             exercise.reps,
                             exercise.picture_url,
                             exercise.description,
+                            exercise.created_at,
                             exercise.assigned_date,
+                            exercise.type,
+                            exercise.muscle,
+                            exercise.difficulty,
+                            exercise.equipment,
+                            exercise.instructions,
                             exercise_id
                         ]
                     )
@@ -116,7 +146,7 @@ class ExerciseRepository:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-                        SELECT id, user_id, name, weight, sets, reps, picture_url, description, assigned_date
+                        SELECT id, user_id, name, weight, sets, reps, picture_url, description, created_at, assigned_date, type, muscle, difficulty, equipment, instructions
                         FROM exercises
                         ORDER BY assigned_date
                         """
@@ -132,7 +162,13 @@ class ExerciseRepository:
                             reps=record[5],
                             picture_url=record[6],
                             description=record[7],
-                            assigned_date=record[8]
+                            created_at=record[8],
+                            assigned_date=record[9],
+                            type=record[10],
+                            muscle=record[11],
+                            difficulty=record[12],
+                            equipment=record[13],
+                            instructions=record[14],
                         )
                         result.append(exercise)
                     return result
@@ -147,9 +183,24 @@ class ExerciseRepository:
                     result = db.execute(
                         """
                         INSERT INTO exercises
-                        (user_id, name, weight, sets, reps, picture_url, description, assigned_date)
+                        (
+                            user_id,
+                            name,
+                            weight,
+                            sets,
+                            reps,
+                            picture_url,
+                            description,
+                            created_at,
+                            assigned_date,
+                            type,
+                            muscle,
+                            difficulty,
+                            equipment,
+                            instructions
+                            )
                         VALUES
-                            (%s, %s, %s, %s, %s, %s, %s, %s)
+                            (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         RETURNING id;
 
                         """,
@@ -161,7 +212,13 @@ class ExerciseRepository:
                             exercise.reps,
                             exercise.picture_url,
                             exercise.description,
-                            exercise.assigned_date
+                            exercise.created_at,
+                            exercise.assigned_date,
+                            exercise.type,
+                            exercise.muscle,
+                            exercise.difficulty,
+                            exercise.equipment,
+                            exercise.instructions,
                         ]
 
                     )
@@ -186,6 +243,12 @@ class ExerciseRepository:
             reps=record[5],
             picture_url=record[6],
             description=record[7],
-            assigned_date=record[8],
+            created_at=record[8],
+            assigned_date=record[9],
+            type=record[10],
+            muscle=record[11],
+            difficulty=record[12],
+            equipment=record[13],
+            instructions=record[14],
 
         )

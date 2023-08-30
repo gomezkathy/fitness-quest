@@ -22,15 +22,22 @@ steps = [
         CREATE TABLE exercises (
             id SERIAL NOT NULL PRIMARY KEY,
             user_id INTEGER REFERENCES accounts(id),
-            name VARCHAR(100) NOT NULL,
-            weight NUMERIC(10, 1),
-            reps INTEGER,
-            sets INTEGER,
+            name VARCHAR(150) NOT NULL,
+            weight SMALLINT,
+            reps SMALLINT,
+            sets SMALLINT,
             picture_url VARCHAR(255),
             description TEXT,
-            assigned_date DATE
+            created_at TIMESTAMP,
+            assigned_date DATE,
+            type VARCHAR(100),
+            muscle VARCHAR(100),
+            difficulty VARCHAR(100),
+            equipment VARCHAR(200),
+            instructions TEXT
         );
         """,
+
         # "Down" SQL statement
         """
         DROP TABLE exercises;
