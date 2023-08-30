@@ -9,6 +9,7 @@ import CreateWorkout from "./pages/CreateWorkout";
 import "./App.css";
 import Comments from "./pages/Comments";
 import CommentForm from "./pages/CreateComment";
+import Footer from "./components/Footer";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
             <Route path="create" element={<CommentForm />} />{" "}
           </Route>
         </Routes>
+        <Footer />
       </div>
     </BrowserRouter>
   );

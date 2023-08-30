@@ -33,13 +33,27 @@ export default function Home() {
         </div>
         <div>
           <h2>Who Are We?</h2>
-          <p>We are team 14</p>
+          <p>
+            We're a team of health and fitness enthusiasts on a mission
+            revolutionize people's lives. While taking care of your health is a
+            significant endeavor, we believe it shouldn't always be a challenge.
+            We're firm believers in simplicity and empowerment throughout the
+            process can heighten your chances of successfully reaching your
+            aspirations.
+          </p>
         </div>
       </div>
       <div className="customer-reviews">
         <div>
           <h2>Customer Reviews</h2>
-          <p>"Fitness Quest is the GOAT"</p>
+          <p>
+            "This app redefined how I approach my fitness goals, offering an
+            intuitive platform to track my workouts and progress with ease.
+            Whether I'm engaging in high-intensity workouts or a yoga session,
+            Fitness Quest caters to various exercise styles. Its straightforward
+            interface keeps me motivated, and the convenience of having all my
+            fitness data in one place is truly remarkable."
+          </p>
           <p>- RandomUser2039</p>
         </div>
         <div>
@@ -52,11 +66,3 @@ export default function Home() {
     </div>
   );
 }
-
-//info about app
-
-//nothing personalized
-
-//not gated login button
-
-//navbar
