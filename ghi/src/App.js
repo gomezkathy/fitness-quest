@@ -13,6 +13,7 @@ import LoginForm from "./Accounts/LoginForm";
 import Logout from "./Accounts/Logout";
 import SignupForm from "./Accounts/SignupForm";
 import ExerciseForm from "./pages/CreateExercise";
+import Exercises from "./pages/Exercises";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 
 export default function App() {

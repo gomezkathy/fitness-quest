@@ -106,7 +106,7 @@ function ExerciseForm() {
               <input
                 value={weight}
                 onChange={handleWeightChange}
-                required type="number"
+                type="number"
                 name="weight"
                 id="weight"
                 className="form-control"
@@ -117,7 +117,7 @@ function ExerciseForm() {
               <input
                 value={sets}
                 onChange={handleSetsChange}
-                required type="number"
+                type="number"
                 name="sets"
                 id="sets"
                 className="form-control"
@@ -128,7 +128,7 @@ function ExerciseForm() {
               <input
                 value={reps}
                 onChange={handleRepsChange}
-                required type="number"
+                type="number"
                 name="reps"
                 id="reps"
                 className="form-control"
@@ -150,7 +150,7 @@ function ExerciseForm() {
               <input
                 value={description}
                 onChange={handleDescriptionChange}
-                required type="text"
+                type="text"
                 name="description"
                 id="description"
                 className="form-control"
@@ -161,7 +161,7 @@ function ExerciseForm() {
               <input
                 value={date}
                 onChange={handleDateChange}
-                required type="date"
+                type="date"
                 name="date"
                 id="date"
                 className="form-control"
