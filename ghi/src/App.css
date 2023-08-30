@@ -13,3 +13,130 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+/* NAVBAR */
+.navbar {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+}
+
+.nav-item {
+  margin-right: 15px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: white;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+/* HOMEPAGE */
+/* HERO BANNER */
+.hero-image {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("https://images.pexels.com/photos/4428992/pexels-photo-4428992.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+  height: 600px;
+  position: relative;
+  left: 0;
+  right: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.hero-text {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+}
+
+.customer-reviews {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  height: 150px;
+}
+
+.customer-reviews > div {
+  border: 1px solid #ddd;
+  text-align: center;
+  height: 150px;
+}
+
+.customer-reviews img {
+  border-radius: 50%;
+  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+  border: 1px solid #ddd;
+  height: 150px;
+}
+
+.who-are-we {
+  display: grid;
+  grid-template-columns: 1fr 6fr;
+  border: 1px solid #ddd;
+  height: 150px;
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
+  text-align: center;
+}
+
+.who-are-we > div {
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.who-are-we img {
+  display: grid;
+  grid-template-columns: 1fr 6fr;
+  border: 1px solid #ddd;
+  height: 150px;
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: 6fr 1fr;
+  border: 1px solid #ddd;
+  height: 150px;
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
+  text-align: center;
+}
+
+.features > div {
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.features img {
+  display: grid;
+  grid-template-columns: 1fr 6fr;
+  border: 1px solid #ddd;
+  height: 150px;
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.center {
+  text-align: center;
+}
