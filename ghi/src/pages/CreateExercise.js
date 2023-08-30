@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 function ExerciseForm() {
-  const [exercises, setExercises] = useState([]);
   const [name, setName] = useState('');
   const [weight, setWeight] = useState('');
   const [sets, setSets] = useState('');
@@ -71,8 +70,8 @@ function ExerciseForm() {
 
     const response = await fetch(exercisesUrl, fetchConfig);
     if (response.ok) {
-      const newHat = await response.json();
-      console.log(newHat);
+      const newExercise = await response.json();
+      console.log(newExercise);
 
       setWeight('');
       setName('');
@@ -84,20 +83,6 @@ function ExerciseForm() {
     }
   };
 
-  const fetchData = async () => {
-    const url = 'http://localhost:8000/api/exercises/';
-
-    const response = await fetch(url);
-
-    if (response.ok) {
-      const data = await response.json();
-      setExercises(data.exercises);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   return (
     <div className="row">
@@ -106,54 +91,51 @@ function ExerciseForm() {
           <h1>create an exercise</h1>
           <form onSubmit={handleSubmit} id="create-exercise-form">
             <div className="mb-3">
-              <label htmlFor="name">Exercise Name</label>
+              <label htmlFor="name">exercise name:</label>
               <input
                 value={name}
                 onChange={handleNameChange}
-                required
-                type="text"
+                required type="text"
                 name="name"
                 id="name"
                 className="form-control"
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="weight">Weight</label>
+              <label htmlFor="weight">weight used:</label>
               <input
                 value={weight}
                 onChange={handleWeightChange}
-                required
-                type="text"
+                required type="number"
                 name="weight"
                 id="weight"
                 className="form-control"
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="sets">Sets</label>
+              <label htmlFor="sets"># of sets:</label>
               <input
                 value={sets}
                 onChange={handleSetsChange}
-                required
-                type="text"
+                required type="number"
                 name="sets"
                 id="sets"
                 className="form-control"
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="reps">Reps</label>
+              <label htmlFor="reps"># of reps:</label>
               <input
                 value={reps}
                 onChange={handleRepsChange}
-                type="url"
+                required type="number"
                 name="reps"
                 id="reps"
                 className="form-control"
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="picture">Picture URL</label>
+              <label htmlFor="picture">picture url:</label>
               <input
                 value={picture}
                 onChange={handlePictureChange}
@@ -164,22 +146,22 @@ function ExerciseForm() {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="description">Description</label>
+              <label htmlFor="description">description:</label>
               <input
                 value={description}
                 onChange={handleDescriptionChange}
-                type="text"
+                required type="text"
                 name="description"
                 id="description"
                 className="form-control"
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="date">Date</label>
+              <label htmlFor="date">assigned date:</label>
               <input
                 value={date}
                 onChange={handleDateChange}
-                type="text"
+                required type="date"
                 name="date"
                 id="date"
                 className="form-control"

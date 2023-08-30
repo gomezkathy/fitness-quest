@@ -6,7 +6,7 @@ from typing import List, Union, Optional
 router = APIRouter()
 
 
-@router.post("/exercises", response_model=Union[ExerciseOut, Error])
+@router.post("/api/exercises", response_model=Union[ExerciseOut, Error])
 async def create_exercise(
     exercise: ExerciseIn,  # sets the exercise model
     account_data: dict = Depends(authenticator.get_current_account_data),  # verifies user authentication
@@ -18,7 +18,7 @@ async def create_exercise(
     else:
         raise HTTPException(status_code=401, detail="User is not authenticated.")
 
-@router.get("/exercises", response_model=Union[Error, List[ExerciseOut]])
+@router.get("/api/exercises", response_model=Union[Error, List[ExerciseOut]])
 async def get_all(
    account_data: dict = Depends(authenticator.get_current_account_data),
    repo: ExerciseRepository = Depends(),
@@ -29,7 +29,7 @@ async def get_all(
       raise HTTPException(status_code=401, detail="User is not authenticated.")
 
 
-@router.put("/exercises/{exercise_id}", response_model=Union[ExerciseOut, Error])
+@router.put("/api/exercises/{exercise_id}", response_model=Union[ExerciseOut, Error])
 async def update_exercise(
     exercise_id: int,
     exercise: ExerciseIn,
@@ -42,7 +42,7 @@ async def update_exercise(
         raise HTTPException(status_code=401, detail="User is not authenticated.")
 
 
-@router.delete("/exercises/{exercise_id}", response_model=bool)
+@router.delete("/api/exercises/{exercise_id}", response_model=bool)
 async def delete_exercise(
     exercise_id: int,
     account_data: dict = Depends(authenticator.get_current_account_data),
@@ -53,7 +53,7 @@ async def delete_exercise(
     else:
         raise HTTPException(status_code=401, detail="User is not authenticated.")
 
-@router.get("/exercises/{exercise_id}", response_model=Optional[ExerciseOut])
+@router.get("/api/exercises/{exercise_id}", response_model=Optional[ExerciseOut])
 async def get_one_exercise(
     exercise_id: int,
     account_data: dict = Depends(authenticator.get_current_account_data),
