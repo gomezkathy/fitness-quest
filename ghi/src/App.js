@@ -16,7 +16,7 @@ import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 
 export default function App() {
   return (
-    <AuthProvider>
+    <AuthProvider baseUrl={process.env.REACT_APP_API_HOST}>
       <BrowserRouter>
         <div className="App">
           <NavBar />
