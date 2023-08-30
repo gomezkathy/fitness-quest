@@ -78,3 +78,19 @@ class ExercisesRepository:
         except Exception as e:
             print("Error:", e)
             return Status(status=400, message=f"Error: {e}")
+
+
+# from pool import pool
+# from models.exercises import ExerciseBase, ExerciseOut
+
+# class ExerciseRepository:
+#     def create(self, exercise: ExerciseBase) -> int:
+#         query = """
+#         INSERT INTO exercises (user_id, name, weight, reps, sets, picture_url, description, created_at, assigned_date, type, muscle, difficulty, equiptment, instructions)
+#         VALUES (%(user_id)s, %(name)s, %(weight)s, %(reps)s, %(sets)s, %(picture_url)s, %(description)s, %(created_at)s, %(assigned_date)s, %(type)s, %(muscle)s, %(difficulty)s, %(equiptment)s, %(instructions)s)
+#         RETURNING id;
+#         """
+#         with pool.get_connection() as connection:
+#             with connection.cursor() as cursor:
+#                 cursor.execute(query, exercise.dict())
+#                 return cursor.fetchone()[0]

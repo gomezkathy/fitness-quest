@@ -16,6 +16,7 @@ def create_exercise(
     comment: ExercisesIn,
     response: Response,
     repo: ExercisesRepository = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     successful_repo = repo.create(comment)
     if isinstance(successful_repo, ExercisesOut):
@@ -44,7 +45,61 @@ def get_all(
         )
 
 
+@router.put("/{exercise_id}", response_model=ExercisesOut)
+async def update_exercise(
+    exercise_id: int,
+    exercise_data: ExercisesIn,
+    response: Response,
+    repo: ExercisesRepository = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
+):
+    if account_data:
+        updated_exercise = repo.update(exercise_id, exercise_data)
+        if updated_exercise:
+            return updated_exercise
+        else:
+            raise HTTPException(status_code=404, detail="Exercise not found")
+    else:
+        raise HTTPException(
+            status_code=401, detail="User is not authenticated."
+        )
+
+
+@router.delete("/{exercise_id}", response_model=Status)
+async def delete_exercise(
+    exercise_id: int,
+    response: Response,
+    repo: ExercisesRepository = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
+):
+    if account_data:
+        deleted = repo.delete(exercise_id)
+        if deleted:
+            return Status(status="Success", message="Exercise deleted")
+        else:
+            raise HTTPException(status_code=404, detail="Exercise not found")
+    else:
+        raise HTTPException(
+            status_code=401, detail="User is not authenticated."
+        )
+
+
 # {headers: {Authorization: Bearer ${token}}} front end
 
 # be extremely careful about fetch requests
 # if you try to fetch to one of the endpoints but the url doesn't match perfectly down to the slashes, it will try to be rerouted as an htps error 429. make sure 100% identical down to the slashes!
+
+# from fastapi import APIRouter, Depends
+# from queries.exercises import ExerciseRepository
+# from models.exercises import ExerciseBase, ExerciseOut
+# from authenticator import MyAuthenticator
+
+# router = APIRouter()
+
+# @router.post("/exercise", response_model=ExerciseOut)
+# async def create_exercise(
+#     exercise: ExerciseBase,
+#     exercises: ExerciseRepository = Depends(),
+# ):
+#     exercise_id = exercises.create(exercise)
+#     return ExerciseOut(**exercise.dict(), id=exercise_id)

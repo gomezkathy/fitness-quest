@@ -3,14 +3,11 @@ steps = [
         # "Up" SQL statement
         """
         CREATE TABLE accounts (
-        CREATE TABLE accounts (
             id SERIAL NOT NULL PRIMARY KEY,
             username VARCHAR(100) NOT NULL UNIQUE,
             password VARCHAR(100) NOT NULL,
-            password VARCHAR(100) NOT NULL,
             first_name VARCHAR(100) NOT NULL,
             last_name VARCHAR(100) NOT NULL,
-            email VARCHAR(100) NOT NULL UNIQUE
             email VARCHAR(100) NOT NULL UNIQUE
         );
         """,
@@ -22,16 +19,36 @@ steps = [
     [
         # "Up" SQL statement
         """
+        CREATE TABLE exercises_workouts (
+            id SERIAL NOT NULL PRIMARY KEY,
+            workout_id INTEGER REFERENCES workouts(id),
+            exercise_id INTEGER REFERENCES exercises(id)
+        );
+        """,
+        # "Down" SQL statement
+        """
+        DROP TABLE exercises_workouts;
+        """,
+    ],
+    [
+        # "Up" SQL statement
+        """
         CREATE TABLE exercises (
             id SERIAL NOT NULL PRIMARY KEY,
             user_id INTEGER REFERENCES accounts(id),
-            name VARCHAR(100) NOT NULL,
-            weight NUMERIC(10, 1),
-            reps INTEGER,
-            sets INTEGER,
+            name VARCHAR(150) NOT NULL,
+            weight SMALLINT,
+            reps SMALLINT,
+            sets SMALLINT,
             picture_url VARCHAR(255),
             description TEXT,
-            assigned_date DATE
+            created_at TIMESTAMP,
+            assigned_date DATE,
+            type VARCHAR(100),
+            muscle VARCHAR(100),
+            difficulty VARCHAR(100),
+            equiptment VARCHAR(200),
+            instructions TEXT
         );
         """,
         # "Down" SQL statement
@@ -56,12 +73,23 @@ steps = [
     ],
     [
         """
+        CREATE TABLE workoutvo_workouts (
+            id SERIAL NOT NULL PRIMARY KEY,
+            workoutvo_id INTEGER REFERENCES workoutVO(id),
+            workout_id INTEGER REFERENCES workouts(id)
+        )
+        """,
+        """
+        DROP TABLE workoutvo_workouts;
+        """,
+    ],
+    [
+        """
         CREATE TABLE workouts (
             id SERIAL NOT NULL PRIMARY KEY,
             user_id INTEGER REFERENCES accounts(id),
             workout_name VARCHAR(100) NOT NULL,
             comment TEXT,
-            exercise_list INTEGER []
         )
         """,
         """
