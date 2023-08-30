@@ -15,18 +15,17 @@ const SignUpForm = () => {
 
   const handleRegistration = async (e) => {
     e.preventDefault();
-    const customerData = {
+    const accountData = {
       first: first,
       last: last,
-      phone: phone,
       email: email,
       username: username,
       password: password,
     };
     try {
       await register(
-        customerData,
-        `${process.env.REACT_APP_API_HOST}/customers`
+        accountData,
+        `${process.env.REACT_APP_API_HOST}/api/accounts`
       );
       e.target.reset();
       navigate("/");
@@ -62,20 +61,9 @@ const SignUpForm = () => {
               }}
             />
           </div>
-          <div className="mb-3">
-            <label className="form-label">Phone</label>
-            <input
-              name="phone"
-              type="number"
-              className="form-control"
-              onChange={(e) => {
-                setPhone(e.target.value);
-              }}
-            />
-          </div>
 
           <div className="mb-3">
-            <label className="form-label">email</label>
+            <label className="form-label">Email</label>
             <input
               name="email"
               type="text"
@@ -85,7 +73,7 @@ const SignUpForm = () => {
               }}
             />
             <div className="mb-3">
-              <label className="form-label">username</label>
+              <label className="form-label">Username</label>
               <input
                 name="username"
                 type="text"

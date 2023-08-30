@@ -23,6 +23,21 @@ from authenticator import authenticator
 router = APIRouter()
 
 
+@router.get("/token", response_model=AccountToken | None)
+async def get_token(
+    request: Request,
+    account: AccountIn = Depends(authenticator.try_get_current_account_data),
+) -> AccountToken | None:
+    if account and authenticator.cookie_name in request.cookies:
+        access_token = request.cookies[authenticator.cookie_name]
+        account_id = account.get("id")
+        if account_id is not None:
+            token = AccountToken(
+                access_token=access_token, type="Bearer", account=account_id
+            )
+            return token
+
+
 @router.post("/api/accounts", response_model=AccountToken | HttpError)
 async def create_account(
     info: AccountIn,

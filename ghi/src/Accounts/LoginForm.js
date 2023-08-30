@@ -1,16 +1,32 @@
-import useToken from "@galvanize-inc/jwtdown-for-react";
 import { useState } from "react";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useToken();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    login(username, password);
-    console.log(`username: ${username} password: ${password}`);
-    e.target.reset();
+
+    const response = await fetch("http://localhost:8000/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      const token = data.token; // Assuming your backend returns a "token" field
+      // Handle the token (e.g., store it in local storage or context)
+      console.log("Received token:", token);
+    } else {
+      console.error("Login failed");
+    }
+
+    // Reset form fields
+    setUsername("");
+    setPassword("");
   };
 
   return (
