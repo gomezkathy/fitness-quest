@@ -9,6 +9,8 @@ import CreateWorkout from "./pages/CreateWorkout";
 import "./App.css";
 import Comments from "./pages/Comments";
 import CommentForm from "./pages/CreateComment";
+import ExerciseForm from "./pages/CreateExercise";
+import Exercises from "./pages/Exercises";
 
 export default function App() {
   return (
@@ -24,6 +26,10 @@ export default function App() {
           <Route path="/comments">
             <Route index element={<Comments />} />
             <Route path="create" element={<CommentForm />} />{" "}
+          </Route>
+          <Route path="/exercises">
+            <Route index element={<Exercises />} />
+            <Route path="create" element={<ExerciseForm />} />{" "}
           </Route>
         </Routes>
       </div>
