@@ -14,8 +14,10 @@ from models.accounts import (
     HttpError,
     AccountForm,
     AccountIn,
+    AccountUpdate,
     AccountOut,
     DuplicateAccountError,
+    AuthenticationException
 )
 from authenticator import authenticator
 
@@ -56,3 +58,39 @@ async def create_account(
     form = AccountForm(username=info.username, password=info.password)
     token = await authenticator.login(response, request, form, repo)
     return AccountToken(account=account, **token.dict())
+
+
+@router.put("/api/accounts/update/{account_id}", response_model=AccountOut | HttpError)
+async def update_account(
+    account_id: int,
+    updated_info: AccountUpdate,
+    repo: AccountRepository = Depends(),
+):
+    try:
+        updated_account = repo.update_account(account_id, updated_info)
+        return updated_account
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"An error occurred while updating the account: {str(e)}",
+        )
+
+
+@router.get("/api/accounts/{account_id}", response_model=AccountOut | HttpError)
+async def get_account_by_id(
+    account_id: int,
+    repo: AccountRepository = Depends(),
+):
+    try:
+        account = repo.get_account_by_id(account_id)
+        return account
+    except AuthenticationException as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Account not found: {str(e)}",
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"An error occurred while retrieving the account: {str(e)}",
+        )

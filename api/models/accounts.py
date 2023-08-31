@@ -24,6 +24,14 @@ class AccountIn(Account):
     password: str
 
 
+class AccountUpdate(Account):
+    first: str
+    last: str
+    email: str
+    username: str
+    password: str
+
+
 class AccountToken(Token):
     account: int
 

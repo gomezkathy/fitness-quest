@@ -13,6 +13,7 @@ import LoginForm from "./Accounts/LoginForm";
 import Logout from "./Accounts/Logout";
 import SignupForm from "./Accounts/SignupForm";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
+import AccountInfo from "./Accounts/AccountInfo";
 
 export default function App() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
               <Route index element={<Comments />} />
               <Route path="create" element={<CommentForm />} />
             </Route>
+            <Route path="/accountinfo" element={<AccountInfo />} />
           </Routes>
         </div>
       </BrowserRouter>
