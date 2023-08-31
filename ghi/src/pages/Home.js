@@ -13,7 +13,7 @@ export default function Home() {
         </div>
       </div>
       <div className="features">
-        <div>
+        <div className="home-page-text">
           <h2>Fitness Quest is free, easy, convinient</h2>
           <p>Plan your workouts, track your goals, feel your best</p>
         </div>
@@ -31,7 +31,7 @@ export default function Home() {
             alt="Gym Background"
           />
         </div>
-        <div>
+        <div className="home-page-text">
           <h2>Who Are We?</h2>
           <p>
             We're a team of health and fitness enthusiasts on a mission
@@ -45,8 +45,8 @@ export default function Home() {
       </div>
       <div className="customer-reviews">
         <div>
-          <h2>Customer Reviews</h2>
-          <p>
+          <h2 className="home-page-text">Customer Reviews</h2>
+          <p className="home-page-text">
             "This app redefined how I approach my fitness goals, offering an
             intuitive platform to track my workouts and progress with ease.
             Whether I'm engaging in high-intensity workouts or a yoga session,
@@ -54,7 +54,7 @@ export default function Home() {
             interface keeps me motivated, and the convenience of having all my
             fitness data in one place is truly remarkable."
           </p>
-          <p>- RandomUser2039</p>
+          <p className="home-page-text">- RandomUser2039</p>
         </div>
         <div>
           <img
