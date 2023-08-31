@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-
+import { format } from "date-fns";
+import useToken from "@galvanize-inc/jwtdown-for-react";
 function ExerciseForm() {
   const [name, setName] = useState('');
   const [weight, setWeight] = useState('');
@@ -8,6 +9,25 @@ function ExerciseForm() {
   const [picture, setPicture] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
+  const [userId, setUserId] = useState("");
+
+  const { token } = useToken();
+  const fetchAccount = async () => {
+    const response = await fetch("http://localhost:8000/token", {
+      credentials: "include",
+    });
+    console.log(response)
+    if (response.ok) {
+      const data = await response.json();
+      const userId = data.account;
+      setUserId(userId);
+    }
+  };
+
+  useEffect(() => {
+    fetchAccount();
+  }, []);
+
 
   const handleNameChange = (event) => {
     const value = event.target.value;
@@ -47,26 +67,27 @@ function ExerciseForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const data = {};
-
-    data.name = name;
-    data.weight = weight;
-    data.sets = sets;
-    data.reps = reps;
-    data.picture_url = picture;
-    data.description = description;
-    data.assigned_date = date;
-
-    console.log(data);
-
     const exercisesUrl = 'http://localhost:8000/api/exercises/';
+
+
     const fetchConfig = {
       method: 'post',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
+      body: JSON.stringify({
+      name,
+      weight: parseInt(weight),
+      sets: parseInt(sets),
+      reps: parseInt(reps),
+      picture_url: picture,
+      description,
+      assigned_date: format(new Date(), "yyyy-MM-dd"),
+      user_id: userId,
+  }),
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
+  },
+  credentials: 'include',
+};
 
     const response = await fetch(exercisesUrl, fetchConfig);
     if (response.ok) {
