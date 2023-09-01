@@ -1,6 +1,11 @@
 from psycopg_pool import ConnectionPool
 import os
-from models.accounts import AccountOut, Account, AccountWithPassword, AuthenticationException
+from models.accounts import (
+    AccountOut,
+    Account,
+    AccountWithPassword,
+    AuthenticationException,
+)
 
 pool = ConnectionPool(conninfo=os.environ["DATABASE_URL"])
 
@@ -50,6 +55,7 @@ class AccountRepository:
                     raise Exception("No account found")
                 else:
                     try:
+                        print
                         return AccountWithPassword(
                             id=ac[0],
                             username=ac[1],
