@@ -11,7 +11,6 @@ class Account(BaseModel):
 
 class AccountWithPassword(Account):
     id: int
-    username: str
     password: str
 
 

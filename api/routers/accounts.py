@@ -64,8 +64,15 @@ async def create_account(
 async def update_account(
     account_id: int,
     updated_info: AccountUpdate,
+    account: dict = Depends(authenticator.try_get_current_account_data),
     repo: AccountRepository = Depends(),
 ):
+    if not account or account["id"] != account_id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You are not allowed to update this account.",
+        )
+
     try:
         updated_account = repo.update_account(account_id, updated_info)
         return updated_account

@@ -60,8 +60,16 @@ function AccountInfo() {
         }
       );
       setMessage("Account information updated successfully");
+
+      setTimeout(() => {
+        setMessage("");
+      }, 3000);
     } catch (error) {
       setMessage("Error updating account information");
+
+      setTimeout(() => {
+        setMessage("");
+      }, 3000);
     }
   };
 
