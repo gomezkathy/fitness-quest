@@ -6,14 +6,6 @@ import Home from "./pages/Home";
 import Workouts from "./pages/Workouts";
 import CreateWorkout from "./pages/CreateWorkout";
 // import UpdateWorkout from "./pages/UpdateWorkout";
-import React from "react";
-import { Route, Routes, BrowserRouter } from "react-router-dom";
-// import { Box } from "@mui/material";
-import NavBar from "./components/NavBar";
-import Home from "./pages/Home";
-import Workouts from "./pages/Workouts";
-import CreateWorkout from "./pages/CreateWorkout";
-// import UpdateWorkout from "./pages/UpdateWorkout";
 import "./App.css";
 import Comments from "./pages/Comments";
 import CommentForm from "./pages/CreateComment";
@@ -24,7 +16,6 @@ import ExerciseForm from "./pages/CreateExercise";
 import Exercises from "./pages/Exercises";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 
-export default function App() {
 export default function App() {
   return (
     <AuthProvider baseUrl={process.env.REACT_APP_API_HOST}>
