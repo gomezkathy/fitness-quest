@@ -1,50 +1,88 @@
-from fastapi import APIRouter, Depends, Response, HTTPException
-from authenticator import authenticator
-from typing import List, Union
+from fastapi import APIRouter, Depends, HTTPException
 from queries.exercises import (
-    Status,
-    ExercisesIn,
-    ExercisesRepository,
-    ExercisesOut,
+    ExerciseIn,
+    ExerciseOut,
+    ExerciseRepository,
+    Error,
 )
+from authenticator import authenticator
+from typing import List, Union, Optional
 
 router = APIRouter()
 
 
-@router.post("/", response_model=Status)
-def create_exercise(
-    comment: ExercisesIn,
-    response: Response,
-    repo: ExercisesRepository = Depends(),
+@router.post("/api/exercises", response_model=Union[ExerciseOut, Error])
+async def create_exercise(
+    exercise: ExerciseIn,  # sets the exercise model
+    account_data: dict = Depends(
+        authenticator.get_current_account_data
+    ),  # verifies user authentication
+    repo: ExerciseRepository = Depends(),  # creates an instance of exerciseRepository
 ):
-    successful_repo = repo.create(comment)
-    if isinstance(successful_repo, ExercisesOut):
-        return successful_repo
-    else:
-        return ""
-
-
-@router.get("/", response_model=Union[ExercisesOut, Status])
-def get_all(
-    response: Response,
-    repo: ExercisesRepository = Depends(),
-    account_data: dict = Depends(authenticator.get_current_account_data),
-):
+    # if user is authenticated, creates exercise. Otherwise, returns 401 error
     if account_data:
-        result = repo.create()
-        if isinstance(result, ExercisesOut):
-            response.status_code = 200
-            return result
-        else:
-            response.status_code = result.status
-            return result.message
+        return repo.create(exercise)
     else:
         raise HTTPException(
             status_code=401, detail="User is not authenticated."
         )
 
 
-# {headers: {Authorization: Bearer ${token}}} front end
+@router.get("/api/exercises", response_model=Union[Error, List[ExerciseOut]])
+async def get_all(
+    account_data: dict = Depends(authenticator.get_current_account_data),
+    repo: ExerciseRepository = Depends(),
+):
+    if account_data:
+        return repo.get_all()
+    else:
+        raise HTTPException(
+            status_code=401, detail="User is not authenticated."
+        )
 
-# be extremely careful about fetch requests
-# if you try to fetch to one of the endpoints but the url doesn't match perfectly down to the slashes, it will try to be rerouted as an htps error 429. make sure 100% identical down to the slashes!
+
+@router.put(
+    "/api/exercises/{exercise_id}", response_model=Union[ExerciseOut, Error]
+)
+async def update_exercise(
+    exercise_id: int,
+    exercise: ExerciseIn,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+    repo: ExerciseRepository = Depends(),
+) -> Union[Error, ExerciseOut]:
+    if account_data:
+        return repo.update(exercise_id, exercise)
+    else:
+        raise HTTPException(
+            status_code=401, detail="User is not authenticated."
+        )
+
+
+@router.delete("/api/exercises/{exercise_id}", response_model=bool)
+async def delete_exercise(
+    exercise_id: int,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+    repo: ExerciseRepository = Depends(),
+) -> bool:
+    if account_data:
+        return repo.delete(exercise_id)
+    else:
+        raise HTTPException(
+            status_code=401, detail="User is not authenticated."
+        )
+
+
+@router.get(
+    "/api/exercises/{exercise_id}", response_model=Optional[ExerciseOut]
+)
+async def get_one_exercise(
+    exercise_id: int,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+    repo: ExerciseRepository = Depends(),
+) -> ExerciseOut:
+    if account_data:
+        return repo.get_one(exercise_id)
+    else:
+        raise HTTPException(
+            status_code=401, detail="User is not authenticated."
+        )

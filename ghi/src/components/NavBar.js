@@ -26,12 +26,12 @@ export default function NavBar() {
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="/workouts" className="nav-link">
+          <Link to="/exercises" className="nav-link">
             Exercises
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="/workouts/create" className="nav-link">
+          <Link to="/exercises/create" className="nav-link">
             Create Exercise
           </Link>
         </li>
