@@ -13,7 +13,7 @@ import LoginForm from "./Accounts/LoginForm";
 import Logout from "./Accounts/Logout";
 import SignupForm from "./Accounts/SignupForm";
 import ExerciseForm from "./pages/CreateExercise";
-import ExerciseList from "./pages/Exercises";
+import ExerciseList from "./pages/ExercisesList";
 import UpdateExerciseForm from "./pages/UpdateExerciseForm";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 
