@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import "../App.css";
 
 export default function Home() {
@@ -20,7 +19,7 @@ export default function Home() {
         <div>
           <img
             src="https://images.pexels.com/photos/4162583/pexels-photo-4162583.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt="App Demo Image"
+            alt="App Demo"
           />
         </div>
       </div>
