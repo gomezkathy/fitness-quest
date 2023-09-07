@@ -22,7 +22,7 @@ from authenticator import authenticator
 router = APIRouter()
 
 
-@router.get("/token", response_model=AccountToken | None)
+@router.get("/token", tags=["Accounts"], response_model=AccountToken | None)
 async def get_token(
     request: Request,
     account: AccountIn = Depends(authenticator.try_get_current_account_data),
@@ -37,7 +37,9 @@ async def get_token(
             return token
 
 
-@router.post("/api/accounts", response_model=AccountToken | HttpError)
+@router.post(
+    "/api/accounts", tags=["Accounts"], response_model=AccountToken | HttpError
+)
 async def create_account(
     info: AccountIn,
     request: Request,

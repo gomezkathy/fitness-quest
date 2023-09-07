@@ -11,7 +11,11 @@ from typing import List, Union, Optional
 router = APIRouter()
 
 
-@router.post("/api/exercises", response_model=Union[ExerciseOut, Error])
+@router.post(
+    "/api/exercises",
+    tags=["Exercises"],
+    response_model=Union[ExerciseOut, Error],
+)
 async def create_exercise(
     exercise: ExerciseIn,  # sets the exercise model
     account_data: dict = Depends(
@@ -28,7 +32,11 @@ async def create_exercise(
         )
 
 
-@router.get("/api/exercises", response_model=Union[Error, List[ExerciseOut]])
+@router.get(
+    "/api/exercises",
+    tags=["Exercises"],
+    response_model=Union[Error, List[ExerciseOut]],
+)
 async def get_all(
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: ExerciseRepository = Depends(),
@@ -42,7 +50,9 @@ async def get_all(
 
 
 @router.put(
-    "/api/exercises/{exercise_id}", response_model=Union[ExerciseOut, Error]
+    "/api/exercises/{exercise_id}",
+    tags=["Exercises"],
+    response_model=Union[ExerciseOut, Error],
 )
 async def update_exercise(
     exercise_id: int,
@@ -58,7 +68,9 @@ async def update_exercise(
         )
 
 
-@router.delete("/api/exercises/{exercise_id}", response_model=bool)
+@router.delete(
+    "/api/exercises/{exercise_id}", tags=["Exercises"], response_model=bool
+)
 async def delete_exercise(
     exercise_id: int,
     account_data: dict = Depends(authenticator.get_current_account_data),
@@ -73,7 +85,9 @@ async def delete_exercise(
 
 
 @router.get(
-    "/api/exercises/{exercise_id}", response_model=Optional[ExerciseOut]
+    "/api/exercises/{exercise_id}",
+    tags=["Exercises"],
+    response_model=Optional[ExerciseOut],
 )
 async def get_one_exercise(
     exercise_id: int,

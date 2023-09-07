@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function Comments() {
   const [comments, setComments] = useState([]);
@@ -25,11 +26,32 @@ function Comments() {
     }
   };
 
-  useEffect(() => {
-    fetchAccount();
-  }, []);
+  const handleDeleteComment = async (commentId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/comments/${commentId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+
+      if (response.ok) {
+        fetchAllComments();
+      } else {
+        console.error(
+          "Failed to delete comment:",
+          response.status,
+          response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Error while deleting comment:", error);
+    }
+  };
 
   useEffect(() => {
+    fetchAccount();
     fetchAllComments();
   }, []);
 
@@ -44,6 +66,18 @@ function Comments() {
             <p className="comment-exercise">Exercise: EXAMPLE</p>
             <p className="comment-text">Comment: {comment.comment}</p>
             <p className="assigned-date">Date: {comment.assigned_date}</p>
+            <Link
+              className="btn btn-primary btn-link"
+              to={`/comments/${comment.id}`}
+            >
+              Edit
+            </Link>
+            <button
+              className="btn btn-danger"
+              onClick={() => handleDeleteComment(comment.id)}
+            >
+              Delete
+            </button>
           </div>
         ))}
       </div>

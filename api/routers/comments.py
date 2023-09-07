@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, Response, HTTPException
-from fastapi import APIRouter, Depends, Response, HTTPException
-from typing import List, Union
+from typing import List, Union, Optional
 from models.comments import Error, CommentIn, CommentOut
 from queries.comments import CommentRepository
 from authenticator import authenticator
@@ -8,7 +7,9 @@ from authenticator import authenticator
 router = APIRouter()
 
 
-@router.post("/api/comments", response_model=Union[CommentOut, Error])
+@router.post(
+    "/api/comments", tags=["Comments"], response_model=Union[CommentOut, Error]
+)
 def create_comment(
     comment: CommentIn,
     response: Response,
@@ -25,7 +26,11 @@ def create_comment(
         raise HTTPException(status_code=401)
 
 
-@router.get("/api/comments", response_model=Union[Error, List[CommentOut]])
+@router.get(
+    "/api/comments",
+    tags=["Comments"],
+    response_model=Union[Error, List[CommentOut]],
+)
 def get_all(
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: CommentRepository = Depends(),
@@ -34,6 +39,24 @@ def get_all(
         return repo.get_all()
     else:
         raise HTTPException(status_code=401)
+
+
+@router.get(
+    "/api/comments/{comment_id}",
+    tags=["Comments"],
+    response_model=Optional[CommentOut],
+)
+async def get_one_comment(
+    comment_id: int,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+    repo: CommentRepository = Depends(),
+):
+    if account_data:
+        return repo.get_comment_by_id(comment_id)
+    else:
+        raise HTTPException(
+            status_code=401, detail="User is not authenticated."
+        )
 
 
 @router.delete(

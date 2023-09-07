@@ -6,17 +6,15 @@ import Footer from "./components/Footer";
 import "./App.css";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 
-// WORKOUTS
 import Workouts from "./pages/Workouts";
 import CreateWorkout from "./pages/CreateWorkout";
 
-// EXERCISES
 import ExerciseForm from "./pages/CreateExercise";
 import Exercises from "./pages/Exercises";
 
-// COMMENTS
 import Comments from "./pages/Comments";
 import CommentForm from "./pages/CreateComment";
+import UpdateComment from "./pages/UpdateComment";
 
 export default function App() {
   return (
@@ -33,10 +31,11 @@ export default function App() {
             <Route path="/comments">
               <Route index element={<Comments />} />
               <Route path="create" element={<CommentForm />} />
+              <Route path=":comment_id" element={<UpdateComment />} />
             </Route>
             <Route path="/exercises">
               <Route index element={<Exercises />} />
-              <Route path="create" element={<ExerciseForm />} />
+              <Route path="" element={<ExerciseForm />} />
             </Route>
           </Routes>
           {<Footer />}
