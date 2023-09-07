@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function ExerciseList() {
   const [exercises, setExercises] = useState([]);
@@ -68,6 +69,9 @@ function ExerciseList() {
                 <td>{exercise.description}</td>
                 <td>
                   <button onClick={() => handleExerciseDelete(exercise.id)} className="btn btn-danger"> delete</button>
+                </td>
+                <td>
+                  <Link to={`/exercises/update/${exercise.id}`}> <button className="btn btn-primary">edit</button></Link>
                 </td>
               </tr>
             ))}
