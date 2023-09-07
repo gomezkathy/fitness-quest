@@ -11,7 +11,6 @@ class Account(BaseModel):
 
 class AccountWithPassword(Account):
     id: int
-    username: str
     password: str
 
 
@@ -21,6 +20,14 @@ class AccountOut(Account):
 
 class AccountIn(Account):
     email: str
+    password: str
+
+
+class AccountUpdate(Account):
+    first: str
+    last: str
+    email: str
+    username: str
     password: str
 
 
