@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from "react";
-import useToken from "@galvanize-inc/jwtdown-for-react";
+
 function ExerciseList() {
   const [exercises, setExercises] = useState([]);
   const [userId, setUserId] = useState("");
 
-  const { token } = useToken();
+  const fetchExercises = async () => {
+    const response = await fetch("http://localhost:8000/api/exercises", {
+      credentials: "include",
+    });
+    if (response.ok) {
+      const data = await response.json();
+      setExercises(data);
+    }
+  };
+
   const fetchAccount = async () => {
     const response = await fetch("http://localhost:8000/token", {
       credentials: "include",
     });
-    console.log(response)
     if (response.ok) {
       const data = await response.json();
       const userId = data.account;
@@ -17,26 +25,16 @@ function ExerciseList() {
     }
   };
 
-
-  async function getExercises() {
-    const response = await fetch(`http://localhost:8000/api/exercises/user/${userId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      credentials: 'include',
-    });
-
-    if(response.ok) {
-      const { exercises } = await response.json();
-      setExercises(exercises);
-    } else (
-      console.error('An error occured fetching the exercise data')
-    )
-  }
   useEffect(() => {
-    getExercises();
     fetchAccount();
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    fetchExercises();
+  }, []);
+
+  const userExercises = exercises.filter((exercise) => exercise.user_id === userId);
+
   return (
     <>
     <div>
