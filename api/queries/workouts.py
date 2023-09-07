@@ -53,24 +53,28 @@ class WorkoutRepository:
                             (%s, %s, %s, %s, %s, %s, %s, %s)
                         RETURNING id;
 
-                        """,
-                        [
-                            workout.user_id,
-                            workout.name,
-                            workout.weight,
-                            workout.sets,
-                            workout.reps,
-                            workout.picture_url,
-                            workout.description,
-                            workout.assigned_date
-                        ]
+                    """,
+<<<<<<< HEAD
+=======
 
-                    )
-                    id = result.fetchone()[0]
-                    return self.workout_in_to_out(id, workout)
-        except Exception as e:
-            print("Error creating workout:", e)
-            return e
+>>>>>>> 78f6f2115f8c5f8f58a8b0317277aee3dbcb2834
+                    [
+                        workout.name,
+                        workout.weight,
+                        workout.sets,
+                        workout.reps,
+                        workout.picture_url,
+                        workout.description,
+                        workout.assigned_date
+                    ]
+<<<<<<< HEAD
+
+                )
+                id = result.fetchone()[0]
+                old_data = workout.dict()
+                return WorkoutOut(id=id, **old_data)
+=======
+                )
 
     def update(self, workout_id: int, workout: WorkoutIn) -> Union[WorkoutOut, Error]:
         try:
@@ -147,3 +151,4 @@ class WorkoutRepository:
     def workout_in_to_out(self, id: int, workout: WorkoutIn):
         old_data = workout.dict()
         return WorkoutOut(id=id, **old_data)
+>>>>>>> 78f6f2115f8c5f8f58a8b0317277aee3dbcb2834

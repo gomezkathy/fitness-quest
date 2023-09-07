@@ -16,7 +16,16 @@ import ExerciseForm from "./pages/CreateExercise";
 import Exercises from "./pages/Exercises";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 
-export default function App() {
+function App() {
+  const { token } = useToken();
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    if (token) {
+      setUser(JSON.parse(atob(token.split(".")[1])).account);
+    }
+  }, [token]);
+
   return (
     <AuthProvider baseUrl={process.env.REACT_APP_API_HOST}>
       <BrowserRouter>
