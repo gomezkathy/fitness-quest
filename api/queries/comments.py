@@ -48,8 +48,8 @@ class CommentRepository:
                         [
                             comment.user_id,
                             comment.comment,
-                            comment.assigned_date
-                        ]
+                            comment.assigned_date,
+                        ],
                     )
                     id = result.fetchone()[0]
                     old_data = comment.dict()
@@ -88,7 +88,9 @@ class CommentRepository:
             print(e)
             return False
 
-    def update(self, comment_id: int, comment: CommentIn) -> Union[CommentOut, Error]:
+    def update(
+        self, comment_id: int, comment: CommentIn
+    ) -> Union[CommentOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -102,7 +104,10 @@ class CommentRepository:
                     result = db.fetchone()
 
                     if result is None:
-                        raise HTTPException(status_code=404, detail=f"Comment with id {comment_id} does not exist.")
+                        raise HTTPException(
+                            status_code=404,
+                            detail=f"Comment with id {comment_id} does not exist.",
+                        )
 
                     db.execute(
                         """
