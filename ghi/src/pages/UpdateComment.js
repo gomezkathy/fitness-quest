@@ -87,9 +87,12 @@ function UpdateComment() {
     };
 
     try {
+      console.log("Sending update request...");
+
       const response = await fetch(commentUrl, fetchConfig);
 
       if (response.ok) {
+        console.log("Update successful");
         setComment("");
       } else {
         console.error(

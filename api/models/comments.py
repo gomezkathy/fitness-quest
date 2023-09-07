@@ -8,6 +8,15 @@ class Error(BaseModel):
 
 class CommentIn(BaseModel):
     user_id: int
+    exercise_id: int
+    comment: str
+    assigned_date: date
+
+
+class CommentOutExerciseId(BaseModel):
+    id: int
+    user_id: int
+    exercise_id: int
     comment: str
     assigned_date: date
 
