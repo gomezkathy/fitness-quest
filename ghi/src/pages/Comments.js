@@ -158,7 +158,7 @@ function Comments() {
             <p className="assigned-date">Date: {comment.assigned_date}</p>
             <Link
               className="btn btn-primary btn-link"
-              to={`/comments/${exerciseId}/${comment.id}`}
+              to={`/comments/${comment.exercise_id}/${comment.id}`}
             >
               Edit
             </Link>
