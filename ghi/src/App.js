@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import SignupForm from "./Accounts/SignupForm.js";
 import LoginForm from "./Accounts/LoginForm.js";
 import Logout from "./Accounts/Logout.js";
+import AccountInfo from "./Accounts/AccountInfo.js";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import Comments from "./pages/Comments";
 import CommentForm from "./pages/CreateComment";
@@ -39,6 +40,7 @@ function App() {
               <Route path="signup" element={<SignupForm />} />
               <Route path="login" element={<LoginForm />} />
               <Route path="logout" element={<Logout />} />
+              <Route path=":accountId" element={<AccountInfo />} />
             </Route>
             <Route path="/" element={<Home />} />
             <Route path="/workouts">

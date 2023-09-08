@@ -8,7 +8,7 @@ export default function Home() {
           <h1>Track your workouts</h1>
           <p>We got you covered</p>
           <a href="/accounts/signup">
-            <button>Get Started</button>
+            <button className="hero-button mt-1 mb-3">Sign Up</button>
           </a>
           <p>
             Already a member?{" "}
@@ -49,22 +49,20 @@ export default function Home() {
           </p>
         </div>
       </div>
-      <div className="customer-reviews">
-        <div>
+      <div className="customer-reviews mb-5">
+        <div className="mb-5">
           <h2 className="home-page-text">Customer Reviews</h2>
           <p className="home-page-text">
             "This app redefined how I approach my fitness goals, offering an
-            intuitive platform to track my workouts and progress with ease.
-            Whether I'm engaging in high-intensity workouts or a yoga session,
-            Fitness Quest caters to various exercise styles. Its straightforward
-            interface keeps me motivated, and the convenience of having all my
-            fitness data in one place is truly remarkable."
+            intuitive platform to track my workouts and progress with ease. Its
+            straightforward interface keeps me motivated, and the convenience of
+            having all my fitness data in one place is truly remarkable."
           </p>
           <p className="home-page-text">- RandomUser2039</p>
         </div>
-        <div>
+        <div className="p-0">
           <img
-            src="https://images.pexels.com/photos/13877085/pexels-photo-13877085.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            src="https://images.pexels.com/photos/1103832/pexels-photo-1103832.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             alt="Customer Review"
           />
         </div>

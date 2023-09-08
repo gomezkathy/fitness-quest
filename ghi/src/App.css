@@ -20,6 +20,10 @@
   color: white;
 }
 
+.custom-alert-bg {
+  background-color: #333;
+}
+
 .nav-list {
   list-style: none;
   display: flex;
@@ -55,7 +59,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 10px 0;
+  padding: 5px 0;
   text-align: center;
 }
 
@@ -87,10 +91,24 @@
   color: white;
 }
 
+.hero-button {
+  background-color: #fff;
+  color: #333;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+.hero-button:hover {
+  background-color: #333;
+  color: #fff;
+}
+
 .customer-reviews {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  height: 200px;
+  grid-template-columns: 5fr 1fr;
+  height: 250px;
   max-width: 200%;
   height: 100%;
   align-items: center;
@@ -102,8 +120,11 @@
 }
 
 .customer-reviews img {
-  border-radius: 50%;
-  height: 300px;
+  display: grid;
+  height: 250px;
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .home-page-text {
@@ -132,7 +153,7 @@
 
 .who-are-we img {
   display: grid;
-  height: 150px;
+  height: 250px;
   max-width: 100%;
   height: 100%;
   object-fit: cover;

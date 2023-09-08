@@ -1,16 +1,44 @@
 import useToken from "@galvanize-inc/jwtdown-for-react";
-import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useToken();
+  const [userId, setUserId] = useState(null);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    login(username, password);
-    e.target.reset();
+    try {
+      await login(username, password);
+      e.target.reset();
+      setShowSuccessAlert(true);
+      fetchAccount();
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
+
+  const fetchAccount = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/token", {
+        credentials: "include",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        const userId = data.account;
+        setUserId(userId);
+      }
+    } catch (error) {
+      console.error("Error fetching account:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAccount();
+  }, []);
 
   return (
     <div className="card text-bg-light mb-3">
@@ -40,6 +68,11 @@ const LoginForm = () => {
           </div>
         </form>
       </div>
+      {showSuccessAlert && (
+        <div className="alert alert-success mt-3" role="alert">
+          Login was successful! <a href="/">Go to Homepage</a>
+        </div>
+      )}
     </div>
   );
 };

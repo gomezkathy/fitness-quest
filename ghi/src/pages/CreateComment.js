@@ -44,18 +44,12 @@ function CreateComment() {
       return;
     }
 
-    console.log("Submitting comment...");
-    console.log("Comment:", comment);
-    console.log("User ID:", userId);
-    console.log("Exercise ID:", selectedExerciseId);
-
     const requestBody = {
       user_id: userId,
       exercise_id: selectedExerciseId,
       comment,
       assigned_date: format(new Date(), "yyyy-MM-dd"),
     };
-    console.log("Request Payload:", requestBody);
 
     const commentUrl = "http://localhost:8000/api/comments/";
     const fetchConfig = {
@@ -71,7 +65,6 @@ function CreateComment() {
       const response = await fetch(commentUrl, fetchConfig);
 
       if (response.ok) {
-        console.log("Comment submitted successfully.");
         setSuccessMessage("Comment submitted successfully.");
         setTimeout(() => {
           setSuccessMessage("");
@@ -108,7 +101,7 @@ function CreateComment() {
             <form onSubmit={handleSubmit} id="create-comment">
               <div className="mb-3">
                 <select
-                  className="form-select mb-3"
+                  className="form-select mt-4 mb-3"
                   value={selectedExerciseId}
                   onChange={(e) =>
                     setSelectedExerciseId(parseInt(e.target.value))
@@ -135,7 +128,7 @@ function CreateComment() {
                   id="comment"
                 />
               </div>
-              <button className="btn btn-primary">Submit</button>
+              <button className="btn btn-primary mb-3">Submit</button>
             </form>
           </div>
         </div>

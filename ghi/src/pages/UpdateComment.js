@@ -74,12 +74,6 @@ function UpdateComment() {
 
     const commentUrl = `http://localhost:8000/api/comments/${exerciseId}/${commentId}`;
 
-    console.log("Updating comment with the following data:");
-    console.log("Comment ID:", commentId);
-    console.log("User ID:", userId);
-    console.log("Comment Text:", comment);
-    console.log("Assigned Date:", format(new Date(), "yyyy-MM-dd"));
-
     const fetchConfig = {
       method: "put",
       body: JSON.stringify({

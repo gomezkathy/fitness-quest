@@ -149,8 +149,8 @@ function Comments() {
   const renderCommentForm = () => {
     if (exerciseId) {
       return (
-        <div className="row mb-5">
-          <div className="offset-1 col-8">
+        <div className="row justify-content-center mb-5">
+          <div className="col-8">
             <div className="p-3">
               <div className=" d-flex align-items-center">
                 <input
@@ -190,7 +190,7 @@ function Comments() {
             <h1>Comments Log</h1>
             <div className="row">
               <div className="col-12">
-                <table className="table table-striped mt-3 mb-0">
+                <table className="table table-striped mt-4 mb-0">
                   <thead>
                     <tr>
                       <th scope="col">Exercise</th>
