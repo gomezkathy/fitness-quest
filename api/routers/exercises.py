@@ -41,6 +41,7 @@ async def get_all(
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: ExerciseRepository = Depends(),
 ):
+    # if user is authenticated, creates exercise. Otherwise, returns 401 error
     if account_data:
         return repo.get_all()
     else:

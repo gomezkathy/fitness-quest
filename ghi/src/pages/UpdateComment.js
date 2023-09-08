@@ -3,11 +3,12 @@ import { useParams } from "react-router-dom";
 import { format } from "date-fns";
 
 function UpdateComment() {
-  const { comment_id } = useParams();
+  const { exerciseId, commentId } = useParams();
   const [comment, setComment] = useState("");
   const [userId, setUserId] = useState("");
   const [currentComment, setCurrentComment] = useState("");
   const [accessToken, setAccessToken] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const fetchAccount = async () => {
     try {
@@ -35,7 +36,7 @@ function UpdateComment() {
   const fetchCommentData = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/comments/${comment_id}`,
+        `http://localhost:8000/api/comments/${exerciseId}/${commentId}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -63,18 +64,26 @@ function UpdateComment() {
   }, []);
 
   useEffect(() => {
-    if (accessToken && comment_id) {
+    if (accessToken && commentId) {
       fetchCommentData();
     }
-  }, [accessToken, comment_id, fetchCommentData]);
+  }, [accessToken, commentId]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const commentUrl = `http://localhost:8000/api/comments/${comment_id}`;
+    const commentUrl = `http://localhost:8000/api/comments/${exerciseId}/${commentId}`;
+
+    console.log("Updating comment with the following data:");
+    console.log("Comment ID:", commentId);
+    console.log("User ID:", userId);
+    console.log("Comment Text:", comment);
+    console.log("Assigned Date:", format(new Date(), "yyyy-MM-dd"));
+
     const fetchConfig = {
       method: "put",
       body: JSON.stringify({
+        exercise_id: exerciseId,
         comment: comment,
         user_id: userId,
         assigned_date: format(new Date(), "yyyy-MM-dd"),
@@ -94,6 +103,8 @@ function UpdateComment() {
       if (response.ok) {
         console.log("Update successful");
         setComment("");
+        setCurrentComment(comment);
+        setSuccessMessage("Comment updated successfully.");
       } else {
         console.error(
           "Failed to update comment:",
@@ -114,6 +125,9 @@ function UpdateComment() {
   return (
     <div>
       <h1>Update Comment</h1>
+      {successMessage && (
+        <div className="alert alert-success mt-3">{successMessage}</div>
+      )}
       <form onSubmit={handleSubmit} id="update-comment">
         <div>
           <input

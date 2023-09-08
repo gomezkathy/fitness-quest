@@ -49,8 +49,7 @@ class AccountRepository:
                     FROM accounts
                     WHERE username = %s;
                     """,
-                    [username],
-                )
+                    [username],)
                 ac = cur.fetchone()
                 if ac is None:
                     raise Exception("No account found")

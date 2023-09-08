@@ -1,19 +1,18 @@
-import React from "react";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
 import Footer from "./components/Footer";
 import "./App.css";
-import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 
 import Workouts from "./pages/Workouts";
 import CreateWorkout from "./pages/CreateWorkout";
 
-import ExerciseForm from "./pages/CreateExercise";
-import Exercises from "./pages/Exercises";
-
 import Comments from "./pages/Comments";
 import CommentForm from "./pages/CreateComment";
+import ExerciseForm from "./pages/CreateExercise";
+import ExerciseList from "./pages/ExercisesList";
+import UpdateExerciseForm from "./pages/UpdateExerciseForm";
+import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import UpdateComment from "./pages/UpdateComment";
 
 export default function App() {
@@ -30,12 +29,20 @@ export default function App() {
             </Route>
             <Route path="/comments">
               <Route index element={<Comments />} />
+              <Route path=":exerciseId" element={<Comments />} />
               <Route path="create" element={<CommentForm />} />
-              <Route path=":comment_id" element={<UpdateComment />} />
+              <Route
+                path="/comments/:exerciseId/:commentId"
+                element={<UpdateComment />}
+              />
             </Route>
             <Route path="/exercises">
-              <Route index element={<Exercises />} />
-              <Route path="" element={<ExerciseForm />} />
+              <Route index element={<ExerciseList />} />
+              <Route path="create" element={<ExerciseForm />} />
+              <Route
+                path="update/:exerciseId"
+                element={<UpdateExerciseForm />}
+              />
             </Route>
           </Routes>
           {<Footer />}

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Response, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from typing import List, Union, Optional
 from models.comments import Error, CommentIn, CommentOut, CommentOutExerciseId
 from queries.comments import CommentRepository
@@ -8,16 +8,17 @@ router = APIRouter()
 
 
 @router.post(
-    "/api/comments", tags=["Comments"], response_model=Union[CommentOut, Error]
+    "/api/comments",
+    tags=["Comments"],
+    response_model=Union[CommentOut, Error],
 )
 def create_comment(
     comment: CommentIn,
-    exercise_id: int,
-    response: Response,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: CommentRepository = Depends(),
 ):
     if account_data:
+        exercise_id = comment.exercise_id
         successful_repo = repo.create(comment, exercise_id)
         if isinstance(successful_repo, CommentOut):
             return successful_repo
@@ -33,11 +34,15 @@ def create_comment(
     response_model=Union[Error, List[CommentOutExerciseId]],
 )
 def get_all(
+    exercise_id: Optional[int] = None,
     user_id: int = Depends(authenticator.get_current_account_data),
     repo: CommentRepository = Depends(),
 ):
     if user_id:
-        return repo.get_all(user_id)
+        if exercise_id is not None:
+            return repo.get_all(user_id, exercise_id)
+        else:
+            return repo.get_all(user_id)
     else:
         raise HTTPException(status_code=401)
 
@@ -76,13 +81,13 @@ async def delete_comment(
 
 
 @router.put(
-    "/api/comments/{comment_id}",
+    "/api/comments/{exercise_id}/{comment_id}",
     tags=["Comments"],
     response_model=Union[CommentOut, Error],
 )
 def update_comment(
-    comment_id: int,
     exercise_id: int,
+    comment_id: int,
     comment: CommentIn,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: CommentRepository = Depends(),

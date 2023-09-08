@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List, Union, Optional
 from pool import pool
 from models.comments import CommentOut, CommentIn, CommentOutExerciseId, Error
 from fastapi import HTTPException
@@ -6,7 +6,7 @@ from fastapi import HTTPException
 
 class CommentRepository:
     def get_all(
-        self, account_data: dict
+        self, account_data: dict, exercise_id: Optional[int] = None
     ) -> Union[Error, List[Union[CommentOut, CommentOutExerciseId]]]:
         try:
             user_id = account_data.get("id")
@@ -17,13 +17,24 @@ class CommentRepository:
 
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    query = """
-                        SELECT id, user_id, exercise_id, comment, assigned_date
-                        FROM comments
-                        WHERE user_id = %s
-                        ORDER BY assigned_date
-                    """
-                    db.execute(query, [user_id])
+                    if exercise_id is not None:
+                        query = """
+                            SELECT id, user_id, exercise_id, comment,
+                            assigned_date
+                            FROM comments
+                            WHERE user_id = %s AND exercise_id = %s
+                            ORDER BY assigned_date
+                        """
+                        db.execute(query, [user_id, exercise_id])
+                    else:
+                        query = """
+                            SELECT id, user_id, exercise_id, comment,
+                            assigned_date
+                            FROM comments
+                            WHERE user_id = %s
+                            ORDER BY assigned_date
+                        """
+                        db.execute(query, [user_id])
                     result = []
                     for record in db:
                         comment = CommentOutExerciseId(
