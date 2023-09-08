@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 from routers import comments, accounts, exercises, workouts
 from authenticator import authenticator
-from fastapi import APIRouter
+
 
 app = FastAPI()
 app.include_router(authenticator.router)

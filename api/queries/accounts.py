@@ -2,7 +2,6 @@ from psycopg_pool import ConnectionPool
 import os
 from models.accounts import (
     AccountOut,
-    AccountIn,
     Account,
     AccountUpdate,
     AccountWithPassword,
@@ -104,15 +103,28 @@ class AccountRepository:
                     (pk),
                 )
 
-    def update_account(self, account_id: int, updated_info: AccountUpdate) -> AccountOut:
+    def update_account(
+            self,
+            account_id: int,
+            updated_info: AccountUpdate
+            ) -> AccountOut:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 if updated_info.password:
-                    hashed_password = bcrypt.hashpw(updated_info.password.encode(), bcrypt.gensalt())
+                    hashed_password = bcrypt.hashpw(
+                        updated_info.password.encode(),
+                        bcrypt.gensalt()
+                        )
                     cur.execute(
                         """
                         UPDATE accounts
-                        SET username = %s, first = %s, last = %s, email = %s, password = %s
+                        SET username = (
+                            %s,
+                            first = %s,
+                            last = %s,
+                            email = %s,
+                            password = %s
+                            )
                         WHERE id = %s
                         RETURNING id, username, first, last, email, password;
                         """,

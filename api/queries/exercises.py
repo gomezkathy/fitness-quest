@@ -38,7 +38,6 @@ class ExerciseRepository:
             print(e)
             return {"message": "could not get exercise"}
 
-
     def delete(self, exercise_id: int) -> bool:
         try:
             with pool.connection() as conn:
@@ -56,7 +55,11 @@ class ExerciseRepository:
             print(e)
             return False
 
-    def update(self, exercise_id:int, exercise:ExerciseIn) -> Union[ExerciseOut, Error]:
+    def update(
+            self,
+            exercise_id: int,
+            exercise: ExerciseIn
+            ) -> Union[ExerciseOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -108,7 +111,23 @@ class ExerciseRepository:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-                        SELECT id, user_id, name, weight, sets, reps, picture_url, description, created_at, assigned_date, type, muscle, difficulty, equipment, instructions
+                        SELECT (
+                            id,
+                            user_id,
+                            name,
+                            weight,
+                            sets,
+                            reps,
+                            picture_url,
+                            description,
+                            created_at,
+                            assigned_date,
+                            type,
+                            muscle,
+                            difficulty,
+                            equipment,
+                            instructions
+                            )
                         FROM exercises
                         ORDER BY assigned_date
                         """
@@ -138,7 +157,7 @@ class ExerciseRepository:
             print('error:', e)
             return e
 
-    def create(self, exercise:ExerciseIn) -> ExerciseOut:
+    def create(self, exercise: ExerciseIn) -> ExerciseOut:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -162,7 +181,11 @@ class ExerciseRepository:
                             instructions
                             )
                         VALUES
-                            (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                            (
+                            %s, %s, %s, %s, %s,
+                            %s, %s, %s, %s, %s,
+                            %s, %s, %s, %s
+                            )
                         RETURNING id;
 
                         """,
@@ -190,12 +213,11 @@ class ExerciseRepository:
             print("Error creating exercise:", e)
             return e
 
-
     def exercise_in_to_out(self, id: int, exercise: ExerciseIn):
         old_data = exercise.dict()
         return ExerciseOut(id=id, **old_data)
 
-    def record_to_exercise_out(self,record):
+    def record_to_exercise_out(self, record):
         return ExerciseOut(
             id=record[0],
             user_id=record[1],

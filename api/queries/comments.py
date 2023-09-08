@@ -52,7 +52,6 @@ class CommentRepository:
                     old_data = comment.dict()
                     return CommentOut(id=id, **old_data)
         except Exception as e:
-            # Handle the exception appropriately, log it, and possibly return an error response
             print("Error:", e)
             return e
 
@@ -103,7 +102,8 @@ class CommentRepository:
                     if result is None:
                         raise HTTPException(
                             status_code=404,
-                            detail=f"Comment with id {comment_id} does not exist.",
+                            detail=f"""Comment with id
+                            {comment_id} does not exist.""",
                         )
 
                     db.execute(

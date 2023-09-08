@@ -60,7 +60,10 @@ async def create_account(
     return AccountToken(account=account, **token.dict())
 
 
-@router.put("/api/accounts/update/{account_id}", response_model=AccountOut | HttpError)
+@router.put(
+    "/api/accounts/update/{account_id}",
+    response_model=AccountOut | HttpError
+    )
 async def update_account(
     account_id: int,
     updated_info: AccountUpdate,
@@ -83,7 +86,10 @@ async def update_account(
         )
 
 
-@router.get("/api/accounts/{account_id}", response_model=AccountOut | HttpError)
+@router.get(
+    "/api/accounts/{account_id}",
+    response_model=AccountOut | HttpError
+    )
 async def get_account_by_id(
     account_id: int,
     repo: AccountRepository = Depends(),

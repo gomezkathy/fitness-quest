@@ -5,14 +5,19 @@ from queries.exercises import ExerciseRepository
 app = FastAPI()
 client = TestClient(app)
 
+
 class EmptyExerciseRepository:
     def get_all(self):
         return []
 
+
 @app.get("/api/exercises")
-def get_all_exercises(repo: ExerciseRepository = Depends(EmptyExerciseRepository)):
+def get_all_exercises(
+    repo: ExerciseRepository = Depends(EmptyExerciseRepository)
+):
     exercises = repo.get_all()
     return {'exercises': exercises}
+
 
 def test_get_all_exercises():
     app.dependency_overrides[ExerciseRepository] = EmptyExerciseRepository
