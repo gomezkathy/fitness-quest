@@ -16,7 +16,8 @@ lint-test-job:
 
 # # Run the unit tests
 api-unit-tests-job:
-  export: postgresql://user:password@db/fitness_quest
+  export:
+    DATABASE_URL: postgresql://user:password@db/fitness_quest
   image: python:3-bullseye
   stage: test
   needs:
