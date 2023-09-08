@@ -8,10 +8,8 @@ const baseUrl = process.env.REACT_APP_API_HOST;
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <AuthProvider baseUrl={baseUrl}>
-        <App />
-      </AuthProvider>
-    </BrowserRouter>
+    <AuthProvider baseUrl={baseUrl}>
+      <App />
+    </AuthProvider>
   </React.StrictMode>
 );
