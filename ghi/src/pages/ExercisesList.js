@@ -44,7 +44,6 @@ function ExerciseList() {
     }
   };
 
-  // Filter exercises for the logged-in user
   const userExercises = exercises.filter((exercise) => exercise.user_id === userId);
 
   return (
@@ -69,7 +68,7 @@ function ExerciseList() {
                 <td>{exercise.weight}</td>
                 <td>{exercise.sets}</td>
                 <td>{exercise.reps}</td>
-                <td>{exercise.picture_url}</td>
+                <td><img src={ exercise.picture_url } alt="exercise" style={{ width: '100px', height:'100px' }}/></td>
                 <td>{exercise.description}</td>
                 <td>
                   <button onClick={() => handleExerciseDelete(exercise.id)} className="btn btn-danger">delete</button>
