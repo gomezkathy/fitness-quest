@@ -33,7 +33,6 @@ function ExerciseList() {
   useEffect(() => {
     fetchExercises();
   }, []);
-
   const handleExerciseDelete = async (exerciseId) => {
     const response = await fetch(`http://localhost:8000/api/exercises/${exerciseId}`, {
       method: "delete",
