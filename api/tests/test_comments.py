@@ -1,19 +1,27 @@
-import unittest
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.testclient import TestClient
+from queries.comments import CommentRepository
 
 app = FastAPI()
 client = TestClient(app)
 
 
-class TestServerResponse(unittest.TestCase):
-    def test_server_response(self):
-        response = client.get("/api/comments")
-
-        self.assertEqual(
-            response.status_code, 404, "Successfully sent request to server"
-        )
+class EmptyCommentRepository:
+    def get_all(self):
+        return []
 
 
-if __name__ == "__main__":
-    unittest.main()
+@app.get("/api/comments")
+def get_all_comments(
+    repo: CommentRepository = Depends(EmptyCommentRepository),
+):
+    comments = repo.get_all()
+    return {"comments": comments}
+
+
+def test_get_all_comments():
+    app.dependency_overrides[CommentRepository] = EmptyCommentRepository
+    response = client.get("/api/comments")
+
+    assert response.status_code == 200
+    assert response.json() == {"comments": []}

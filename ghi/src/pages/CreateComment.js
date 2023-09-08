@@ -4,7 +4,6 @@ import { format } from "date-fns";
 function CreateComment() {
   const [comment, setComment] = useState("");
   const [userId, setUserId] = useState("");
-  // Fetches from GET /token
   const fetchAccount = async () => {
     const response = await fetch("http://localhost:8000/token", {
       credentials: "include",
@@ -49,6 +48,7 @@ function CreateComment() {
 
   return (
     <div>
+<<<<<<< HEAD
       <div className="row">
         <div className="offset-3 col-6">
           <div className="border rounded p-4 mt-4">
@@ -73,8 +73,23 @@ function CreateComment() {
               <button className="btn btn-primary">Submit</button>
             </form>
           </div>
+=======
+      <h1>Create a Comment</h1>
+      <form onSubmit={handleSubmit} id="create-comment">
+        <div>
+          <input
+            onChange={handleCommentChange}
+            value={comment}
+            placeholder="Leave a comment..."
+            required
+            type="text"
+            name="comment"
+            id="comment"
+          />
+>>>>>>> main
         </div>
-      </div>
+        <button>Submit</button>
+      </form>
     </div>
   );
 }

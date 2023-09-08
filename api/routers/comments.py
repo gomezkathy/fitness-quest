@@ -16,20 +16,28 @@ router = APIRouter()
 def create_comment(
     comment: CommentIn,
     response: Response,
+    account_data: dict = Depends(authenticator.get_current_account_data),
     repo: CommentRepository = Depends(),
 ):
-    successful_repo = repo.create(comment)
-    if isinstance(successful_repo, CommentOut):
-        return successful_repo
+    if account_data:
+        successful_repo = repo.create(comment)
+        if isinstance(successful_repo, CommentOut):
+            return successful_repo
+        else:
+            return ""
     else:
-        return ""
+        raise HTTPException(status_code=401)
 
 
 @router.get("/api/comments", response_model=Union[Error, List[CommentOut]])
 def get_all(
+    account_data: dict = Depends(authenticator.get_current_account_data),
     repo: CommentRepository = Depends(),
 ):
-    return repo.get_all()
+    if account_data:
+        return repo.get_all()
+    else:
+        raise HTTPException(status_code=401)
 
 
 @router.delete(

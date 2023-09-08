@@ -1,50 +1,99 @@
 from fastapi import APIRouter, Depends, HTTPException
-from queries.workouts import WorkoutIn, WorkoutOut, WorkoutRepository, Error
+from typing import List, Optional
+from models.workouts import WorkoutIn, WorkoutOut
+from queries.workouts import WorkoutRepository
 from authenticator import authenticator
-from typing import List, Union
 
 router = APIRouter()
+repo = WorkoutRepository()
 
 
-@router.post("/workouts", response_model=Union[WorkoutOut, Error])
-async def create_workout(
-    workout: WorkoutIn,  # sets the workout model
-    # verifies user authentication
-    account_data: dict = Depends(authenticator.get_current_account_data),
-    # creates an instance of WorkoutRepository
-    repo: WorkoutRepository = Depends(),
+def authenticate_user(
+    authenticator=Depends(authenticator.get_account_data_for_cookie),
 ):
-    # if user is authenticated, creates workout. Otherwise, returns 401 error
-    if account_data:
-        return repo.create(workout)
+    if authenticator:
+        return authenticator
     else:
         raise HTTPException(
             status_code=401, detail="User is not authenticated."
         )
 
 
-@router.get("/workouts", response_model=Union[Error, List[WorkoutOut]])
-async def get_all(
-    account_data: dict = Depends(authenticator.get_current_account_data),
+@router.post("/api/workouts", response_model=WorkoutOut)
+def create_workout(
+    workout: WorkoutIn,
+    user: dict = Depends(authenticator.get_current_account_data),
     repo: WorkoutRepository = Depends(),
 ):
-    if account_data:
-        return repo.get_all()
+    if user:
+        new_workout = repo.create(workout)
+        return new_workout
     else:
         raise HTTPException(
             status_code=401, detail="User is not authenticated."
         )
 
 
-@router.put("/workouts/{workout_id}", response_model=Union[WorkoutOut, Error])
-async def update_workout(
+@router.get("/api/workouts", response_model=List[WorkoutOut])
+def get_all_workouts(
+    user: dict = Depends(authenticator.get_current_account_data),
+    repo: WorkoutRepository = Depends(),
+):
+    if user:
+        workouts = repo.get_all()
+        return workouts
+    else:
+        raise HTTPException(
+            status_code=401, detail="User is not authenticated."
+        )
+
+
+@router.get("/api/workouts/{workout_id}", response_model=Optional[WorkoutOut])
+def get_one_workout(
+    workout_id: int,
+    user: dict = Depends(authenticator.get_current_account_data),
+    repo: WorkoutRepository = Depends(),
+):
+    if user:
+        workout = repo.get_one(workout_id)
+        if workout is None:
+            raise HTTPException(status_code=404, detail="Workout not found")
+        return workout
+    else:
+        raise HTTPException(
+            status_code=401, detail="User is not authenticated."
+        )
+
+
+@router.put("/api/workouts/{workout_id}", response_model=WorkoutOut)
+def update_workout(
     workout_id: int,
     workout: WorkoutIn,
-    account_data: dict = Depends(authenticator.get_current_account_data),
+    user: dict = Depends(authenticator.get_current_account_data),
     repo: WorkoutRepository = Depends(),
-) -> Union[Error, WorkoutOut]:
-    if account_data:
-        return repo.update(workout_id, workout)
+):
+    if user:
+        updated_workout = repo.update(workout_id, workout)
+        if updated_workout is None:
+            raise HTTPException(status_code=404, detail="Workout not found")
+        return updated_workout
+    else:
+        raise HTTPException(
+            status_code=401, detail="User is not authenticated."
+        )
+
+
+@router.delete("/api/workouts/{workout_id}", response_model=dict)
+def delete_workout(
+    workout_id: int,
+    user: dict = Depends(authenticator.get_current_account_data),
+    repo: WorkoutRepository = Depends(),
+):
+    if user:
+        success = repo.delete(workout_id)
+        if not success:
+            raise HTTPException(status_code=404, detail="Workout not found")
+        return {"message": "Workout deleted successfully"}
     else:
         raise HTTPException(
             status_code=401, detail="User is not authenticated."
