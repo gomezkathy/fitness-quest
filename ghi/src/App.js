@@ -17,11 +17,13 @@ import UpdateExerciseForm from "./pages/UpdateExerciseForm";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import Workouts from "./pages/Workouts";
 import CreateWorkout from "./pages/CreateWorkout";
+import NavBar from "./components/NavBar";
+import Home from "./pages/Home";
+import "./App.css";
 
 function App() {
   const { token } = useToken();
   const [user, setUser] = useState({});
-
 
   useEffect(() => {
     if (token) {
@@ -41,9 +43,9 @@ function App() {
           <NavBar />
           <Routes>
             <Route path="/accounts">
-            <Route path="signup" element={<SignupForm />} />
-            <Route path="login" element={<LoginForm />} />
-            <Route path="logout" element={<Logout />} />
+              <Route path="signup" element={<SignupForm />} />
+              <Route path="login" element={<LoginForm />} />
+              <Route path="logout" element={<Logout />} />
             </Route>
             <Route path="/" element={<Home />} />
             <Route path="/workouts">
@@ -55,9 +57,12 @@ function App() {
               <Route path="create" element={<CommentForm />} />
             </Route>
             <Route path="/exercises">
-              <Route index element={<ExerciseList/>}/>
+              <Route index element={<ExerciseList />} />
               <Route path="create" element={<ExerciseForm />} />
-              <Route path="update/:exerciseId" element={<UpdateExerciseForm />} />
+              <Route
+                path="update/:exerciseId"
+                element={<UpdateExerciseForm />}
+              />
             </Route>
           </Routes>
         </div>
@@ -65,3 +70,5 @@ function App() {
     </AuthProvider>
   );
 }
+
+export default App;
