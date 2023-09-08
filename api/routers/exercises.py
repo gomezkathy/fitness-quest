@@ -6,7 +6,7 @@ from typing import List, Union, Optional
 router = APIRouter()
 
 
-@router.post("/api/exercises", response_model=Union[ExerciseOut, Error])
+@router.post("/api/exercises/", response_model=Union[ExerciseOut, Error])
 async def create_exercise(
     exercise: ExerciseIn,  # sets the exercise model
     account_data: dict = Depends(authenticator.get_current_account_data),  # verifies user authentication
@@ -18,7 +18,7 @@ async def create_exercise(
     else:
         raise HTTPException(status_code=401, detail="User is not authenticated.")
 
-@router.get("/api/exercises", response_model=Union[Error, List[ExerciseOut]])
+@router.get("/api/exercises/", response_model=Union[Error, List[ExerciseOut]])
 async def get_all(
    account_data: dict = Depends(authenticator.get_current_account_data),
    repo: ExerciseRepository = Depends(),
