@@ -1,8 +1,5 @@
-from pydantic import BaseModel
 from typing import List, Union
-from datetime import date
 from pool import pool
-from queries.accounts import AccountRepository
 from models.comments import CommentOut, CommentIn, Error
 from fastapi import HTTPException
 
