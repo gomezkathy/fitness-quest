@@ -37,7 +37,6 @@ steps = [
             instructions TEXT
         );
         """,
-
         # "Down" SQL statement
         """
         DROP TABLE exercises;
@@ -64,23 +63,13 @@ steps = [
             id SERIAL NOT NULL PRIMARY KEY,
             user_id INTEGER REFERENCES accounts(id),
             workout_name VARCHAR(100) NOT NULL,
-            comment TEXT,
-            exercise_list INTEGER []
+            comment_id INTEGER REFERENCES comments(id),
+            exercise_id INTEGER REFERENCES exercises(id)
+
         )
         """,
         """
         DROP TABLE workouts;
-        """,
-    ],
-    [
-        """
-        CREATE TABLE workoutVO (
-            assigned_date DATE NOT NULL,
-            workout_id INTEGER NOT NULL REFERENCES workouts
-        )
-        """,
-        """
-        DROP TABLE workoutVO;
         """,
     ],
 ]
