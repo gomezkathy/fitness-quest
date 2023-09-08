@@ -169,7 +169,7 @@ function ExerciseForm() {
                 className="form-control"
               />
             </div>
-            <button className="btn btn-primary">Create</button>
+            <button className="btn btn-primary">CREATE</button>
           </form>
         </div>
       </div>

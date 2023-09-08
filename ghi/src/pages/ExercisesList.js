@@ -75,9 +75,9 @@ function ExerciseList() {
           )}
         </p>
         <p className="exercise-text">
-          <button onClick={() => handleExerciseDelete(exercise.id)} className="btn btn-danger">Delete</button>
+          <button onClick={() => handleExerciseDelete(exercise.id)} className="btn btn-danger">DELETE</button>
           <Link to={`/exercises/update/${exercise.id}`}>
-            <button className="btn btn-primary">Edit</button>
+            <button className="btn btn-primary">EDIT</button>
           </Link>
         </p>
       </div>

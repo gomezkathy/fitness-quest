@@ -98,7 +98,7 @@ function UpdateExerciseForm() {
 
     const response = await fetch(exercisesUrl, fetchConfig);
     if (response.ok) {
-      console.log('exercise was update');
+      console.log('exercise was updated');
     } else {
       console.error('error updating exercise');
     }
