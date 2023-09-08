@@ -1,9 +1,9 @@
 from fastapi.testclient import TestClient
-from main import app
+from fastapi import FastAPI
 from models.accounts import AccountOut, AccountUpdate
 from authenticator import authenticator
 
-
+app = FastAPI()
 client = TestClient(app)
 
 
@@ -31,24 +31,29 @@ def fake_get_account_data():
 
 
 def test_update_account():
-    app.dependency_overrides[
-        authenticator.try_get_current_account_data
-    ] = fake_get_account_data
-    updated_info = {
-        "username": "new_username",
-        "first": "New",
-        "last": "Name",
-        "email": "new@example.com",
-        "password": "new_password",
-    }
+    try:
+        app.dependency_overrides[
+            authenticator.try_get_current_account_data
+        ] = fake_get_account_data
+        updated_info = {
+            "username": "new_username",
+            "first": "New",
+            "last": "Name",
+            "email": "new@example.com",
+            "password": "new_password",
+        }
 
-    response = client.put("/api/accounts/update/1", json=updated_info)
+        response = client.put("/api/accounts/update/1", json=updated_info)
 
-    assert response.status_code == 200
-    assert response.json() == {
-        "id": 1,
-        "username": "new_username",
-        "first": "New",
-        "last": "Name",
-        "email": "new@example.com",
-    }
+        assert response.status_code == 200
+        assert response.json() == {
+            "id": 1,
+            "username": "new_username",
+            "first": "New",
+            "last": "Name",
+            "email": "new@example.com",
+        }
+    except Exception as e:
+        # Print the exception for debugging purposes
+        print(f"Exception: {e}")
+        raise  # Re-raise the exception to fail the test
