@@ -33,6 +33,7 @@ function ExerciseList() {
   useEffect(() => {
     fetchExercises();
   }, []);
+
   const handleExerciseDelete = async (exerciseId) => {
     const response = await fetch(`http://localhost:8000/api/exercises/${exerciseId}`, {
       method: "delete",
@@ -41,12 +42,15 @@ function ExerciseList() {
     if (response.ok) {
       setExercises(exercises.filter((exercise) => exercise.id !== exerciseId));
     }
-};
+  };
+
+  // Filter exercises for the logged-in user
+  const userExercises = exercises.filter((exercise) => exercise.user_id === userId);
 
   return (
     <>
       <div>
-        <h1>list of exercises</h1>
+        <h1>List of Exercises</h1>
         <table className="table table-striped">
           <thead className="table-primary">
             <tr>
@@ -59,7 +63,7 @@ function ExerciseList() {
             </tr>
           </thead>
           <tbody>
-            {exercises.map((exercise) => (
+            {userExercises.map((exercise) => (
               <tr key={exercise.id}>
                 <td>{exercise.name}</td>
                 <td>{exercise.weight}</td>
@@ -68,10 +72,12 @@ function ExerciseList() {
                 <td>{exercise.picture_url}</td>
                 <td>{exercise.description}</td>
                 <td>
-                  <button onClick={() => handleExerciseDelete(exercise.id)} className="btn btn-danger"> delete</button>
+                  <button onClick={() => handleExerciseDelete(exercise.id)} className="btn btn-danger">delete</button>
                 </td>
                 <td>
-                  <Link to={`/exercises/update/${exercise.id}`}> <button className="btn btn-primary">edit</button></Link>
+                  <Link to={`/exercises/update/${exercise.id}`}>
+                    <button className="btn btn-primary">edit</button>
+                  </Link>
                 </td>
               </tr>
             ))}
