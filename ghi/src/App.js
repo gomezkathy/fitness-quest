@@ -1,14 +1,11 @@
-import React, { useEffect, useState }  from "react";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
 import "./App.css";
-import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import SignupForm from "./Accounts/SignupForm.js";
 import LoginForm from "./Accounts/LoginForm.js";
 import Logout from "./Accounts/Logout.js";
-import useToken from "@galvanize-inc/jwtdown-for-react";
 import Comments from "./pages/Comments";
 import CommentForm from "./pages/CreateComment";
 import ExerciseForm from "./pages/CreateExercise";
@@ -22,21 +19,7 @@ import Home from "./pages/Home";
 import "./App.css";
 
 function App() {
-  const { token } = useToken();
-  const [user, setUser] = useState({});
-
-  useEffect(() => {
-    if (token) {
-      setUser(JSON.parse(atob(token.split(".")[1])).account);
-    }
-  }, [token]);
-
   return (
-      <Route path="/accounts">
-        <Route path="signup" element={<SignupForm />} />
-        <Route path="login" element={<LoginForm />} />
-        <Route path="logout" element={<Logout />} />
-      </Route>
     <AuthProvider baseUrl={process.env.REACT_APP_API_HOST}>
       <BrowserRouter>
         <div className="App">
