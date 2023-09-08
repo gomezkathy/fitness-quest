@@ -59,7 +59,12 @@ function AccountInfo() {
           },
         }
       );
-      setMessage("Account information updated successfully");
+
+      if (response.status === 200) {
+        setMessage("Account information updated successfully");
+      } else {
+        setMessage("Error updating account information");
+      }
 
       setTimeout(() => {
         setMessage("");

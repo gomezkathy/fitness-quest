@@ -18,15 +18,6 @@ import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import AccountInfo from "./Accounts/AccountInfo";
 
 function App() {
-  const { token } = useToken();
-  const [user, setUser] = useState({});
-
-  useEffect(() => {
-    if (token) {
-      setUser(JSON.parse(atob(token.split(".")[1])).account);
-    }
-  }, [token]);
-
   return (
     <AuthProvider baseUrl={process.env.REACT_APP_API_HOST}>
       <BrowserRouter>
@@ -58,3 +49,5 @@ function App() {
     </AuthProvider>
   );
 }
+
+export default App;

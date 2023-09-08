@@ -6,7 +6,7 @@ export default function Logout() {
 
   useEffect(() => {
     if (token) logout();
-  }, [token]);
+  }, [token, logout]);
 
   return <div>Logged out</div>;
 }
