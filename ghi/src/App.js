@@ -7,7 +7,6 @@ import Workouts from "./pages/Workouts";
 import CreateWorkout from "./pages/CreateWorkout";
 // import UpdateWorkout from "./pages/UpdateWorkout";
 import "./App.css";
-<<<<<<< Updated upstream
 import Comments from "./pages/Comments";
 import CommentForm from "./pages/CreateComment";
 import LoginForm from "./Accounts/LoginForm";
@@ -16,9 +15,7 @@ import SignupForm from "./Accounts/SignupForm";
 import ExerciseForm from "./pages/CreateExercise";
 import Exercises from "./pages/Exercises";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
-=======
 import AccountInfo from "./Accounts/AccountInfo";
->>>>>>> Stashed changes
 
 function App() {
   const { token } = useToken();
@@ -36,19 +33,13 @@ function App() {
         <div className="App">
           <NavBar />
           <Routes>
-<<<<<<< Updated upstream
-=======
             <Route path="/accounts">
               <Route path="info" element={<AccountInfo />} />
               <Route path="signup" element={<SignupForm />} />
               <Route path="login" element={<LoginForm />} />
               <Route path="logout" element={<Logout />} />
             </Route>
->>>>>>> Stashed changes
             <Route path="/" element={<Home />} />
-            <Route path="/signup" element={<SignupForm />} />
-            <Route path="/login" element={<LoginForm />} />
-            <Route path="/logout" element={<Logout />} />
             <Route path="/workouts">
               <Route index element={<Workouts />} />
               <Route path="create" element={<CreateWorkout />} />
