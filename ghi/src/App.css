@@ -51,11 +51,19 @@
 .footer {
   background-color: #333;
   color: white;
-  margin-top: 5px;
-  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px 0;
+  text-align: center;
 }
 
 /* HOMEPAGE */
+.login-link {
+  color: white;
+}
+
 /* HERO BANNER */
 .hero-image {
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),

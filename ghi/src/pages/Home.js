@@ -7,8 +7,15 @@ export default function Home() {
         <div className="hero-text">
           <h1>Track your workouts</h1>
           <p>We got you covered</p>
-          <button>Get Started</button>
-          <p>Already a member? Log In</p>
+          <a href="/accounts/signup">
+            <button>Get Started</button>
+          </a>
+          <p>
+            Already a member?{" "}
+            <a className="login-link" href="/accounts/login">
+              Log In
+            </a>{" "}
+          </p>
         </div>
       </div>
       <div className="features">

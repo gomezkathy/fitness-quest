@@ -6,6 +6,7 @@ function CreateComment() {
   const [userId, setUserId] = useState("");
   const [selectedExerciseId, setSelectedExerciseId] = useState(0);
   const [exercises, setExercises] = useState([]);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const fetchAccount = async () => {
     try {
@@ -71,7 +72,11 @@ function CreateComment() {
 
       if (response.ok) {
         console.log("Comment submitted successfully.");
-        window.location.href = "http://localhost:3000/comments";
+        setSuccessMessage("Comment submitted successfully.");
+        setTimeout(() => {
+          setSuccessMessage("");
+          window.location.href = "http://localhost:3000/comments";
+        }, 2000);
       } else {
         console.error(
           "Failed to create comment:",
@@ -90,35 +95,51 @@ function CreateComment() {
   };
 
   return (
-    <div>
-      <h1>Create a Comment</h1>
-      <form onSubmit={handleSubmit} id="create-comment">
-        <div>
-          <select
-            value={selectedExerciseId}
-            onChange={(e) => setSelectedExerciseId(parseInt(e.target.value))}
-            required
-          >
-            <option value={0}>Select an exercise</option>
-            {exercises.map((exercise) => (
-              <option key={exercise.id} value={exercise.id}>
-                {exercise.name}
-              </option>
-            ))}
-          </select>
-          <br />
-          <input
-            onChange={handleCommentChange}
-            value={comment}
-            placeholder="Leave a comment..."
-            required
-            type="text"
-            name="comment"
-            id="comment"
-          />
+    <div className="container mt-5">
+      <div className="row">
+        <div className="col-12 col-md-6 mx-auto">
+          <div className="shadow p-4">
+            <h1 className="text-center">Create a Comment</h1>
+            {successMessage && (
+              <div className="alert alert-success" role="alert">
+                {successMessage}
+              </div>
+            )}
+            <form onSubmit={handleSubmit} id="create-comment">
+              <div className="mb-3">
+                <select
+                  className="form-select mb-3"
+                  value={selectedExerciseId}
+                  onChange={(e) =>
+                    setSelectedExerciseId(parseInt(e.target.value))
+                  }
+                  required
+                >
+                  <option value={0}>Select an exercise</option>
+                  {exercises.map((exercise) => (
+                    <option key={exercise.id} value={exercise.id}>
+                      {exercise.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="mb-3">
+                <input
+                  className="form-control"
+                  onChange={handleCommentChange}
+                  value={comment}
+                  placeholder="Leave a comment..."
+                  required
+                  type="text"
+                  name="comment"
+                  id="comment"
+                />
+              </div>
+              <button className="btn btn-primary">Submit</button>
+            </form>
+          </div>
         </div>
-        <button>Submit</button>
-      </form>
+      </div>
     </div>
   );
 }

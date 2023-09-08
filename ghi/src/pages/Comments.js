@@ -9,6 +9,7 @@ function Comments() {
   const [newComment, setNewComment] = useState("");
   const { exerciseId } = useParams();
   const exerciseIdAsNumber = parseInt(exerciseId, 10);
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
   console.log("Exercise ID:", exerciseId);
 
   const fetchAccount = async () => {
@@ -82,6 +83,7 @@ function Comments() {
 
       if (response.ok) {
         fetchAllComments();
+        setDeleteSuccess(true);
       } else {
         console.error(
           "Failed to delete comment:",
@@ -144,45 +146,90 @@ function Comments() {
   }, [exerciseIdAsNumber]);
 
   const userComments = comments.filter((comment) => comment.user_id === userId);
-
-  return (
-    <div>
-      <h1>Comments Log</h1>
-      <div className="comments-container">
-        {userComments.map((comment) => (
-          <div key={comment.id} className="comment-box">
-            <p className="comment-exercise">
-              Exercise: {exerciseNames[comment.exercise_id] || "Unknown"}
-            </p>
-            <p className="comment-text">Comment: {comment.comment}</p>
-            <p className="assigned-date">Date: {comment.assigned_date}</p>
-            <Link
-              className="btn btn-primary btn-link"
-              to={`/comments/${comment.exercise_id}/${comment.id}`}
-            >
-              Edit
-            </Link>
-            <button
-              className="btn btn-danger"
-              onClick={() => handleDeleteComment(comment.id)}
-            >
-              Delete
-            </button>
+  const renderCommentForm = () => {
+    if (exerciseId) {
+      return (
+        <div className="row mb-5">
+          <div className="offset-1 col-8">
+            <div className="p-3">
+              <div className=" d-flex align-items-center">
+                <input
+                  className="form-control flex-grow-1"
+                  onChange={(e) => setNewComment(e.target.value)}
+                  value={newComment}
+                  placeholder="Leave a comment..."
+                  required
+                  type="text"
+                  name="comment"
+                  id="comment"
+                />
+                <button
+                  className="btn btn-primary ml-3"
+                  onClick={handleAddComment}
+                >
+                  Post
+                </button>
+              </div>
+            </div>
           </div>
-        ))}
-      </div>
-      <div className="comment-input">
-        <h2>Add a Comment</h2>
-        <textarea
-          rows="4"
-          cols="50"
-          placeholder="Enter your comment..."
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-        />
-        <button className="btn btn-primary" onClick={handleAddComment}>
-          Post
-        </button>
+        </div>
+      );
+    }
+    return null;
+  };
+  return (
+    <div className="container mt-5 mb-5">
+      <div className="shadow p-3 mb-5 bg-white rounded">
+        {deleteSuccess && (
+          <div className="alert alert-danger" role="alert">
+            Comment deleted successfully!
+          </div>
+        )}
+        <div className={`row${renderCommentForm() ? "" : " mb-5"}`}>
+          <div className="col-10 mt-5 mx-auto">
+            <h1>Comments Log</h1>
+            <div className="row">
+              <div className="col-12">
+                <table className="table table-striped mt-3 mb-0">
+                  <thead>
+                    <tr>
+                      <th scope="col">Exercise</th>
+                      <th scope="col">Comment</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {userComments.map((comment) => (
+                      <tr key={comment.id}>
+                        <td>
+                          {exerciseNames[comment.exercise_id] || "Unknown"}
+                        </td>
+                        <td>{comment.comment}</td>
+                        <td>{comment.assigned_date}</td>
+                        <td>
+                          <Link
+                            className="btn btn-primary btn-link"
+                            to={`/comments/${comment.exercise_id}/${comment.id}`}
+                          >
+                            Edit
+                          </Link>
+                          <button
+                            className="btn btn-danger"
+                            onClick={() => handleDeleteComment(comment.id)}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        {renderCommentForm()}
       </div>
     </div>
   );

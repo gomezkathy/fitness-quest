@@ -123,25 +123,32 @@ function UpdateComment() {
   };
 
   return (
-    <div>
-      <h1>Update Comment</h1>
-      {successMessage && (
-        <div className="alert alert-success mt-3">{successMessage}</div>
-      )}
-      <form onSubmit={handleSubmit} id="update-comment">
-        <div>
-          <input
-            onChange={handleCommentChange}
-            value={comment}
-            placeholder={currentComment}
-            required
-            type="text"
-            name="comment"
-            id="comment"
-          />
+    <div className="container mt-5">
+      <div className="row">
+        <div className="col-8 offset-md-2 mx-auto">
+          <div className="shadow p-4 mt-5">
+            <h1>Update Comment</h1>
+            {successMessage && (
+              <div className="alert alert-success mt-3">{successMessage}</div>
+            )}
+            <form onSubmit={handleSubmit} id="update-comment">
+              <div className="mb-3">
+                <input
+                  onChange={handleCommentChange}
+                  value={comment}
+                  placeholder={currentComment}
+                  required
+                  className="form-control"
+                  type="text"
+                  name="comment"
+                  id="comment"
+                />
+              </div>
+              <button className="btn btn-primary">Submit</button>
+            </form>
+          </div>
         </div>
-        <button>Submit</button>
-      </form>
+      </div>
     </div>
   );
 }
