@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo from "../assets/logo-transparent-png.png";
 import "../App.css";
 import useToken from "@galvanize-inc/jwtdown-for-react";
@@ -8,7 +8,6 @@ export default function NavBar() {
   const [userId, setUserId] = useState(null);
   const [logoutSuccess, setLogoutSuccess] = useState(false);
   const { logout, token } = useToken();
-  const location = useLocation();
 
   const fetchAccount = async () => {
     try {
@@ -45,8 +44,6 @@ export default function NavBar() {
       window.location.href = "/";
     }
   };
-
-  const isHomePage = location.pathname === "/" && userId === null;
 
   return (
     <div className="px-0 mx-0">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { format } from "date-fns";
 
@@ -59,15 +59,21 @@ function UpdateComment() {
     }
   };
 
+  const callbackfetchCommentData = useCallback(fetchCommentData, [
+    accessToken,
+    commentId,
+    exerciseId,
+  ]);
+
   useEffect(() => {
     fetchAccount();
   }, []);
 
   useEffect(() => {
     if (accessToken && commentId) {
-      fetchCommentData();
+      callbackfetchCommentData();
     }
-  }, [accessToken, commentId]);
+  }, [accessToken, commentId, callbackfetchCommentData]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

@@ -80,8 +80,6 @@ function ExerciseForm() {
 
     const response = await fetch(exercisesUrl, fetchConfig);
     if (response.ok) {
-      const newExercise = await response.json();
-
       setWeight("");
       setName("");
       setSets("");

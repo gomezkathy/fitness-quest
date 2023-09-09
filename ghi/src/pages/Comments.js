@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 import { format } from "date-fns";
 
@@ -36,8 +36,6 @@ function Comments() {
       if (response.ok) {
         const data = await response.json();
         setComments(data);
-
-        const exerciseIds = data.map((comment) => comment.exercise_id);
 
         const exerciseNamesResponse = await fetch(
           `http://localhost:8000/api/exercises`,
@@ -128,14 +126,16 @@ function Comments() {
     }
   };
 
+  const callbackFetchAllComments = useCallback(fetchAllComments, [exerciseId]);
+
   useEffect(() => {
     const fetchData = async () => {
       await fetchAccount();
-      fetchAllComments();
+      await callbackFetchAllComments();
     };
 
     fetchData();
-  }, [exerciseIdAsNumber]);
+  }, [exerciseIdAsNumber, callbackFetchAllComments]);
 
   const userComments = comments.filter((comment) => comment.user_id === userId);
   const renderCommentForm = () => {

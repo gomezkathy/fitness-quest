@@ -17,7 +17,7 @@ from models.accounts import (
     AccountUpdate,
     AccountOut,
     DuplicateAccountError,
-    AuthenticationException
+    AuthenticationException,
 )
 from authenticator import authenticator
 
@@ -63,9 +63,8 @@ async def create_account(
 
 
 @router.put(
-    "/api/accounts/update/{account_id}",
-    response_model=AccountOut | HttpError
-    )
+    "/api/accounts/update/{account_id}", response_model=AccountOut | HttpError
+)
 async def update_account(
     account_id: int,
     updated_info: AccountUpdate,
@@ -89,9 +88,8 @@ async def update_account(
 
 
 @router.get(
-    "/api/accounts/{account_id}",
-    response_model=AccountOut | HttpError
-    )
+    "/api/accounts/{account_id}", response_model=AccountOut | HttpError
+)
 async def get_account_by_id(
     account_id: int,
     repo: AccountRepository = Depends(),
