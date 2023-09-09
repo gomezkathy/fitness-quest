@@ -13,7 +13,6 @@ import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import Workouts from "./pages/Workouts";
 import CreateWorkout from "./pages/CreateWorkout";
 import NavBar from "./components/NavBar";
-import Home from "./pages/Home";
 import "./App.css";
 
 function App() {
