@@ -4,6 +4,7 @@ import "./App.css";
 import SignupForm from "./Accounts/SignupForm.js";
 import LoginForm from "./Accounts/LoginForm.js";
 import Logout from "./Accounts/Logout.js";
+import AccountInfo from "./Accounts/AccountInfo";
 import Comments from "./pages/Comments";
 import CommentForm from "./pages/CreateComment";
 import ExerciseForm from "./pages/CreateExercise";
