@@ -66,20 +66,20 @@ class ExerciseRepository:
                     db.execute(
                         """
                         UPDATE exercises
-                        SET user_id = %s
-                            , name = %s
-                            , weight = %s
-                            , sets = %s
-                            , reps = %s
-                            , picture_url = %s
-                            , description = %s
-                            , created_at = %s
-                            , assigned_date = %s
-                            , type = %s
-                            , muscle = %s
-                            , difficulty = %s
-                            , equipment = %s
-                            , instructions = %s
+                        SET user_id = %s,
+                            name = %s,
+                            weight = %s,
+                            sets = %s,
+                            reps = %s,
+                            picture_url = %s,
+                            description = %s,
+                            created_at = %s,
+                            assigned_date = %s,
+                            type = %s,
+                            muscle = %s,
+                            difficulty = %s,
+                            equipment = %s,
+                            instructions = %s
                         WHERE id = %s
                         """,
                         [
@@ -111,8 +111,7 @@ class ExerciseRepository:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-                        SELECT (
-                            id,
+                        SELECT id,
                             user_id,
                             name,
                             weight,
@@ -127,7 +126,6 @@ class ExerciseRepository:
                             difficulty,
                             equipment,
                             instructions
-                            )
                         FROM exercises
                         ORDER BY assigned_date
                         """

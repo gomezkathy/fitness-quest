@@ -41,13 +41,12 @@ class WorkoutRepository:
                 with conn.cursor() as db:
                     db.execute(
                         """
-                        SELECT (
+                        SELECT
                             w.id,
                             w.user_id,
                             w.workout_name,
                             w.comment_id,
                             w.exercise_id
-                            )
                         FROM workouts w
                         LEFT JOIN accounts a ON w.user_id = a.id
                         LEFT JOIN exercises e ON w.exercise_id = e.id
@@ -108,19 +107,15 @@ class WorkoutRepository:
                     db.execute(
                         """
                         UPDATE workouts
-                        SET (
-                            user_id = %s,
+                        SET user_id = %s,
                             workout_name = %s,
                             comment_id = %s,
                             exercise_id = %s
-                            )
                         WHERE id = %s
-                        RETURNING (
-                            user_id,
+                        RETURNING user_id,
                             workout_name,
                             comment_id,
                             exercise_id;
-                            )
                         """,
                         [
                             workout.user_id,

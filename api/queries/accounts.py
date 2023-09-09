@@ -75,8 +75,7 @@ class AccountRepository:
                 cur.execute(
                     """
                     INSERT INTO accounts
-                    (username, password, first,
-                        last, email)
+                    (username, password, first, last, email)
                     VALUES (%s, %s, %s, %s, %s)
                     RETURNING ID;
                     """,
@@ -118,13 +117,11 @@ class AccountRepository:
                     cur.execute(
                         """
                         UPDATE accounts
-                        SET username = (
-                            %s,
+                        SET username = %s,
                             first = %s,
                             last = %s,
                             email = %s,
                             password = %s
-                            )
                         WHERE id = %s
                         RETURNING id, username, first, last, email, password;
                         """,
