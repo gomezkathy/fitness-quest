@@ -1,4 +1,3 @@
-from datetime import date
 from typing import List, Union
 from fastapi import HTTPException
 from pool import pool
@@ -12,7 +11,12 @@ class WorkoutRepository:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-                        INSERT INTO workouts (user_id, workout_name, comment_id, exercise_id)
+                        INSERT INTO workouts (
+                            user_id,
+                            workout_name,
+                            comment_id,
+                            exercise_id
+                            )
                         VALUES (%s, %s, %s, %s)
                         RETURNING id;
                         """,
@@ -37,7 +41,12 @@ class WorkoutRepository:
                 with conn.cursor() as db:
                     db.execute(
                         """
-                        SELECT w.id, w.user_id, w.workout_name, w.comment_id, w.exercise_id
+                        SELECT
+                            w.id,
+                            w.user_id,
+                            w.workout_name,
+                            w.comment_id,
+                            w.exercise_id
                         FROM workouts w
                         LEFT JOIN accounts a ON w.user_id = a.id
                         LEFT JOIN exercises e ON w.exercise_id = e.id
@@ -98,9 +107,15 @@ class WorkoutRepository:
                     db.execute(
                         """
                         UPDATE workouts
-                        SET user_id = %s, workout_name = %s, comment_id = %s, exercise_id = %s
+                        SET user_id = %s,
+                            workout_name = %s,
+                            comment_id = %s,
+                            exercise_id = %s
                         WHERE id = %s
-                        RETURNING user_id, workout_name, comment_id, exercise_id;
+                        RETURNING user_id,
+                            workout_name,
+                            comment_id,
+                            exercise_id;
                         """,
                         [
                             workout.user_id,

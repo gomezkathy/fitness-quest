@@ -21,22 +21,16 @@ import NavBar from "./components/NavBar";
 import "./App.css";
 
 function App() {
-  const { token } = useToken();
-  const [user, setUser] = useState({});
-
-  useEffect(() => {
-    if (token) {
-      setUser(JSON.parse(atob(token.split(".")[1])).account);
-    }
-  }, [token]);
-
+  const domain = /https:\/\/[^/]+/;
+  const basename = process.env.PUBLIC_URL.replace(domain, "");
   return (
     <AuthProvider baseUrl={process.env.REACT_APP_API_HOST}>
-      <BrowserRouter>
+      <BrowserRouter basename={basename}>
         <div className="App">
           <NavBar />
           <Routes>
             <Route path="/accounts">
+              <Route path="info" element={<AccountInfo />} />
               <Route path="signup" element={<SignupForm />} />
               <Route path="login" element={<LoginForm />} />
               <Route path="logout" element={<Logout />} />

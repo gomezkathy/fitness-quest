@@ -6,6 +6,7 @@ from datetime import datetime, date
 class Error(BaseModel):
     message: str
 
+
 class ExerciseIn(BaseModel):
     user_id: int
     name: str

@@ -58,7 +58,6 @@ export default function Home() {
             straightforward interface keeps me motivated, and the convenience of
             having all my fitness data in one place is truly remarkable."
           </p>
-          <p className="home-page-text">- RandomUser2039</p>
         </div>
         <div className="p-0">
           <img

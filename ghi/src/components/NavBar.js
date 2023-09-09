@@ -113,6 +113,13 @@ export default function NavBar() {
           )}
           {userId === null && (
             <li className="nav-item">
+              <Link to="/accounts/signup" className="nav-link">
+                Sign Up
+              </Link>
+            </li>
+          )}
+          {userId === null && (
+            <li className="nav-item">
               <Link to="/accounts/login" className="nav-link">
                 Login
               </Link>

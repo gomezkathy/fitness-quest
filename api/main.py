@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 from routers import comments, accounts, exercises, workouts
 from authenticator import authenticator
-from fastapi import APIRouter
+
 
 app = FastAPI()
 app.include_router(authenticator.router)
@@ -12,13 +12,23 @@ app.include_router(accounts.router)
 app.include_router(exercises.router)
 app.include_router(workouts.router)
 
+origins = [
+    "http://localhost:3000",
+    os.environ.get("CORS_HOST", None),
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[os.environ.get("CORS_HOST", "http://localhost:3000")],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.get("/")
+def root():
+    return {"message": "You hit the root path!"}
 
 
 @app.get("/api/launch-details")

@@ -123,7 +123,8 @@ class CommentRepository:
                     if result is None:
                         raise HTTPException(
                             status_code=404,
-                            detail=f"Comment id {comment_id} doesn't exist.",
+                            detail=f"""Comment with id
+                            {comment_id} does not exist.""",
                         )
 
                     db.execute(
