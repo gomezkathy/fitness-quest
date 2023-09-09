@@ -17,9 +17,11 @@ import NavBar from "./components/NavBar";
 import "./App.css";
 
 function App() {
+  const domain = /https:\/\/[^/]+/;
+  const basename = process.env.PUBLIC_URL.replace(domain, "");
   return (
     <AuthProvider baseUrl={process.env.REACT_APP_API_HOST}>
-      <BrowserRouter>
+      <BrowserRouter basename={basename}>
         <div className="App">
           <NavBar />
           <Routes>
