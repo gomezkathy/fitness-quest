@@ -67,7 +67,7 @@ function UpdateComment() {
     if (accessToken && commentId) {
       fetchCommentData();
     }
-  }, [accessToken, commentId]);
+  }, [accessToken, commentId, fetchCommentData]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

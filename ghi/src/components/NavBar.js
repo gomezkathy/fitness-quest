@@ -46,8 +46,6 @@ export default function NavBar() {
     }
   };
 
-  const isHomePage = location.pathname === "/" && userId === null;
-
   return (
     <div className="px-0 mx-0">
       <nav className="navbar">

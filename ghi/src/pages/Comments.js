@@ -37,8 +37,6 @@ function Comments() {
         const data = await response.json();
         setComments(data);
 
-        const exerciseIds = data.map((comment) => comment.exercise_id);
-
         const exerciseNamesResponse = await fetch(
           `http://localhost:8000/api/exercises`,
           {
@@ -135,7 +133,7 @@ function Comments() {
     };
 
     fetchData();
-  }, [exerciseIdAsNumber]);
+  }, [exerciseIdAsNumber, fetchAllComments]);
 
   const userComments = comments.filter((comment) => comment.user_id === userId);
   const renderCommentForm = () => {

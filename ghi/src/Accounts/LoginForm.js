@@ -1,12 +1,11 @@
 import useToken from "@galvanize-inc/jwtdown-for-react";
-import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useToken();
-  const [userId, setUserId] = useState(null);
+  const [setUserId] = useState(null);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
   const handleSubmit = async (e) => {
