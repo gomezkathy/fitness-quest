@@ -1,25 +1,25 @@
-from fastapi import APIRouter, Depends, Response, HTTPException
-from typing import List, Union
+from fastapi import APIRouter, Depends, HTTPException
+from typing import List, Union, Optional
+from models.comments import Error, CommentIn, CommentOut, CommentOutExerciseId
+from queries.comments import CommentRepository
 from authenticator import authenticator
-from queries.comments import (
-    Error,
-    CommentIn,
-    CommentRepository,
-    CommentOut,
-)
 
 router = APIRouter()
 
 
-@router.post("/api/comments", response_model=Union[CommentOut, Error])
+@router.post(
+    "/api/comments",
+    tags=["Comments"],
+    response_model=Union[CommentOut, Error],
+)
 def create_comment(
     comment: CommentIn,
-    response: Response,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: CommentRepository = Depends(),
 ):
     if account_data:
-        successful_repo = repo.create(comment)
+        exercise_id = comment.exercise_id
+        successful_repo = repo.create(comment, exercise_id)
         if isinstance(successful_repo, CommentOut):
             return successful_repo
         else:
@@ -28,15 +28,42 @@ def create_comment(
         raise HTTPException(status_code=401)
 
 
-@router.get("/api/comments", response_model=Union[Error, List[CommentOut]])
+@router.get(
+    "/api/comments",
+    tags=["Comments"],
+    response_model=Union[Error, List[CommentOutExerciseId]],
+)
 def get_all(
+    exercise_id: Optional[int] = None,
+    user_id: int = Depends(authenticator.get_current_account_data),
+    repo: CommentRepository = Depends(),
+):
+    if user_id:
+        if exercise_id is not None:
+            return repo.get_all(user_id, exercise_id)
+        else:
+            return repo.get_all(user_id)
+    else:
+        raise HTTPException(status_code=401)
+
+
+@router.get(
+    "/api/comments/{exercise_id}/{comment_id}",
+    tags=["Comments"],
+    response_model=Optional[CommentOut],
+)
+async def get_one_comment(
+    exercise_id: int,
+    comment_id: int,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: CommentRepository = Depends(),
 ):
     if account_data:
-        return repo.get_all()
+        return repo.get_comment_by_id(exercise_id, comment_id)
     else:
-        raise HTTPException(status_code=401)
+        raise HTTPException(
+            status_code=401, detail="User is not authenticated."
+        )
 
 
 @router.delete(
@@ -54,17 +81,18 @@ async def delete_comment(
 
 
 @router.put(
-    "/api/comments/{comment_id}",
+    "/api/comments/{exercise_id}/{comment_id}",
     tags=["Comments"],
     response_model=Union[CommentOut, Error],
 )
 def update_comment(
+    exercise_id: int,
     comment_id: int,
     comment: CommentIn,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: CommentRepository = Depends(),
 ) -> Union[Error, CommentOut]:
     if account_data:
-        return repo.update(comment_id, comment)
+        return repo.update(exercise_id, comment_id, comment)
     else:
         raise HTTPException(status_code=401)

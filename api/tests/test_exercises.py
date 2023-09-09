@@ -13,10 +13,10 @@ class EmptyExerciseRepository:
 
 @app.get("/api/exercises")
 def get_all_exercises(
-    repo: ExerciseRepository = Depends(EmptyExerciseRepository)
+    repo: ExerciseRepository = Depends(EmptyExerciseRepository),
 ):
     exercises = repo.get_all()
-    return {'exercises': exercises}
+    return {"exercises": exercises}
 
 
 def test_get_all_exercises():
@@ -24,7 +24,7 @@ def test_get_all_exercises():
     response = client.get("/api/exercises")
 
     assert response.status_code == 200
-    assert response.json() == {'exercises': []}
+    assert response.json() == {"exercises": []}
 
 
 def test_init():

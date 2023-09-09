@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 function ExerciseForm() {
-  const [name, setName] = useState('');
-  const [weight, setWeight] = useState('');
-  const [sets, setSets] = useState('');
-  const [reps, setReps] = useState('');
-  const [picture, setPicture] = useState('');
-  const [description, setDescription] = useState('');
+  const [name, setName] = useState("");
+  const [weight, setWeight] = useState("");
+  const [sets, setSets] = useState("");
+  const [reps, setReps] = useState("");
+  const [picture, setPicture] = useState("");
+  const [description, setDescription] = useState("");
   const [userId, setUserId] = useState("");
 
   const { token } = useToken();
@@ -14,7 +14,6 @@ function ExerciseForm() {
     const response = await fetch("http://localhost:8000/token", {
       credentials: "include",
     });
-    console.log(response)
     if (response.ok) {
       const data = await response.json();
       const userId = data.account;
@@ -25,7 +24,6 @@ function ExerciseForm() {
   useEffect(() => {
     fetchAccount();
   }, []);
-
 
   const handleNameChange = (event) => {
     const value = event.target.value;
@@ -57,45 +55,41 @@ function ExerciseForm() {
     setDescription(value);
   };
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const exercisesUrl = 'http://localhost:8000/api/exercises/';
-
+    const exercisesUrl = "http://localhost:8000/api/exercises/";
 
     const fetchConfig = {
-      method: 'post',
+      method: "post",
       body: JSON.stringify({
-      name,
-      weight: parseInt(weight),
-      sets: parseInt(sets),
-      reps: parseInt(reps),
-      picture_url: picture,
-      description,
-      user_id: userId,
-  }),
-  headers: {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${token}`,
-  },
-  credentials: 'include',
-};
+        name,
+        weight: parseInt(weight),
+        sets: parseInt(sets),
+        reps: parseInt(reps),
+        picture_url: picture,
+        description,
+        user_id: userId,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: "include",
+    };
 
     const response = await fetch(exercisesUrl, fetchConfig);
     if (response.ok) {
       const newExercise = await response.json();
-      console.log(newExercise);
 
-      setWeight('');
-      setName('');
-      setSets('');
-      setReps('');
-      setPicture('');
-      setDescription('');
+      setWeight("");
+      setName("");
+      setSets("");
+      setReps("");
+      setPicture("");
+      setDescription("");
     }
   };
-
 
   return (
     <div className="row">
@@ -108,7 +102,8 @@ function ExerciseForm() {
               <input
                 value={name}
                 onChange={handleNameChange}
-                required type="text"
+                required
+                type="text"
                 name="name"
                 id="name"
                 className="form-control"

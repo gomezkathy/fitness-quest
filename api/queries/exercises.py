@@ -28,7 +28,7 @@ class ExerciseRepository:
                         FROM exercises
                         WHERE id = %s
                         """,
-                        [exercise_id]
+                        [exercise_id],
                     )
                     record = result.fetchone()
                     if record is None:
@@ -48,7 +48,7 @@ class ExerciseRepository:
                         WHERE id = %s
 
                         """,
-                        [exercise_id]
+                        [exercise_id],
                     )
                     return True
         except Exception as e:
@@ -56,10 +56,8 @@ class ExerciseRepository:
             return False
 
     def update(
-            self,
-            exercise_id: int,
-            exercise: ExerciseIn
-            ) -> Union[ExerciseOut, Error]:
+        self, exercise_id: int, exercise: ExerciseIn
+    ) -> Union[ExerciseOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -97,8 +95,8 @@ class ExerciseRepository:
                             exercise.difficulty,
                             exercise.equipment,
                             exercise.instructions,
-                            exercise_id
-                        ]
+                            exercise_id,
+                        ],
                     )
                     return self.exercise_in_to_out(exercise_id, exercise)
         except Exception as e:
@@ -152,7 +150,7 @@ class ExerciseRepository:
                         result.append(exercise)
                     return result
         except Exception as e:
-            print('error:', e)
+            print("error:", e)
             return e
 
     def create(self, exercise: ExerciseIn) -> ExerciseOut:
@@ -202,8 +200,7 @@ class ExerciseRepository:
                             exercise.difficulty,
                             exercise.equipment,
                             exercise.instructions,
-                        ]
-
+                        ],
                     )
                     id = result.fetchone()[0]
                     return self.exercise_in_to_out(id, exercise)

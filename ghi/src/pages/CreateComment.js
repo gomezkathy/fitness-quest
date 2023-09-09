@@ -4,15 +4,31 @@ import { format } from "date-fns";
 function CreateComment() {
   const [comment, setComment] = useState("");
   const [userId, setUserId] = useState("");
+  const [selectedExerciseId, setSelectedExerciseId] = useState(0);
+  const [exercises, setExercises] = useState([]);
+  const [successMessage, setSuccessMessage] = useState("");
+
   const fetchAccount = async () => {
-    const response = await fetch("http://localhost:8000/token", {
-      credentials: "include",
-    });
-    console.log(response);
-    if (response.ok) {
-      const data = await response.json();
-      const userId = data.account;
-      setUserId(userId);
+    try {
+      const [accountResponse, exercisesResponse] = await Promise.all([
+        fetch("http://localhost:8000/token", {
+          credentials: "include",
+        }),
+        fetch("http://localhost:8000/api/exercises", {
+          credentials: "include",
+        }),
+      ]);
+
+      if (accountResponse.ok && exercisesResponse.ok) {
+        const accountData = await accountResponse.json();
+        const userId = accountData.account;
+        setUserId(userId);
+
+        const exercisesData = await exercisesResponse.json();
+        setExercises(exercisesData);
+      }
+    } catch (error) {
+      console.error("Error while fetching data:", error);
     }
   };
 
@@ -23,22 +39,47 @@ function CreateComment() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if (selectedExerciseId === 0) {
+      console.error("Selected exercise ID is 0. Aborting submit.");
+      return;
+    }
+
+    const requestBody = {
+      user_id: userId,
+      exercise_id: selectedExerciseId,
+      comment,
+      assigned_date: format(new Date(), "yyyy-MM-dd"),
+    };
+
     const commentUrl = "http://localhost:8000/api/comments/";
     const fetchConfig = {
       method: "post",
-      body: JSON.stringify({
-        comment,
-        user_id: userId,
-        assigned_date: format(new Date(), "yyyy-MM-dd"),
-      }),
+      body: JSON.stringify(requestBody),
       headers: {
         "Content-Type": "application/json",
       },
       credentials: "include",
     };
 
-    await fetch(commentUrl, fetchConfig);
-    setComment("");
+    try {
+      const response = await fetch(commentUrl, fetchConfig);
+
+      if (response.ok) {
+        setSuccessMessage("Comment submitted successfully.");
+        setTimeout(() => {
+          setSuccessMessage("");
+          window.location.href = "http://localhost:3000/comments";
+        }, 2000);
+      } else {
+        console.error(
+          "Failed to create comment:",
+          response.status,
+          response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Error while creating comment:", error);
+    }
   };
 
   const handleCommentChange = (event) => {
@@ -47,22 +88,51 @@ function CreateComment() {
   };
 
   return (
-    <div>
-      <h1>Create a Comment</h1>
-      <form onSubmit={handleSubmit} id="create-comment">
-        <div>
-          <input
-            onChange={handleCommentChange}
-            value={comment}
-            placeholder="Leave a comment..."
-            required
-            type="text"
-            name="comment"
-            id="comment"
-          />
+    <div className="container mt-5">
+      <div className="row">
+        <div className="col-12 col-md-6 mx-auto">
+          <div className="shadow p-4">
+            <h1 className="text-center">Create a Comment</h1>
+            {successMessage && (
+              <div className="alert alert-success" role="alert">
+                {successMessage}
+              </div>
+            )}
+            <form onSubmit={handleSubmit} id="create-comment">
+              <div className="mb-3">
+                <select
+                  className="form-select mt-4 mb-3"
+                  value={selectedExerciseId}
+                  onChange={(e) =>
+                    setSelectedExerciseId(parseInt(e.target.value))
+                  }
+                  required
+                >
+                  <option value={0}>Select an exercise</option>
+                  {exercises.map((exercise) => (
+                    <option key={exercise.id} value={exercise.id}>
+                      {exercise.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="mb-3">
+                <input
+                  className="form-control"
+                  onChange={handleCommentChange}
+                  value={comment}
+                  placeholder="Leave a comment..."
+                  required
+                  type="text"
+                  name="comment"
+                  id="comment"
+                />
+              </div>
+              <button className="btn btn-primary mb-3">Submit</button>
+            </form>
+          </div>
         </div>
-        <button>Submit</button>
-      </form>
+      </div>
     </div>
   );
 }

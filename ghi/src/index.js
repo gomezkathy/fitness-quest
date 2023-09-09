@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
+import "bootstrap/dist/css/bootstrap.css";
 import App from "./App";
 
 const baseUrl = process.env.REACT_APP_API_HOST;
