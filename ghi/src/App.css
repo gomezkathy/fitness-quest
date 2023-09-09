@@ -14,7 +14,6 @@
   color: white;
 }
 
-/* NAVBAR */
 .navbar {
   background-color: #333;
   color: white;
@@ -63,12 +62,10 @@
   text-align: center;
 }
 
-/* HOMEPAGE */
 .login-link {
   color: white;
 }
 
-/* HERO BANNER */
 .hero-image {
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
     url("https://images.pexels.com/photos/4428992/pexels-photo-4428992.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
@@ -186,7 +183,6 @@
   text-align: center;
 }
 
-/* COMMENTS */
 .comments-container {
   display: flex;
   flex-direction: column;
@@ -225,12 +221,53 @@
   text-align: center;
 }
 
-/* Remove underline from link buttons */
+.exercises-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.exercise-box {
+  border: 1px solid #ccc;
+  padding-bottom: 5px;
+  margin: 5px 10px;
+  background-color: #f7f7f7;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.exercise-info {
+  margin-right: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: center;
+}
+
+.exercise-text {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  margin-right: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: center;
+}
+
+.emphasis {
+  font-weight: bold;
+}
+form label {
+  display: inline-block;
+  width: 150px;
+  text-align: right;
+  margin-right: 10px;
+}
+
 .btn-link {
   text-decoration: none;
 }
 
-/* Bootstrap Base Button Styles */
 .btn {
   display: inline-block;
   font-weight: 400;
@@ -247,7 +284,6 @@
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-/* Primary Button */
 .btn-primary {
   color: #fff;
   background-color: #007bff;
@@ -261,7 +297,6 @@
   border-color: #0056b3;
 }
 
-/* Danger Button */
 .btn-danger {
   color: #fff;
   background-color: #dc3545;
@@ -275,7 +310,6 @@
   border-color: #bd2130;
 }
 
-/* Bootstrap Success Alert */
 .alert-success {
   color: #155724;
   background-color: #d4edda;

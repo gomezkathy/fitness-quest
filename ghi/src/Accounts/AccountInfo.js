@@ -5,7 +5,7 @@ import jwtDecode from "jwt-decode";
 
 function AccountInfo() {
   const { token } = useToken();
-  const [accountId, setAccountId] = useState(""); // State to store account ID
+  const [accountId, setAccountId] = useState("");
   const [userData, setUserData] = useState({
     username: "",
     password: "",

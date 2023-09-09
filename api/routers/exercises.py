@@ -17,13 +17,10 @@ router = APIRouter()
     response_model=Union[ExerciseOut, Error],
 )
 async def create_exercise(
-    exercise: ExerciseIn,  # sets the exercise model
-    account_data: dict = Depends(
-        authenticator.get_current_account_data
-    ),  # verifies user authentication
-    repo: ExerciseRepository = Depends(),  # creates an instance of exerciseRepository
+    exercise: ExerciseIn,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+    repo: ExerciseRepository = Depends(),
 ):
-    # if user is authenticated, creates exercise. Otherwise, returns 401 error
     if account_data:
         return repo.create(exercise)
     else:
@@ -41,7 +38,6 @@ async def get_all(
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: ExerciseRepository = Depends(),
 ):
-    # if user is authenticated, creates exercise. Otherwise, returns 401 error
     if account_data:
         return repo.get_all()
     else:

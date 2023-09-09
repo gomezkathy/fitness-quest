@@ -38,7 +38,7 @@ export default function NavBar() {
         setTimeout(() => {
           setLogoutSuccess(false);
           window.location.href = "/";
-        }, 1000);
+        }, 250);
       }
     } catch (error) {
       console.error("Error logging out:", error);

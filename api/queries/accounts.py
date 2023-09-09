@@ -52,7 +52,8 @@ class AccountRepository:
                     FROM accounts
                     WHERE username = %s;
                     """,
-                    [username],)
+                    [username],
+                )
                 ac = cur.fetchone()
                 if ac is None:
                     raise Exception("No account found")
@@ -104,11 +105,15 @@ class AccountRepository:
                     (pk),
                 )
 
-    def update_account(self, account_id: int, updated_info: AccountUpdate) -> AccountOut:
+    def update_account(
+        self, account_id: int, updated_info: AccountUpdate
+    ) -> AccountOut:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 if updated_info.password:
-                    hashed_password = bcrypt.hashpw(updated_info.password.encode(), bcrypt.gensalt())
+                    hashed_password = bcrypt.hashpw(
+                        updated_info.password.encode(), bcrypt.gensalt()
+                    )
                     cur.execute(
                         """
                         UPDATE accounts
