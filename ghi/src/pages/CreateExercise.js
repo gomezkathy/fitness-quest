@@ -14,7 +14,6 @@ function ExerciseForm() {
     const response = await fetch("http://localhost:8000/token", {
       credentials: "include",
     });
-    console.log(response);
     if (response.ok) {
       const data = await response.json();
       const userId = data.account;
@@ -82,7 +81,6 @@ function ExerciseForm() {
     const response = await fetch(exercisesUrl, fetchConfig);
     if (response.ok) {
       const newExercise = await response.json();
-      console.log(newExercise);
 
       setWeight("");
       setName("");

@@ -10,7 +10,6 @@ function Comments() {
   const { exerciseId } = useParams();
   const exerciseIdAsNumber = parseInt(exerciseId, 10);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
-  console.log("Exercise ID:", exerciseId);
 
   const fetchAccount = async () => {
     const response = await fetch("http://localhost:8000/token", {
@@ -98,16 +97,12 @@ function Comments() {
 
   const handleAddComment = async () => {
     try {
-      console.log("exerciseId data type:", typeof exerciseIdAsNumber);
       const payload = {
         user_id: userId,
         exercise_id: exerciseIdAsNumber,
         comment: newComment,
         assigned_date: format(new Date(), "yyyy-MM-dd"),
       };
-
-      console.log("Sending data:", JSON.stringify(payload));
-      console.log("New Comment Data:", payload);
 
       const response = await fetch(`http://localhost:8000/api/comments`, {
         method: "POST",
@@ -117,8 +112,6 @@ function Comments() {
         credentials: "include",
         body: JSON.stringify(payload),
       });
-
-      console.log("Response:", response);
 
       if (response.ok) {
         fetchAllComments();
@@ -136,7 +129,6 @@ function Comments() {
   };
 
   useEffect(() => {
-    console.log("Exercise ID:", exerciseIdAsNumber);
     const fetchData = async () => {
       await fetchAccount();
       fetchAllComments();

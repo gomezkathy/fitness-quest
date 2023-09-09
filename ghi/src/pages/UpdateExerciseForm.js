@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
 function UpdateExerciseForm() {
   const { exerciseId } = useParams();
@@ -22,13 +22,21 @@ function UpdateExerciseForm() {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        credentials: 'include',
+        credentials: "include",
       });
 
       if (response.ok) {
         const data = await response.json();
         if (data) {
-          const { name, weight, sets, reps, picture_url, description, user_id } = data;
+          const {
+            name,
+            weight,
+            sets,
+            reps,
+            picture_url,
+            description,
+            user_id,
+          } = data;
           setName(name || null);
           setWeight(weight !== null ? parseInt(weight) : null);
           setSets(sets !== null ? parseInt(sets) : null);
@@ -50,17 +58,17 @@ function UpdateExerciseForm() {
 
   const handleWeightChange = (event) => {
     const value = event.target.value;
-    setWeight(value === '' ? null : parseInt(value));
+    setWeight(value === "" ? null : parseInt(value));
   };
 
   const handleSetsChange = (event) => {
     const value = event.target.value;
-    setSets(value === '' ? null : parseInt(value));
+    setSets(value === "" ? null : parseInt(value));
   };
 
   const handleRepsChange = (event) => {
     const value = event.target.value;
-    setReps(value === '' ? null : parseInt(value));
+    setReps(value === "" ? null : parseInt(value));
   };
 
   const handlePictureChange = (event) => {
@@ -79,7 +87,7 @@ function UpdateExerciseForm() {
     const exercisesUrl = `http://localhost:8000/api/exercises/${exerciseId}`;
 
     const fetchConfig = {
-      method: 'put',
+      method: "put",
       body: JSON.stringify({
         name,
         weight,
@@ -90,17 +98,17 @@ function UpdateExerciseForm() {
         user_id: userId,
       }),
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      credentials: 'include',
+      credentials: "include",
     };
 
     const response = await fetch(exercisesUrl, fetchConfig);
     if (response.ok) {
-      console.log('exercise was updated');
+      console.log("exercise was updated");
     } else {
-      console.error('error updating exercise');
+      console.error("error updating exercise");
     }
   };
   return (
@@ -112,7 +120,7 @@ function UpdateExerciseForm() {
             <div className="mb-3">
               <label htmlFor="name">exercise name:</label>
               <input
-                value={name === null ? '' : name}
+                value={name === null ? "" : name}
                 onChange={handleNameChange}
                 required
                 type="text"
@@ -125,7 +133,7 @@ function UpdateExerciseForm() {
             <div className="mb-3">
               <label htmlFor="weight">weight used:</label>
               <input
-                value={weight === null ? '' : weight}
+                value={weight === null ? "" : weight}
                 onChange={handleWeightChange}
                 type="number"
                 name="weight"
@@ -137,7 +145,7 @@ function UpdateExerciseForm() {
             <div className="mb-3">
               <label htmlFor="sets"># of sets:</label>
               <input
-                value={sets === null ? '' : sets}
+                value={sets === null ? "" : sets}
                 onChange={handleSetsChange}
                 type="number"
                 name="sets"
@@ -149,7 +157,7 @@ function UpdateExerciseForm() {
             <div className="mb-3">
               <label htmlFor="reps"># of reps:</label>
               <input
-                value={reps === null ? '' : reps}
+                value={reps === null ? "" : reps}
                 onChange={handleRepsChange}
                 type="number"
                 name="reps"
@@ -161,7 +169,7 @@ function UpdateExerciseForm() {
             <div className="mb-3">
               <label htmlFor="picture">picture url:</label>
               <input
-                value={picture === null ? '' : picture}
+                value={picture === null ? "" : picture}
                 onChange={handlePictureChange}
                 type="url"
                 name="picture"
@@ -173,7 +181,7 @@ function UpdateExerciseForm() {
             <div className="mb-3">
               <label htmlFor="description">description:</label>
               <input
-                value={description === null ? '' : description}
+                value={description === null ? "" : description}
                 onChange={handleDescriptionChange}
                 type="text"
                 name="description"
