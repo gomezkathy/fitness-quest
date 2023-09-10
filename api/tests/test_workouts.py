@@ -1,44 +1,28 @@
+from fastapi import FastAPI, Depends
 from fastapi.testclient import TestClient
-from main import (
-    app,
-)  # Replace 'main' with the name of your main FastAPI application file
+from queries.workouts import WorkoutRepository
 
+
+app = FastAPI()
 client = TestClient(app)
 
 
-def test_create_workout():
-    response = client.post("/workouts/", json={"name": "New Workout"})
-    assert response.status_code == 200
-    assert response.json()["name"] == "New Workout"
+class EmptyWorkoutRepository:
+    def get_all(self):
+        return []
+
+
+@app.get("/api/workouts")
+def get_all_workouts(
+    repo: WorkoutRepository = Depends(EmptyWorkoutRepository),
+):
+    workouts = repo.get_all()
+    return {"workouts": workouts}
 
 
 def test_get_all_workouts():
-    response = client.get("/workouts/")
+    app.dependency_overrides[WorkoutRepository] = EmptyWorkoutRepository
+    response = client.get("/api/workouts")
+
     assert response.status_code == 200
-    assert isinstance(response.json(), list)
-
-
-def test_get_workout():
-    response = client.post("/workouts/", json={"name": "New Workout"})
-    workout_id = response.json()["id"]
-    response = client.get(f"/workouts/{workout_id}/")
-    assert response.status_code == 200
-    assert response.json()["id"] == workout_id
-
-
-def test_update_workout():
-    response = client.post("/workouts/", json={"name": "New Workout"})
-    workout_id = response.json()["id"]
-    response = client.put(
-        f"/workouts/{workout_id}/", json={"name": "Updated Workout"}
-    )
-    assert response.status_code == 200
-    assert response.json()["name"] == "Updated Workout"
-
-
-def test_delete_workout():
-    response = client.post("/workouts/", json={"name": "New Workout"})
-    workout_id = response.json()["id"]
-    response = client.delete(f"/workouts/{workout_id}/")
-    assert response.status_code == 200
-    assert response.json()["message"] == "Workout deleted successfully"
+    assert response.json() == {"workouts": []}

@@ -8,7 +8,10 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { React, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+//Unattatched to backend, will revisit after base deadline functionality is completed.
+//Use VO's for reocurring workouts 'every tuesday etc'. best practice is junction tables,
+//Can also use list for work around. Have both ways working in another file currently.
+//Need to adjust the timings on end of day
 const locales = {
   "en-US": require("date-fns/locale/en-US"),
 };
