@@ -14,7 +14,7 @@ class WorkoutRepository:
                         INSERT INTO workouts (
                             user_id,
                             workout_name,
-                            comment_id,
+                            comment,
                             exercise_id
                             )
                         VALUES (%s, %s, %s, %s)
@@ -23,7 +23,7 @@ class WorkoutRepository:
                         [
                             workout.user_id,
                             workout.workout_name,
-                            workout.comment_id,
+                            workout.comment,
                             workout.exercise_id,
                         ],
                     )
@@ -45,12 +45,12 @@ class WorkoutRepository:
                             w.id,
                             w.user_id,
                             w.workout_name,
-                            w.comment_id,
+                            w.comment,
                             w.exercise_id
                         FROM workouts w
                         LEFT JOIN accounts a ON w.user_id = a.id
                         LEFT JOIN exercises e ON w.exercise_id = e.id
-                        LEFT JOIN comments c ON w.comment_id = c.id
+                        LEFT JOIN comments c ON w.comment = c.id
                         """
                     )
                     workouts = []
@@ -59,7 +59,7 @@ class WorkoutRepository:
                             id=record[0],
                             user_id=record[1],
                             workout_name=record[2],
-                            comment_id=record[3],
+                            comment=record[3],
                             exercise_id=record[4],
                         )
                         workouts.append(workout)
@@ -76,7 +76,7 @@ class WorkoutRepository:
                 with conn.cursor() as db:
                     db.execute(
                         """
-                        SELECT user_id, workout_name, comment_id, exercise_id
+                        SELECT user_id, workout_name, comment, exercise_id
                         FROM workouts
                         WHERE id = %s
                         """,
@@ -88,7 +88,7 @@ class WorkoutRepository:
                             id=workout_id,
                             user_id=record[0],
                             workout_name=record[1],
-                            comment_id=record[2],
+                            comment=record[2],
                             exercise_id=record[3],
                         )
                     return None
@@ -109,18 +109,18 @@ class WorkoutRepository:
                         UPDATE workouts
                         SET user_id = %s,
                             workout_name = %s,
-                            comment_id = %s,
+                            comment = %s,
                             exercise_id = %s
                         WHERE id = %s
                         RETURNING user_id,
                             workout_name,
-                            comment_id,
+                            comment,
                             exercise_id;
                         """,
                         [
                             workout.user_id,
                             workout.workout_name,
-                            workout.comment_id,
+                            workout.comment,
                             workout.exercise_id,
                             workout_id,
                         ],
@@ -131,7 +131,7 @@ class WorkoutRepository:
                             id=workout_id,
                             user_id=record[0],
                             workout_name=record[1],
-                            comment_id=record[2],
+                            comment=record[2],
                             exercise_id=record[3],
                         )
                     return None

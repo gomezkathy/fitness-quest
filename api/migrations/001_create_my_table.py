@@ -47,7 +47,7 @@ steps = [
         """
         CREATE TABLE comments (
             id SERIAL NOT NULL PRIMARY KEY,
-            exercise_id INTEGER NOT NULL REFERENCES exercises(id),
+            exercise_id INTEGER REFERENCES exercises(id),
             user_id INTEGER REFERENCES accounts(id),
             comment TEXT NOT NULL,
             assigned_date DATE
@@ -64,7 +64,7 @@ steps = [
             id SERIAL NOT NULL PRIMARY KEY,
             user_id INTEGER REFERENCES accounts(id),
             workout_name VARCHAR(100) NOT NULL,
-            comment_id INTEGER REFERENCES comments(id),
+            comment VARCHAR(100),
             exercise_id INTEGER REFERENCES exercises(id)
 
         )

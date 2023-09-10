@@ -52,46 +52,6 @@ export default function NavBar() {
           <Link to="/">
             <img className="navbar-logo" src={logo} alt="Logo" />
           </Link>
-<<<<<<< HEAD
-        </li>
-        <li className="nav-item">
-          <Link to="/workouts" className="nav-link">
-            Workouts
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link to="/workouts/create" className="nav-link">
-            Create Workout
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link to="/workouts/list" className="nav-link">
-            Workout List
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link to="/exercises" className="nav-link">
-            Exercises
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link to="/exercises/create" className="nav-link">
-            Create Exercise
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link to="/comments" className="nav-link">
-            Comments
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link to="/comments/create" className="nav-link">
-            Create Comment
-          </Link>
-        </li>
-      </ul>
-    </nav>
-=======
           <li className="nav-item">
             <a className="nav-link" href="/">
               Home
@@ -179,6 +139,5 @@ export default function NavBar() {
         )}
       </div>
     </div>
->>>>>>> 60d8683f12050a776b825a928b4a89631bcd41bd
   );
 }

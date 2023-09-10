@@ -26,7 +26,7 @@ def create_workout(
     repo: WorkoutRepository = Depends(),
 ):
     if user:
-        new_workout = repo.create(workout)
+        new_workout = repo.create_workout(workout)
         return new_workout
     else:
         raise HTTPException(
@@ -55,7 +55,7 @@ def get_one_workout(
     repo: WorkoutRepository = Depends(),
 ):
     if user:
-        workout = repo.get_one(workout_id)
+        workout = repo.get_workout_by_id(workout_id)
         if workout is None:
             raise HTTPException(status_code=404, detail="Workout not found")
         return workout
@@ -73,7 +73,7 @@ def update_workout(
     repo: WorkoutRepository = Depends(),
 ):
     if user:
-        updated_workout = repo.update(workout_id, workout)
+        updated_workout = repo.update_workout(workout_id, workout)
         if updated_workout is None:
             raise HTTPException(status_code=404, detail="Workout not found")
         return updated_workout
@@ -90,7 +90,7 @@ def delete_workout(
     repo: WorkoutRepository = Depends(),
 ):
     if user:
-        success = repo.delete(workout_id)
+        success = repo.delete_workout(workout_id)
         if not success:
             raise HTTPException(status_code=404, detail="Workout not found")
         return {"message": "Workout deleted successfully"}
