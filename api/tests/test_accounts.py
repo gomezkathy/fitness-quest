@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 from main import app
-from queries.accounts import AccountRepository
 from models.accounts import AccountOut, AccountUpdate
+from queries.accounts import AccountRepository
 from authenticator import authenticator
 
 
@@ -32,8 +32,10 @@ def fake_get_account_data():
 
 
 def test_update_account():
-    app.dependency_overrides[authenticator.try_get_current_account_data] = fake_get_account_data
-
+    app.dependency_overrides[
+        authenticator.try_get_current_account_data
+    ] = fake_get_account_data
+    app.dependency_overrides[AccountRepository] = MockAccountRepository
     updated_info = {
         "username": "new_username",
         "first": "New",

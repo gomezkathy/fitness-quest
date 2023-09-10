@@ -17,7 +17,7 @@ from models.accounts import (
     AccountUpdate,
     AccountOut,
     DuplicateAccountError,
-    AuthenticationException
+    AuthenticationException,
 )
 from authenticator import authenticator
 
@@ -25,7 +25,7 @@ from authenticator import authenticator
 router = APIRouter()
 
 
-@router.get("/token", response_model=AccountToken | None)
+@router.get("/token", tags=["Accounts"], response_model=AccountToken | None)
 async def get_token(
     request: Request,
     account: AccountIn = Depends(authenticator.try_get_current_account_data),
@@ -40,7 +40,9 @@ async def get_token(
             return token
 
 
-@router.post("/api/accounts", response_model=AccountToken | HttpError)
+@router.post(
+    "/api/accounts", tags=["Accounts"], response_model=AccountToken | HttpError
+)
 async def create_account(
     info: AccountIn,
     request: Request,
@@ -60,7 +62,9 @@ async def create_account(
     return AccountToken(account=account, **token.dict())
 
 
-@router.put("/api/accounts/update/{account_id}", response_model=AccountOut | HttpError)
+@router.put(
+    "/api/accounts/update/{account_id}", response_model=AccountOut | HttpError
+)
 async def update_account(
     account_id: int,
     updated_info: AccountUpdate,
@@ -83,7 +87,9 @@ async def update_account(
         )
 
 
-@router.get("/api/accounts/{account_id}", response_model=AccountOut | HttpError)
+@router.get(
+    "/api/accounts/{account_id}", response_model=AccountOut | HttpError
+)
 async def get_account_by_id(
     account_id: int,
     repo: AccountRepository = Depends(),

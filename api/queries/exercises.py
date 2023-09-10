@@ -1,44 +1,6 @@
-from pydantic import BaseModel
 from typing import Optional, List, Union
-from datetime import datetime, date
+from models.exercises import ExerciseIn, ExerciseOut, Error
 from pool import pool
-
-class Error(BaseModel):
-    message: str
-
-class ExerciseIn(BaseModel):
-    user_id: int
-    name: str
-    weight: Optional[int]
-    sets: Optional[int]
-    reps: Optional[int]
-    picture_url: Optional[str]
-    description: Optional[str]
-    created_at: Optional[datetime]
-    assigned_date: Optional[date]
-    type: Optional[str]
-    muscle: Optional[str]
-    difficulty: Optional[str]
-    equipment: Optional[str]
-    instructions: Optional[str]
-
-
-class ExerciseOut(BaseModel):
-    id: int
-    user_id: int
-    name: str
-    weight: Optional[int]
-    sets: Optional[int]
-    reps: Optional[int]
-    picture_url: Optional[str]
-    description: Optional[str]
-    created_at: Optional[datetime]
-    assigned_date: Optional[date]
-    type: Optional[str]
-    muscle: Optional[str]
-    difficulty: Optional[str]
-    equipment: Optional[str]
-    instructions: Optional[str]
 
 
 class ExerciseRepository:
@@ -66,7 +28,7 @@ class ExerciseRepository:
                         FROM exercises
                         WHERE id = %s
                         """,
-                        [exercise_id]
+                        [exercise_id],
                     )
                     record = result.fetchone()
                     if record is None:
@@ -86,34 +48,36 @@ class ExerciseRepository:
                         WHERE id = %s
 
                         """,
-                        [exercise_id]
+                        [exercise_id],
                     )
                     return True
         except Exception as e:
             print(e)
             return False
 
-    def update(self, exercise_id:int, exercise:ExerciseIn) -> Union[ExerciseOut, Error]:
+    def update(
+        self, exercise_id: int, exercise: ExerciseIn
+    ) -> Union[ExerciseOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     db.execute(
                         """
                         UPDATE exercises
-                        SET user_id = %s
-                            , name = %s
-                            , weight = %s
-                            , sets = %s
-                            , reps = %s
-                            , picture_url = %s
-                            , description = %s
-                            , created_at = %s
-                            , assigned_date = %s
-                            , type = %s
-                            , muscle = %s
-                            , difficulty = %s
-                            , equipment = %s
-                            , instructions = %s
+                        SET user_id = %s,
+                            name = %s,
+                            weight = %s,
+                            sets = %s,
+                            reps = %s,
+                            picture_url = %s,
+                            description = %s,
+                            created_at = %s,
+                            assigned_date = %s,
+                            type = %s,
+                            muscle = %s,
+                            difficulty = %s,
+                            equipment = %s,
+                            instructions = %s
                         WHERE id = %s
                         """,
                         [
@@ -131,8 +95,8 @@ class ExerciseRepository:
                             exercise.difficulty,
                             exercise.equipment,
                             exercise.instructions,
-                            exercise_id
-                        ]
+                            exercise_id,
+                        ],
                     )
                     return self.exercise_in_to_out(exercise_id, exercise)
         except Exception as e:
@@ -145,7 +109,21 @@ class ExerciseRepository:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-                        SELECT id, user_id, name, weight, sets, reps, picture_url, description, created_at, assigned_date, type, muscle, difficulty, equipment, instructions
+                        SELECT id,
+                            user_id,
+                            name,
+                            weight,
+                            sets,
+                            reps,
+                            picture_url,
+                            description,
+                            created_at,
+                            assigned_date,
+                            type,
+                            muscle,
+                            difficulty,
+                            equipment,
+                            instructions
                         FROM exercises
                         ORDER BY assigned_date
                         """
@@ -172,10 +150,10 @@ class ExerciseRepository:
                         result.append(exercise)
                     return result
         except Exception as e:
-            print('error:', e)
+            print("error:", e)
             return e
 
-    def create(self, exercise:ExerciseIn) -> ExerciseOut:
+    def create(self, exercise: ExerciseIn) -> ExerciseOut:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -199,7 +177,11 @@ class ExerciseRepository:
                             instructions
                             )
                         VALUES
-                            (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                            (
+                            %s, %s, %s, %s, %s,
+                            %s, %s, %s, %s, %s,
+                            %s, %s, %s, %s
+                            )
                         RETURNING id;
 
                         """,
@@ -218,8 +200,7 @@ class ExerciseRepository:
                             exercise.difficulty,
                             exercise.equipment,
                             exercise.instructions,
-                        ]
-
+                        ],
                     )
                     id = result.fetchone()[0]
                     return self.exercise_in_to_out(id, exercise)
@@ -227,12 +208,11 @@ class ExerciseRepository:
             print("Error creating exercise:", e)
             return e
 
-
     def exercise_in_to_out(self, id: int, exercise: ExerciseIn):
         old_data = exercise.dict()
         return ExerciseOut(id=id, **old_data)
 
-    def record_to_exercise_out(self,record):
+    def record_to_exercise_out(self, record):
         return ExerciseOut(
             id=record[0],
             user_id=record[1],

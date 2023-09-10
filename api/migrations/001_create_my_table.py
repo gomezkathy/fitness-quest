@@ -47,6 +47,7 @@ steps = [
         """
         CREATE TABLE comments (
             id SERIAL NOT NULL PRIMARY KEY,
+            exercise_id INTEGER NOT NULL REFERENCES exercises(id),
             user_id INTEGER REFERENCES accounts(id),
             comment TEXT NOT NULL,
             assigned_date DATE
@@ -73,4 +74,3 @@ steps = [
         """,
     ],
 ]
-# migration issue, delete the volume, create the volume again to fix *migration issues usually means to destroy the volume

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import useToken from "@galvanize-inc/jwtdown-for-react";
@@ -66,6 +67,10 @@ function CreateWorkout({ addWorkout }) {
       </form>
     </div>
   );
+=======
+export default function CreateWorkout() {
+  return <h1>Create Workout Page</h1>;
+>>>>>>> 60d8683f12050a776b825a928b4a89631bcd41bd
 }
 
 export default CreateWorkout;

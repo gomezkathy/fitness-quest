@@ -34,51 +34,85 @@ function ExerciseList() {
     fetchExercises();
   }, []);
   const handleExerciseDelete = async (exerciseId) => {
-    const response = await fetch(`http://localhost:8000/api/exercises/${exerciseId}`, {
-      method: "delete",
-      credentials: "include",
-    });
+    const response = await fetch(
+      `http://localhost:8000/api/exercises/${exerciseId}`,
+      {
+        method: "delete",
+        credentials: "include",
+      }
+    );
     if (response.ok) {
       setExercises(exercises.filter((exercise) => exercise.id !== exerciseId));
     }
-};
+  };
+
+  const userExercises = exercises.filter(
+    (exercise) => exercise.user_id === userId
+  );
 
   return (
-    <>
-      <div>
-        <h1>list of exercises</h1>
-        <table className="table table-striped">
-          <thead className="table-primary">
-            <tr>
-              <th>exercise name</th>
-              <th>weight used</th>
-              <th># of sets</th>
-              <th># of reps</th>
-              <th>picture</th>
-              <th>description</th>
-            </tr>
-          </thead>
-          <tbody>
-            {exercises.map((exercise) => (
-              <tr key={exercise.id}>
-                <td>{exercise.name}</td>
-                <td>{exercise.weight}</td>
-                <td>{exercise.sets}</td>
-                <td>{exercise.reps}</td>
-                <td>{exercise.picture_url}</td>
-                <td>{exercise.description}</td>
-                <td>
-                  <button onClick={() => handleExerciseDelete(exercise.id)} className="btn btn-danger"> delete</button>
-                </td>
-                <td>
-                  <Link to={`/exercises/update/${exercise.id}`}> <button className="btn btn-primary">edit</button></Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div>
+      <h1>list of exercises</h1>
+      <div className="exercises-container">
+        {userExercises.map((exercise) => (
+          <div key={exercise.id} className="exercise-box">
+            <p className="exercise-text">
+              <span className="emphasis">exercise:</span>&nbsp; {exercise.name}
+            </p>
+
+            <p className="exercise-text">
+              <span className="emphasis">weight used:</span>&nbsp;{" "}
+              {exercise.weight}
+            </p>
+            <p className="exercise-text">
+              <span className="emphasis">
+                <strong># of sets: </strong>
+              </span>
+              &nbsp; {exercise.sets}
+            </p>
+            <p className="exercise-text">
+              <span className="emphasis">
+                <strong># of reps:</strong>
+              </span>
+              &nbsp; {exercise.reps}
+            </p>
+            <p className="exercise-text">
+              <span className="emphasis">description:</span>&nbsp;{" "}
+              {exercise.description}
+            </p>
+            <p className="exercise-text">
+              <span className="emphasis">picture:</span>&nbsp;
+              {exercise.picture_url && (
+                <img
+                  src={exercise.picture_url}
+                  alt="exercise"
+                  style={{ width: "100px", height: "100px" }}
+                />
+              )}
+            </p>
+            <p>
+              <Link
+                to={`/comments/${exercise.id}`}
+                className="btn btn-primary btn-link"
+              >
+                COMMENTS
+              </Link>
+            </p>
+            <p className="exercise-text">
+              <button
+                onClick={() => handleExerciseDelete(exercise.id)}
+                className="btn btn-danger"
+              >
+                DELETE
+              </button>
+              <Link to={`/exercises/update/${exercise.id}`}>
+                <button className="btn btn-primary">EDIT</button>
+              </Link>
+            </p>
+          </div>
+        ))}
       </div>
-    </>
+    </div>
   );
 }
 
