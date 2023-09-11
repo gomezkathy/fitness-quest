@@ -81,8 +81,8 @@ const LoginForm = () => {
               </form>
             </div>
             {showSuccessAlert && (
-              <div className="alert alert-success mt-3" role="alert">
-                Login was successful! <a href="/">Go to Homepage</a>
+              <div className="alert alert-secondary mt-3" role="alert">
+                <a href="/">Go to Homepage</a>
               </div>
             )}
           </div>

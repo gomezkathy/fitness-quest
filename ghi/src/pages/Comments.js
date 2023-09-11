@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 import { format } from "date-fns";
+import useToken from "@galvanize-inc/jwtdown-for-react";
 
 function Comments() {
   const [comments, setComments] = useState([]);
@@ -10,6 +11,7 @@ function Comments() {
   const { exerciseId } = useParams();
   const exerciseIdAsNumber = parseInt(exerciseId, 10);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
+  const { token } = useToken();
 
   const fetchAccount = async () => {
     const response = await fetch("http://localhost:8000/token", {
@@ -25,9 +27,6 @@ function Comments() {
   const fetchAllComments = async () => {
     try {
       let url = "http://localhost:8000/api/comments";
-      if (exerciseId) {
-        url += `?exercise_id=${exerciseId}`;
-      }
 
       const response = await fetch(url, {
         credentials: "include",
@@ -106,6 +105,7 @@ function Comments() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         credentials: "include",
         body: JSON.stringify(payload),
