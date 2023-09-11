@@ -61,6 +61,7 @@ function UpdateComment() {
   const callbackfetchCommentData = useCallback(fetchCommentData, [
     commentId,
     exerciseId,
+    token,
   ]);
 
   useEffect(() => {

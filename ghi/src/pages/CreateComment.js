@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { format } from "date-fns";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 
@@ -39,9 +39,13 @@ function CreateComment() {
     }
   };
 
+  const callbackfetchAccount = useCallback(() => {
+    fetchAccount();
+  }, [fetchAccount]);
+
   useEffect(() => {
     fetchAccount();
-  }, []);
+  }, [fetchAccount]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
