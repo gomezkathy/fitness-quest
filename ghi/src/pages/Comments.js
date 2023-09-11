@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 import { format } from "date-fns";
+import useToken from "@galvanize-inc/jwtdown-for-react";
 
 function Comments() {
   const [comments, setComments] = useState([]);
@@ -10,6 +11,7 @@ function Comments() {
   const { exerciseId } = useParams();
   const exerciseIdAsNumber = parseInt(exerciseId, 10);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
+  const { token } = useToken();
 
   const fetchAccount = async () => {
     const response = await fetch("http://localhost:8000/token", {
@@ -25,9 +27,6 @@ function Comments() {
   const fetchAllComments = async () => {
     try {
       let url = "http://localhost:8000/api/comments";
-      if (exerciseId) {
-        url += `?exercise_id=${exerciseId}`;
-      }
 
       const response = await fetch(url, {
         credentials: "include",
@@ -36,8 +35,6 @@ function Comments() {
       if (response.ok) {
         const data = await response.json();
         setComments(data);
-
-        const exerciseIds = data.map((comment) => comment.exercise_id);
 
         const exerciseNamesResponse = await fetch(
           `http://localhost:8000/api/exercises`,
@@ -108,6 +105,7 @@ function Comments() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         credentials: "include",
         body: JSON.stringify(payload),
@@ -128,14 +126,16 @@ function Comments() {
     }
   };
 
+  const callbackFetchAllComments = useCallback(fetchAllComments, [exerciseId]);
+
   useEffect(() => {
     const fetchData = async () => {
       await fetchAccount();
-      fetchAllComments();
+      await callbackFetchAllComments();
     };
 
     fetchData();
-  }, [exerciseIdAsNumber]);
+  }, [exerciseIdAsNumber, callbackFetchAllComments]);
 
   const userComments = comments.filter((comment) => comment.user_id === userId);
   const renderCommentForm = () => {

@@ -80,8 +80,6 @@ function ExerciseForm() {
 
     const response = await fetch(exercisesUrl, fetchConfig);
     if (response.ok) {
-      const newExercise = await response.json();
-
       setWeight("");
       setName("");
       setSets("");
@@ -92,7 +90,7 @@ function ExerciseForm() {
   };
 
   return (
-    <div className="row">
+    <div className="row content-container">
       <div className="offset-3 col-6">
         <div className="shadow p-4 mt-4">
           <h1>create an exercise</h1>

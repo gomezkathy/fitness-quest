@@ -1,12 +1,11 @@
 import useToken from "@galvanize-inc/jwtdown-for-react";
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useToken();
-  const [userId, setUserId] = useState(null);
+  const [setUserId] = useState(null);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -21,7 +20,7 @@ const LoginForm = () => {
     }
   };
 
-  const fetchAccount = async () => {
+  const fetchAccount = useCallback(async () => {
     try {
       const response = await fetch("http://localhost:8000/token", {
         credentials: "include",
@@ -34,11 +33,11 @@ const LoginForm = () => {
     } catch (error) {
       console.error("Error fetching account:", error);
     }
-  };
+  }, [setUserId]);
 
   useEffect(() => {
     fetchAccount();
-  }, []);
+  }, [fetchAccount]);
 
   return (
     <div className="container mt-5">
@@ -82,8 +81,8 @@ const LoginForm = () => {
               </form>
             </div>
             {showSuccessAlert && (
-              <div className="alert alert-success mt-3" role="alert">
-                Login was successful! <a href="/">Go to Homepage</a>
+              <div className="alert alert-secondary mt-3" role="alert">
+                <a href="/">Go to Homepage</a>
               </div>
             )}
           </div>

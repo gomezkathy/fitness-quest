@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { format } from "date-fns";
+import useToken from "@galvanize-inc/jwtdown-for-react";
 
 function UpdateComment() {
   const { exerciseId, commentId } = useParams();
   const [comment, setComment] = useState("");
   const [userId, setUserId] = useState("");
   const [currentComment, setCurrentComment] = useState("");
-  const [accessToken, setAccessToken] = useState("");
+  const { token } = useToken();
   const [successMessage, setSuccessMessage] = useState("");
 
   const fetchAccount = async () => {
@@ -17,9 +18,7 @@ function UpdateComment() {
       });
       if (response.ok) {
         const data = await response.json();
-        const accessToken = data.access_token;
         const userId = data.account;
-        setAccessToken(accessToken);
         setUserId(userId);
       } else {
         console.error(
@@ -39,7 +38,7 @@ function UpdateComment() {
         `http://localhost:8000/api/comments/${exerciseId}/${commentId}`,
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -59,15 +58,20 @@ function UpdateComment() {
     }
   };
 
+  const callbackfetchCommentData = useCallback(fetchCommentData, [
+    commentId,
+    exerciseId,
+  ]);
+
   useEffect(() => {
     fetchAccount();
   }, []);
 
   useEffect(() => {
-    if (accessToken && commentId) {
-      fetchCommentData();
+    if (commentId) {
+      callbackfetchCommentData();
     }
-  }, [accessToken, commentId]);
+  }, [commentId, callbackfetchCommentData]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -84,7 +88,7 @@ function UpdateComment() {
       }),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${token}`,
       },
       credentials: "include",
     };

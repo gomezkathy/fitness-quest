@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
+import useToken from "@galvanize-inc/jwtdown-for-react";
 
 function CreateComment() {
   const [comment, setComment] = useState("");
@@ -7,14 +8,20 @@ function CreateComment() {
   const [selectedExerciseId, setSelectedExerciseId] = useState(0);
   const [exercises, setExercises] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
-
+  const { token } = useToken();
   const fetchAccount = async () => {
     try {
       const [accountResponse, exercisesResponse] = await Promise.all([
         fetch("http://localhost:8000/token", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           credentials: "include",
         }),
         fetch("http://localhost:8000/api/exercises", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           credentials: "include",
         }),
       ]);
@@ -57,6 +64,7 @@ function CreateComment() {
       body: JSON.stringify(requestBody),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       credentials: "include",
     };
