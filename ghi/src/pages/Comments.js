@@ -128,7 +128,7 @@ function Comments() {
 
   const callbackFetchAllComments = useCallback(() => {
     fetchAllComments();
-  }, [exerciseIdAsNumber]);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -137,7 +137,7 @@ function Comments() {
     };
 
     fetchData();
-  }, [exerciseIdAsNumber, callbackFetchAllComments]);
+  }, [callbackFetchAllComments]);
 
   const userComments = comments.filter((comment) => comment.user_id === userId);
   const renderCommentForm = () => {
