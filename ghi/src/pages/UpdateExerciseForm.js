@@ -1,40 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
 function UpdateExerciseForm() {
-  const [name, setName] = useState('');
-  const [weight, setWeight] = useState('');
-  const [sets, setSets] = useState('');
-  const [reps, setReps] = useState('');
-  const [picture, setPicture] = useState('');
-  const [description, setDescription] = useState('');
-  const [userId, setUserId] = useState('');
+  const [name, setName] = useState("");
+  const [weight, setWeight] = useState("");
+  const [sets, setSets] = useState("");
+  const [reps, setReps] = useState("");
+  const [picture, setPicture] = useState("");
+  const [description, setDescription] = useState("");
+  const [userId, setUserId] = useState("");
   const { token } = useToken();
   const { exerciseId } = useParams();
 
   useEffect(() => {
-  const fetchExerciseData = async () => {
-    const response = await fetch(`http://localhost:8000/api/exercises/${exerciseId}`, {
-      credentials: 'include',
-    });
+    const fetchExerciseData = async () => {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_HOST}/api/exercises/${exerciseId}`,
+        {
+          credentials: "include",
+        }
+      );
 
-    if (response.ok) {
-      const data = await response.json();
-      if (data) {
-        setName(data.name || '');
-        setWeight(data.weight ? data.weight.toString() : '');
-        setSets(data.sets ? data.sets.toString() : '');
-        setReps(data.reps ? data.reps.toString() : '');
-        setPicture(data.picture_url || '');
-        setDescription(data.description || '');
-        setUserId(data.user_id || '');
+      if (response.ok) {
+        const data = await response.json();
+        if (data) {
+          setName(data.name || "");
+          setWeight(data.weight ? data.weight.toString() : "");
+          setSets(data.sets ? data.sets.toString() : "");
+          setReps(data.reps ? data.reps.toString() : "");
+          setPicture(data.picture_url || "");
+          setDescription(data.description || "");
+          setUserId(data.user_id || "");
+        }
       }
-    }
-  };
+    };
 
-  fetchExerciseData();
-}, [exerciseId]);
+    fetchExerciseData();
+  }, [exerciseId]);
 
   const handleNameChange = (event) => {
     const value = event.target.value;
@@ -69,10 +72,10 @@ function UpdateExerciseForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const exercisesUrl = `http://localhost:8000/api/exercises/${exerciseId}`;
+    const exercisesUrl = `${process.env.REACT_APP_API_HOST}/api/exercises/${exerciseId}`;
 
     const fetchConfig = {
-      method: 'put',
+      method: "put",
       body: JSON.stringify({
         name,
         weight: parseInt(weight),
@@ -83,16 +86,16 @@ function UpdateExerciseForm() {
         user_id: userId,
       }),
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      credentials: 'include',
+      credentials: "include",
     };
 
     const response = await fetch(exercisesUrl, fetchConfig);
 
     if (response.ok) {
-      console.log("exercise was updated")
+      console.log("exercise was updated");
     }
   };
 

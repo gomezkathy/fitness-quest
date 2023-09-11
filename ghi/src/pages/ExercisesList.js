@@ -6,9 +6,12 @@ function ExerciseList() {
   const [userId, setUserId] = useState("");
 
   const fetchExercises = async () => {
-    const response = await fetch("http://localhost:8000/api/exercises", {
-      credentials: "include",
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_HOST}/api/exercises`,
+      {
+        credentials: "include",
+      }
+    );
     if (response.ok) {
       const data = await response.json();
       setExercises(data);
@@ -16,7 +19,7 @@ function ExerciseList() {
   };
 
   const fetchAccount = async () => {
-    const response = await fetch("http://localhost:8000/token", {
+    const response = await fetch(`${process.env.REACT_APP_API_HOST}/token`, {
       credentials: "include",
     });
     if (response.ok) {
@@ -35,7 +38,7 @@ function ExerciseList() {
   }, []);
   const handleExerciseDelete = async (exerciseId) => {
     const response = await fetch(
-      `http://localhost:8000/api/exercises/${exerciseId}`,
+      `${process.env.REACT_APP_API_HOST}/api/exercises/${exerciseId}`,
       {
         method: "delete",
         credentials: "include",

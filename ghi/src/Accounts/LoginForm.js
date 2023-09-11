@@ -22,7 +22,7 @@ const LoginForm = () => {
 
   const fetchAccount = useCallback(async () => {
     try {
-      const response = await fetch("http://localhost:8000/token", {
+      const response = await fetch(`${process.env.REACT_APP_API_HOST}/token`, {
         credentials: "include",
       });
       if (response.ok) {
@@ -81,8 +81,8 @@ const LoginForm = () => {
               </form>
             </div>
             {showSuccessAlert && (
-              <div className="alert alert-success mt-3" role="alert">
-                Login was successful! <a href="/">Go to Homepage</a>
+              <div className="alert alert-secondary mt-3" role="alert">
+                <a href="/">Go to Homepage</a>
               </div>
             )}
           </div>

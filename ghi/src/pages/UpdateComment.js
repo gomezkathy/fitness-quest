@@ -1,25 +1,24 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { format } from "date-fns";
+import useToken from "@galvanize-inc/jwtdown-for-react";
 
 function UpdateComment() {
   const { exerciseId, commentId } = useParams();
   const [comment, setComment] = useState("");
   const [userId, setUserId] = useState("");
   const [currentComment, setCurrentComment] = useState("");
-  const [accessToken, setAccessToken] = useState("");
+  const { token } = useToken();
   const [successMessage, setSuccessMessage] = useState("");
 
   const fetchAccount = async () => {
     try {
-      const response = await fetch("http://localhost:8000/token", {
+      const response = await fetch(`${process.env.REACT_APP_API_HOST}/token`, {
         credentials: "include",
       });
       if (response.ok) {
         const data = await response.json();
-        const accessToken = data.access_token;
         const userId = data.account;
-        setAccessToken(accessToken);
         setUserId(userId);
       } else {
         console.error(
@@ -36,10 +35,10 @@ function UpdateComment() {
   const fetchCommentData = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/comments/${exerciseId}/${commentId}`,
+        `${process.env.REACT_APP_API_HOST}/api/comments/${exerciseId}/${commentId}`,
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -60,9 +59,9 @@ function UpdateComment() {
   };
 
   const callbackfetchCommentData = useCallback(fetchCommentData, [
-    accessToken,
     commentId,
     exerciseId,
+    token,
   ]);
 
   useEffect(() => {
@@ -70,15 +69,15 @@ function UpdateComment() {
   }, []);
 
   useEffect(() => {
-    if (accessToken && commentId) {
+    if (commentId) {
       callbackfetchCommentData();
     }
-  }, [accessToken, commentId, callbackfetchCommentData]);
+  }, [commentId, callbackfetchCommentData]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const commentUrl = `http://localhost:8000/api/comments/${exerciseId}/${commentId}`;
+    const commentUrl = `${process.env.REACT_APP_API_HOST}/api/comments/${exerciseId}/${commentId}`;
 
     const fetchConfig = {
       method: "put",
@@ -90,7 +89,7 @@ function UpdateComment() {
       }),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${token}`,
       },
       credentials: "include",
     };

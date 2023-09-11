@@ -1,5 +1,36 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { format } from "date-fns";
+import useToken from "@galvanize-inc/jwtdown-for-react";
+
+const fetchAccount = async (token, setUserId, setExercises) => {
+  try {
+    const [accountResponse, exercisesResponse] = await Promise.all([
+      fetch(`${process.env.REACT_APP_API_HOST}/token`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+      }),
+      fetch(`${process.env.REACT_APP_API_HOST}/api/exercises`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+      }),
+    ]);
+
+    if (accountResponse.ok && exercisesResponse.ok) {
+      const accountData = await accountResponse.json();
+      const userId = accountData.account;
+      setUserId(userId);
+
+      const exercisesData = await exercisesResponse.json();
+      setExercises(exercisesData);
+    }
+  } catch (error) {
+    console.error("Error while fetching data:", error);
+  }
+};
 
 function CreateComment() {
   const [comment, setComment] = useState("");
@@ -7,34 +38,15 @@ function CreateComment() {
   const [selectedExerciseId, setSelectedExerciseId] = useState(0);
   const [exercises, setExercises] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
+  const { token } = useToken();
 
-  const fetchAccount = async () => {
-    try {
-      const [accountResponse, exercisesResponse] = await Promise.all([
-        fetch("http://localhost:8000/token", {
-          credentials: "include",
-        }),
-        fetch("http://localhost:8000/api/exercises", {
-          credentials: "include",
-        }),
-      ]);
-
-      if (accountResponse.ok && exercisesResponse.ok) {
-        const accountData = await accountResponse.json();
-        const userId = accountData.account;
-        setUserId(userId);
-
-        const exercisesData = await exercisesResponse.json();
-        setExercises(exercisesData);
-      }
-    } catch (error) {
-      console.error("Error while fetching data:", error);
-    }
-  };
+  const callbackfetchAccount = useCallback(() => {
+    fetchAccount(token, setUserId, setExercises);
+  }, [token, setUserId, setExercises]);
 
   useEffect(() => {
-    fetchAccount();
-  }, []);
+    callbackfetchAccount();
+  }, [callbackfetchAccount]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -51,12 +63,13 @@ function CreateComment() {
       assigned_date: format(new Date(), "yyyy-MM-dd"),
     };
 
-    const commentUrl = "http://localhost:8000/api/comments/";
+    const commentUrl = `${process.env.REACT_APP_API_HOST}/api/comments/`;
     const fetchConfig = {
       method: "post",
       body: JSON.stringify(requestBody),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       credentials: "include",
     };
@@ -68,7 +81,6 @@ function CreateComment() {
         setSuccessMessage("Comment submitted successfully.");
         setTimeout(() => {
           setSuccessMessage("");
-          window.location.href = "http://localhost:3000/comments";
         }, 2000);
       } else {
         console.error(
