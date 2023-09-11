@@ -58,8 +58,26 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 5px 0;
+  padding: 3px 0;
   text-align: center;
+}
+
+@media screen and (min-width: 960px) {
+  .footer {
+    padding: 20px;
+    text-align: left;
+  }
+
+  .footer p {
+    font-size: 12px;
+    text-align: center;
+    margin: 0px;
+  }
+}
+
+.content-container {
+  min-height: calc(100vh - 60px);
+  padding-bottom: 60px;
 }
 
 .login-link {

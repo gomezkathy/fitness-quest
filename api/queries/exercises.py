@@ -38,6 +38,7 @@ class ExerciseRepository:
             print(e)
             return {"message": "could not get exercise"}
 
+
     def delete(self, exercise_id: int) -> bool:
         try:
             with pool.connection() as conn:
@@ -229,4 +230,5 @@ class ExerciseRepository:
             difficulty=record[12],
             equipment=record[13],
             instructions=record[14],
+
         )
