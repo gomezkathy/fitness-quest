@@ -22,7 +22,7 @@ const LoginForm = () => {
 
   const fetchAccount = useCallback(async () => {
     try {
-      const response = await fetch("http://localhost:8000/token", {
+      const response = await fetch(`${process.env.REACT_APP_API_HOST}/token`, {
         credentials: "include",
       });
       if (response.ok) {

@@ -5,13 +5,13 @@ import useToken from "@galvanize-inc/jwtdown-for-react";
 const fetchAccount = async (token, setUserId, setExercises) => {
   try {
     const [accountResponse, exercisesResponse] = await Promise.all([
-      fetch("http://localhost:8000/token", {
+      fetch(`${process.env.REACT_APP_API_HOST}/token`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
         credentials: "include",
       }),
-      fetch("http://localhost:8000/api/exercises", {
+      fetch(`${process.env.REACT_APP_API_HOST}/api/exercises`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -63,7 +63,7 @@ function CreateComment() {
       assigned_date: format(new Date(), "yyyy-MM-dd"),
     };
 
-    const commentUrl = "http://localhost:8000/api/comments/";
+    const commentUrl = `${process.env.REACT_APP_API_HOST}/api/comments/`;
     const fetchConfig = {
       method: "post",
       body: JSON.stringify(requestBody),
@@ -81,7 +81,6 @@ function CreateComment() {
         setSuccessMessage("Comment submitted successfully.");
         setTimeout(() => {
           setSuccessMessage("");
-          window.location.href = "http://localhost:3000/comments";
         }, 2000);
       } else {
         console.error(

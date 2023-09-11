@@ -14,7 +14,7 @@ function Comments() {
   const { token } = useToken();
 
   const fetchAccount = async () => {
-    const response = await fetch("http://localhost:8000/token", {
+    const response = await fetch(`${process.env.REACT_APP_API_HOST}/token`, {
       credentials: "include",
     });
     if (response.ok) {
@@ -26,7 +26,7 @@ function Comments() {
 
   const fetchAllComments = async () => {
     try {
-      let url = "http://localhost:8000/api/comments";
+      let url = `${process.env.REACT_APP_API_HOST}/api/comments`;
 
       const response = await fetch(url, {
         credentials: "include",
@@ -37,7 +37,7 @@ function Comments() {
         setComments(data);
 
         const exerciseNamesResponse = await fetch(
-          `http://localhost:8000/api/exercises`,
+          `${process.env.REACT_APP_API_HOST}/api/exercises`,
           {
             credentials: "include",
           }
@@ -70,7 +70,7 @@ function Comments() {
   const handleDeleteComment = async (commentId) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/comments/${commentId}`,
+        `${process.env.REACT_APP_API_HOST}/api/comments/${commentId}`,
         {
           method: "DELETE",
           credentials: "include",
@@ -101,15 +101,18 @@ function Comments() {
         assigned_date: format(new Date(), "yyyy-MM-dd"),
       };
 
-      const response = await fetch(`http://localhost:8000/api/comments`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        credentials: "include",
-        body: JSON.stringify(payload),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_HOST}/api/comments`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+          body: JSON.stringify(payload),
+        }
+      );
 
       if (response.ok) {
         fetchAllComments();

@@ -17,7 +17,7 @@ function UpdateExerciseForm() {
 
   useEffect(() => {
     async function fetchExerciseData() {
-      const exerciseUrl = `http://localhost:8000/api/exercises/${exerciseId}`;
+      const exerciseUrl = `${process.env.REACT_APP_API_HOST}/api/exercises/${exerciseId}`;
       const response = await fetch(exerciseUrl, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -84,7 +84,7 @@ function UpdateExerciseForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const exercisesUrl = `http://localhost:8000/api/exercises/${exerciseId}`;
+    const exercisesUrl = `${process.env.REACT_APP_API_HOST}/api/exercises/${exerciseId}`;
 
     const fetchConfig = {
       method: "put",

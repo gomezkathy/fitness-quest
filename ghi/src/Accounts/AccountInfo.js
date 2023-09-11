@@ -29,7 +29,7 @@ function AccountInfo() {
       const fetchAccountInfo = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:8000/api/accounts/${accountId}`,
+            `${process.env.REACT_APP_API_HOST}/api/accounts/${accountId}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -51,7 +51,7 @@ function AccountInfo() {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/accounts/update/${accountId}`,
+        `${process.env.REACT_APP_API_HOST}/api/accounts/update/${accountId}`,
         userData,
         {
           headers: {

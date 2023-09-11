@@ -13,7 +13,7 @@ function UpdateComment() {
 
   const fetchAccount = async () => {
     try {
-      const response = await fetch("http://localhost:8000/token", {
+      const response = await fetch(`${process.env.REACT_APP_API_HOST}/token`, {
         credentials: "include",
       });
       if (response.ok) {
@@ -35,7 +35,7 @@ function UpdateComment() {
   const fetchCommentData = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/comments/${exerciseId}/${commentId}`,
+        `${process.env.REACT_APP_API_HOST}/api/comments/${exerciseId}/${commentId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -77,7 +77,7 @@ function UpdateComment() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const commentUrl = `http://localhost:8000/api/comments/${exerciseId}/${commentId}`;
+    const commentUrl = `${process.env.REACT_APP_API_HOST}/api/comments/${exerciseId}/${commentId}`;
 
     const fetchConfig = {
       method: "put",

@@ -11,7 +11,7 @@ function ExerciseForm() {
 
   const { token } = useToken();
   const fetchAccount = async () => {
-    const response = await fetch("http://localhost:8000/token", {
+    const response = await fetch(`${process.env.REACT_APP_API_HOST}/token`, {
       credentials: "include",
     });
     if (response.ok) {
@@ -58,7 +58,7 @@ function ExerciseForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const exercisesUrl = "http://localhost:8000/api/exercises/";
+    const exercisesUrl = `${process.env.REACT_APP_API_HOST}/api/exercises/`;
 
     const fetchConfig = {
       method: "post",
