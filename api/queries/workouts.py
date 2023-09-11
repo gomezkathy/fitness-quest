@@ -13,24 +13,23 @@ class WorkoutRepository:
                         """
                         INSERT INTO workouts (
                             user_id,
-                            workout_name,
-                            comment,
-                            exercise_id
+                            workout_name
                             )
-                        VALUES (%s, %s, %s, %s)
+                        VALUES (%s, %s)
                         RETURNING id;
                         """,
                         [
                             workout.user_id,
                             workout.workout_name,
-                            workout.comment,
-                            workout.exercise_id,
                         ],
                     )
                     new_id = result.fetchone()[0]
                     return WorkoutOut(id=new_id, **workout.dict())
         except Exception as e:
-            print("Error:", e)
+            print(
+                "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT:",
+                e,
+            )
             raise HTTPException(
                 status_code=500, detail="Failed to create workout"
             )
@@ -45,12 +44,8 @@ class WorkoutRepository:
                             w.id,
                             w.user_id,
                             w.workout_name,
-                            w.comment,
-                            w.exercise_id
                         FROM workouts w
                         LEFT JOIN accounts a ON w.user_id = a.id
-                        LEFT JOIN exercises e ON w.exercise_id = e.id
-                        LEFT JOIN comments c ON w.comment = c.id
                         """
                     )
                     workouts = []
@@ -59,8 +54,6 @@ class WorkoutRepository:
                             id=record[0],
                             user_id=record[1],
                             workout_name=record[2],
-                            comment=record[3],
-                            exercise_id=record[4],
                         )
                         workouts.append(workout)
                     return workouts
@@ -76,7 +69,7 @@ class WorkoutRepository:
                 with conn.cursor() as db:
                     db.execute(
                         """
-                        SELECT user_id, workout_name, comment, exercise_id
+                        SELECT user_id, workout_name
                         FROM workouts
                         WHERE id = %s
                         """,
@@ -88,8 +81,6 @@ class WorkoutRepository:
                             id=workout_id,
                             user_id=record[0],
                             workout_name=record[1],
-                            comment=record[2],
-                            exercise_id=record[3],
                         )
                     return None
         except Exception as e:
@@ -109,19 +100,13 @@ class WorkoutRepository:
                         UPDATE workouts
                         SET user_id = %s,
                             workout_name = %s,
-                            comment = %s,
-                            exercise_id = %s
                         WHERE id = %s
                         RETURNING user_id,
                             workout_name,
-                            comment,
-                            exercise_id;
                         """,
                         [
                             workout.user_id,
                             workout.workout_name,
-                            workout.comment,
-                            workout.exercise_id,
                             workout_id,
                         ],
                     )
@@ -131,8 +116,6 @@ class WorkoutRepository:
                             id=workout_id,
                             user_id=record[0],
                             workout_name=record[1],
-                            comment=record[2],
-                            exercise_id=record[3],
                         )
                     return None
         except Exception as e:

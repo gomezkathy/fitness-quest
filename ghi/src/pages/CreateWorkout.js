@@ -4,41 +4,41 @@ import useToken from "@galvanize-inc/jwtdown-for-react";
 
 function CreateWorkouts() {
   const [userId, setUserId] = useState(null);
-  const [availableExercises, setAvailableExercises] = useState([]);
+  // const [availableExercises, setAvailableExercises] = useState([]);
   const [workoutName, setWorkoutName] = useState("");
-  const [comment, setComment] = useState("");
-  const [selectedExercises, setSelectedExercises] = useState([]);
+  // const [comment, setComment] = useState("");
+  // const [selectedExercises, setSelectedExercises] = useState([]);
   const { token } = useToken();
 
   useEffect(() => {
-    fetchAvailableExercises();
-    // When token is recieved, Fetch user ID and avail exercises
+    // fetchAvailableExercises();
+    // Fetch user ID and avail exercises when token hits
     fetchUserId();
   }, [token]);
 
-  const fetchAvailableExercises = async () => {
-    const exercisesUrl = "http://localhost:8000/api/exercises";
-    try {
-      const response = await axios.get(exercisesUrl, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        credentials: "include",
-      });
+  // const fetchAvailableExercises = async () => {
+  //   const exercisesUrl = "http://localhost:8000/api/exercises";
+  //   try {
+  //     const response = await axios.get(exercisesUrl, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //       credentials: "include",
+  //     });
 
-      if (response.status === 200) {
-        setAvailableExercises(response.data);
-      } else {
-        console.error(
-          "Failed to fetch available exercises:",
-          response.status,
-          response.statusText
-        );
-      }
-    } catch (error) {
-      console.error("Error while fetching available exercises:", error);
-    }
-  };
+  //     if (response.status === 200) {
+  //       setAvailableExercises(response.data);
+  //     } else {
+  //       console.error(
+  //         "Failed to fetch available exercises:",
+  //         response.status,
+  //         response.statusText
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.error("Error while fetching available exercises:", error);
+  //   }
+  // };
 
   const fetchUserId = async () => {
     const response = await fetch("http://localhost:8000/token", {
@@ -57,29 +57,28 @@ function CreateWorkouts() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(selectedExercises);
     const requestBody = {
       user_id: userId,
       workout_name: workoutName,
-      comment: comment,
-      exercise_id: selectedExercises[0]?.id : null,
     };
 
     const workoutUrl = "http://localhost:8000/api/workouts";
     const fetchConfig = {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
       credentials: "include",
     };
 
     const data = JSON.stringify(requestBody);
+    console.log(data);
     try {
       const response = await axios.post(workoutUrl, data, fetchConfig);
 
       if (response.status === 200) {
-        // if workout created successfully, reset the form
+        // reset if created
         setWorkoutName("");
-        setComment("");
-        setSelectedExercises([]);
       } else {
         console.error(
           "Failed to create workout:",
@@ -92,15 +91,15 @@ function CreateWorkouts() {
     }
   };
 
-  const handleExerciseSelection = (event) => {
-    const selectedIds = Array.from(event.target.selectedOptions).map((option) =>
-      parseInt(option.value)
-    );
-    const selectedExercises = availableExercises.filter((exercise) =>
-      selectedIds.includes(exercise.id)
-    );
-    setSelectedExercises(selectedExercises);
-  };
+  // const handleExerciseSelection = (event) => {
+  //   const selectedIds = Array.from(event.target.selectedOptions).map((option) =>
+  //     parseInt(option.value)
+  //   );
+  //   const selectedExercises = availableExercises.filter((exercise) =>
+  //     selectedIds.includes(exercise.id)
+  //   );
+  //   setSelectedExercises(selectedExercises);
+  // };
 
   return (
     <div className="container mt-5">
@@ -121,7 +120,7 @@ function CreateWorkouts() {
                   id="workoutName"
                 />
               </div>
-              <div className="mb-3">
+              {/* <div className="mb-3">
                 <input
                   className="form-control"
                   onChange={(e) => setComment(e.target.value)}
@@ -131,8 +130,8 @@ function CreateWorkouts() {
                   name="comment"
                   id="comment"
                 />
-              </div>
-              <div className="mb-3">
+              </div> */}
+              {/* <div className="mb-3">
                 <label>Select Exercises:</label>
                 <select
                   multiple
@@ -145,15 +144,15 @@ function CreateWorkouts() {
                     </option>
                   ))}
                 </select>
-              </div>
-              <div className="mb-3">
+              </div> */}
+              {/* <div className="mb-3">
                 <label>Selected Exercises:</label>
                 <ul>
                   {selectedExercises.map((exercise) => (
                     <li key={exercise.id}>{exercise.name}</li>
                   ))}
                 </ul>
-              </div>
+              </div> */}
               <button className="btn btn-primary mb-3">Create</button>
             </form>
           </div>

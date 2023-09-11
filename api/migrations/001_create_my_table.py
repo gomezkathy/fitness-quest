@@ -63,10 +63,7 @@ steps = [
         CREATE TABLE workouts (
             id SERIAL NOT NULL PRIMARY KEY,
             user_id INTEGER REFERENCES accounts(id),
-            workout_name VARCHAR(100) NOT NULL,
-            comment VARCHAR(100),
-            exercise_id INTEGER REFERENCES exercises(id)
-
+            workout_name VARCHAR(100) NOT NULL
         )
         """,
         """
