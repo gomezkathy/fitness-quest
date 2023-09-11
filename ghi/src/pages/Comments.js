@@ -126,7 +126,9 @@ function Comments() {
     }
   };
 
-  const callbackFetchAllComments = useCallback(fetchAllComments);
+  const callbackFetchAllComments = useCallback(() => {
+    fetchAllComments();
+  }, [exerciseIdAsNumber]);
 
   useEffect(() => {
     const fetchData = async () => {

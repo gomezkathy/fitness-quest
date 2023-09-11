@@ -2,6 +2,36 @@ import React, { useState, useEffect, useCallback } from "react";
 import { format } from "date-fns";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 
+const fetchAccount = async (token, setUserId, setExercises) => {
+  try {
+    const [accountResponse, exercisesResponse] = await Promise.all([
+      fetch("http://localhost:8000/token", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+      }),
+      fetch("http://localhost:8000/api/exercises", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+      }),
+    ]);
+
+    if (accountResponse.ok && exercisesResponse.ok) {
+      const accountData = await accountResponse.json();
+      const userId = accountData.account;
+      setUserId(userId);
+
+      const exercisesData = await exercisesResponse.json();
+      setExercises(exercisesData);
+    }
+  } catch (error) {
+    console.error("Error while fetching data:", error);
+  }
+};
+
 function CreateComment() {
   const [comment, setComment] = useState("");
   const [userId, setUserId] = useState("");
@@ -9,43 +39,14 @@ function CreateComment() {
   const [exercises, setExercises] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
   const { token } = useToken();
-  const fetchAccount = async () => {
-    try {
-      const [accountResponse, exercisesResponse] = await Promise.all([
-        fetch("http://localhost:8000/token", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          credentials: "include",
-        }),
-        fetch("http://localhost:8000/api/exercises", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          credentials: "include",
-        }),
-      ]);
-
-      if (accountResponse.ok && exercisesResponse.ok) {
-        const accountData = await accountResponse.json();
-        const userId = accountData.account;
-        setUserId(userId);
-
-        const exercisesData = await exercisesResponse.json();
-        setExercises(exercisesData);
-      }
-    } catch (error) {
-      console.error("Error while fetching data:", error);
-    }
-  };
 
   const callbackfetchAccount = useCallback(() => {
-    fetchAccount();
-  }, [fetchAccount]);
+    fetchAccount(token, setUserId, setExercises);
+  }, [token, setUserId, setExercises]);
 
   useEffect(() => {
-    fetchAccount();
-  }, [fetchAccount]);
+    callbackfetchAccount();
+  }, [callbackfetchAccount]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
