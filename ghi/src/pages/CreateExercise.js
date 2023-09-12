@@ -58,7 +58,7 @@ function ExerciseForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const exercisesUrl = `${process.env.REACT_APP_API_HOST}/api/exercises/`;
+    const exercisesUrl = `${process.env.REACT_APP_API_HOST}/api/exercises`;
 
     const fetchConfig = {
       method: "post",
