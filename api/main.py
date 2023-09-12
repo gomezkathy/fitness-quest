@@ -15,7 +15,7 @@ app.include_router(workouts.router)
 origins = [
     "http://localhost:3000",
     "https://module3-project-gamma-full-"
-    "stack-alchemist-fccc9d4594f7ac41ee30.gitlab.io/",
+    "stack-alchemist-fccc9d4594f7ac41ee30.gitlab.io",
     os.environ.get("CORS_HOST", None),
 ]
 
