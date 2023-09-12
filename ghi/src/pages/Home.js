@@ -1,4 +1,5 @@
 import "../App.css";
+console.log("API Host:", process.env.REACT_APP_API_HOST);
 
 export default function Home() {
   return (
