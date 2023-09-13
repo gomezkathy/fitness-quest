@@ -63,7 +63,7 @@ function CreateComment() {
       assigned_date: format(new Date(), "yyyy-MM-dd"),
     };
 
-    const commentUrl = `${process.env.REACT_APP_API_HOST}/api/comments/`;
+    const commentUrl = `${process.env.REACT_APP_API_HOST}/api/comments`;
     const fetchConfig = {
       method: "post",
       body: JSON.stringify(requestBody),
