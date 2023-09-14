@@ -17,6 +17,7 @@ import Workouts from "./pages/Workouts";
 import CreateWorkout from "./pages/CreateWorkout";
 import NavBar from "./components/NavBar";
 import "./App.css";
+import ListComments from "./pages/ListComments";
 
 function App() {
   const domain = /https:\/\/[^/]+/;
@@ -40,7 +41,7 @@ function App() {
               <Route path="create" element={<CreateWorkout />} />
             </Route>
             <Route path="/comments">
-              <Route index element={<Comments />} />
+              <Route index element={<ListComments />} />
               <Route path=":exerciseId" element={<Comments />} />
               <Route path="create" element={<CommentForm />} />
               <Route

@@ -114,35 +114,34 @@ function UpdateComment() {
   };
 
   const handleCommentChange = (event) => {
-    const value = event.target.value;
-    setComment(value);
+    const { comment, value } = event.target.value;
+    setComment((prevComment) => ({
+      ...prevComment,
+    }));
   };
 
   return (
-    <div className="container mt-5">
-      <div className="row">
-        <div className="col-8 offset-md-2 mx-auto">
-          <div className="shadow p-4 mt-5">
-            <h1>Update Comment</h1>
-            {successMessage && (
-              <div className="alert alert-success mt-3">{successMessage}</div>
-            )}
-            <form onSubmit={handleSubmit} id="update-comment">
-              <div className="mb-3">
-                <input
-                  onChange={handleCommentChange}
-                  value={comment}
-                  placeholder={currentComment}
-                  required
-                  className="form-control"
-                  type="text"
-                  name="comment"
-                  id="comment"
-                />
-              </div>
-              <button className="btn btn-primary">Submit</button>
-            </form>
-          </div>
+    <div className="container mt-4 content-container">
+      <div className="col-12 col-md-8 mx-auto">
+        <div className="shadow p-4 mt-4">
+          <h1 className="mb-5 mt-5">Update Comment</h1>
+          {successMessage && (
+            <div className="alert alert-success mt-3">{successMessage}</div>
+          )}
+          <form onSubmit={handleSubmit} id="update-comment">
+            <div className="form-floating mx-auto col-10 mb-3">
+              <input
+                placeholder=" "
+                className="form-control"
+                name="comment"
+                type="text"
+                value={currentComment}
+                onChange={handleCommentChange}
+              />
+              <label htmlFor="comment">Comment</label>
+            </div>
+            <button className="btn btn-primary mb-3">Submit</button>
+          </form>
         </div>
       </div>
     </div>

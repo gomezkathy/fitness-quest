@@ -92,21 +92,19 @@ function UpdateExerciseForm() {
       credentials: "include",
     };
 
-    const response = await fetch(exercisesUrl, fetchConfig);
-
-    if (response.ok) {
-    }
+    await fetch(exercisesUrl, fetchConfig);
+    window.location.href = `/exercises`;
   };
 
   return (
-    <div className="row content-container">
-      <div className="offset-3 col-6">
+    <div className="container mt-4 content-container">
+      <div className="col-12 col-md-8 mx-auto">
         <div className="shadow p-4 mt-4">
-          <h1>update your exercise</h1>
+          <h1>Update Exercise</h1>
           <form onSubmit={handleSubmit} id="update-exercise-form">
-            <div className="mb-3">
-              <label htmlFor="name">exercise name:</label>
+            <div className="form-floating mx-auto col-10 mb-3">
               <input
+                placeholder=" "
                 value={name}
                 onChange={handleNameChange}
                 required
@@ -115,10 +113,11 @@ function UpdateExerciseForm() {
                 id="name"
                 className="form-control"
               />
+              <label htmlFor="name">Exercise</label>
             </div>
-            <div className="mb-3">
-              <label htmlFor="weight">weight used:</label>
+            <div className="form-floating mx-auto col-10 mb-3">
               <input
+                placeholder=" "
                 value={weight}
                 onChange={handleWeightChange}
                 type="number"
@@ -126,10 +125,12 @@ function UpdateExerciseForm() {
                 id="weight"
                 className="form-control"
               />
+              <label htmlFor="weight">Weight</label>
             </div>
-            <div className="mb-3">
-              <label htmlFor="sets"># of sets:</label>
+            <div className="form-floating mx-auto col-10 mb-3">
+              <label htmlFor="sets"># of Sets</label>
               <input
+                placeholder=" "
                 value={sets}
                 onChange={handleSetsChange}
                 type="number"
@@ -138,9 +139,9 @@ function UpdateExerciseForm() {
                 className="form-control"
               />
             </div>
-            <div className="mb-3">
-              <label htmlFor="reps"># of reps:</label>
+            <div className="form-floating mx-auto col-10 mb-3">
               <input
+                placeholder=" "
                 value={reps}
                 onChange={handleRepsChange}
                 type="number"
@@ -148,10 +149,11 @@ function UpdateExerciseForm() {
                 id="reps"
                 className="form-control"
               />
+              <label htmlFor="reps"># of Reps</label>
             </div>
-            <div className="mb-3">
-              <label htmlFor="picture">picture url:</label>
+            <div className="form-floating mx-auto col-10 mb-3">
               <input
+                placeholder=" "
                 value={picture}
                 onChange={handlePictureChange}
                 type="url"
@@ -159,10 +161,11 @@ function UpdateExerciseForm() {
                 id="picture"
                 className="form-control"
               />
+              <label htmlFor="picture">Picture URL</label>
             </div>
-            <div className="mb-3">
-              <label htmlFor="description">description:</label>
+            <div className="form-floating mx-auto col-10 mb-3">
               <input
+                placeholder=" "
                 value={description}
                 onChange={handleDescriptionChange}
                 type="text"
@@ -170,8 +173,9 @@ function UpdateExerciseForm() {
                 id="description"
                 className="form-control"
               />
+              <label htmlFor="description">Description</label>
             </div>
-            <button className="btn btn-primary">UPDATE</button>
+            <button className="btn btn-primary mb-3">Update</button>
           </form>
         </div>
       </div>

@@ -32,7 +32,7 @@ const fetchAccount = async (token, setUserId, setExercises) => {
   }
 };
 
-function CreateComment() {
+function CreateComment({ onClose }) {
   const [comment, setComment] = useState("");
   const [userId, setUserId] = useState("");
   const [selectedExerciseId, setSelectedExerciseId] = useState(0);
@@ -63,7 +63,7 @@ function CreateComment() {
       assigned_date: format(new Date(), "yyyy-MM-dd"),
     };
 
-    const commentUrl = `${process.env.REACT_APP_API_HOST}/api/comments`;
+    const commentUrl = `${process.env.REACT_APP_API_HOST}/api/comments/`;
     const fetchConfig = {
       method: "post",
       body: JSON.stringify(requestBody),
@@ -82,6 +82,8 @@ function CreateComment() {
         setTimeout(() => {
           setSuccessMessage("");
         }, 2000);
+        window.location.href = `/comments`;
+        onClose();
       } else {
         console.error(
           "Failed to create comment:",
@@ -99,52 +101,57 @@ function CreateComment() {
     setComment(value);
   };
 
+  const handleClose = () => {
+    onClose();
+  };
+
   return (
-    <div className="container mt-5">
-      <div className="row">
-        <div className="col-12 col-md-6 mx-auto">
-          <div className="shadow p-4">
-            <h1 className="text-center">Create a Comment</h1>
-            {successMessage && (
-              <div className="alert alert-success" role="alert">
-                {successMessage}
-              </div>
-            )}
-            <form onSubmit={handleSubmit} id="create-comment">
-              <div className="mb-3">
-                <select
-                  className="form-select mt-4 mb-3"
-                  value={selectedExerciseId}
-                  onChange={(e) =>
-                    setSelectedExerciseId(parseInt(e.target.value))
-                  }
-                  required
-                >
-                  <option value={0}>Select an exercise</option>
-                  {exercises.map((exercise) => (
-                    <option key={exercise.id} value={exercise.id}>
-                      {exercise.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="mb-3">
-                <input
-                  className="form-control"
-                  onChange={handleCommentChange}
-                  value={comment}
-                  placeholder="Leave a comment..."
-                  required
-                  type="text"
-                  name="comment"
-                  id="comment"
-                />
-              </div>
-              <button className="btn btn-primary mb-3">Submit</button>
-            </form>
-          </div>
+    <div className="shadow p-4">
+      <h1 className="text-center">Create Comment</h1>
+      {successMessage && (
+        <div className="alert alert-success" role="alert">
+          {successMessage}
         </div>
-      </div>
+      )}
+      <form onSubmit={handleSubmit} id="create-comment">
+        <div className="form-floating mx-auto col-10 mb-3">
+          <select
+            placeholder=" "
+            className="form-select mt-4 mb-3 pt-2 pb-2 pl-2"
+            value={selectedExerciseId}
+            onChange={(e) => setSelectedExerciseId(parseInt(e.target.value))}
+            required
+            name="select"
+          >
+            <label htmlFor="select">Select Exercise</label>
+            <option value={0}>Exercise</option>
+            {exercises
+              .filter((exercise) => exercise.user_id === userId)
+              .map((exercise) => (
+                <option key={exercise.id} value={exercise.id}>
+                  {exercise.name}
+                </option>
+              ))}
+          </select>
+        </div>
+        <div className="form-floating mx-auto col-10 mb-3">
+          <input
+            className="form-control"
+            onChange={handleCommentChange}
+            value={comment}
+            placeholder=" "
+            required
+            type="text"
+            name="comment"
+            id="comment"
+          />
+          <label htmlFor="comment">Comment</label>
+        </div>
+        <button className="btn btn-success m-1">Submit</button>
+        <button className="btn btn-secondary m-1" onClick={handleClose}>
+          Cancel
+        </button>
+      </form>
     </div>
   );
 }

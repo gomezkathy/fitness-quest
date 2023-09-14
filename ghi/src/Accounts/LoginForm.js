@@ -40,52 +40,46 @@ const LoginForm = () => {
   }, [fetchAccount]);
 
   return (
-    <div className="container mt-5">
-      <div className="row">
-        <div className="col-12 col-md-6 mx-auto">
-          <div className="shadow p-4">
-            <h1 className="card-header">Login</h1>
-            <div className="card-body">
-              <form onSubmit={(e) => handleSubmit(e)}>
-                <div className="mb-3 mt-4">
-                  <label className="form-label text-center pb-2 m-0">
-                    Username:
-                  </label>
-                  <input
-                    name="username"
-                    type="text"
-                    className="form-control"
-                    placeholder="Enter username..."
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label text-center pb-2 m-0">
-                    Password:
-                  </label>
-                  <input
-                    name="password"
-                    type="password"
-                    className="form-control"
-                    placeholder="Enter password..."
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <input
-                    className="btn btn-primary"
-                    type="submit"
-                    value="Login"
-                  />
-                </div>
-              </form>
-            </div>
-            {showSuccessAlert && (
-              <div className="alert alert-secondary mt-3" role="alert">
-                <a href="/">Go to Homepage</a>
+    <div className="container mt-4 content-container">
+      <div className="col-12 col-md-6 mx-auto">
+        <div className="shadow p-4 mt-4">
+          <h1 className="mb-5 mt-5">Login</h1>
+          <div className="card-body">
+            <form onSubmit={(e) => handleSubmit(e)}>
+              <div className="form-floating mx-auto col-10 mb-3">
+                <input
+                  name="username"
+                  type="text"
+                  className="form-control"
+                  placeholder=" "
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+                <label htmlFor="username">Username</label>
               </div>
-            )}
+              <div className="form-floating mx-auto col-10 mb-3">
+                <input
+                  name="password"
+                  type="password"
+                  className="form-control"
+                  placeholder=" "
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <label htmlFor="password">Password</label>
+              </div>
+              <div>
+                <input
+                  className="btn btn-primary"
+                  type="submit"
+                  value="Login"
+                />
+              </div>
+            </form>
           </div>
+          {showSuccessAlert && (
+            <div className="alert alert-secondary mt-3" role="alert">
+              <a href="/">Go to Homepage</a>
+            </div>
+          )}
         </div>
       </div>
     </div>

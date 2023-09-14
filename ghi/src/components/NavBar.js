@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/logo-transparent-png.png";
 import "../App.css";
 import useToken from "@galvanize-inc/jwtdown-for-react";
@@ -8,6 +8,7 @@ export default function NavBar() {
   const [userId, setUserId] = useState(null);
   const [logoutSuccess, setLogoutSuccess] = useState(false);
   const { logout, token } = useToken();
+  const location = useLocation();
 
   const fetchAccount = async () => {
     try {
@@ -37,12 +38,16 @@ export default function NavBar() {
         setTimeout(() => {
           setLogoutSuccess(false);
           window.location.href = "/";
-        }, 250);
+        }, 3000);
       }
     } catch (error) {
       console.error("Error logging out:", error);
       window.location.href = "/";
     }
+  };
+
+  const isActiveLink = (path) => {
+    return location.pathname === path;
   };
 
   return (
@@ -53,49 +58,58 @@ export default function NavBar() {
             <img className="navbar-logo" src={logo} alt="Logo" />
           </Link>
           <li className="nav-item">
-            <a className="nav-link" href="/">
+            <a
+              className={`nav-link ${isActiveLink("/") ? "active" : ""}`}
+              href="/"
+            >
               Home
             </a>
           </li>
           {userId > 0 && (
             <li className="nav-item">
-              <Link to="/workouts" className="nav-link">
+              <Link
+                to="/workouts"
+                className={`nav-link ${
+                  isActiveLink("/workouts") ? "active" : ""
+                }`}
+              >
                 Workouts
               </Link>
             </li>
           )}
           {userId > 0 && (
             <li className="nav-item">
-              <Link to="/workouts/create" className="nav-link">
+              <Link
+                to="/workouts/create"
+                className={`nav-link ${
+                  isActiveLink("/workouts/create") ? "active" : ""
+                }`}
+              >
                 Create Workout
               </Link>
             </li>
           )}
           {userId > 0 && (
             <li className="nav-item">
-              <Link to="/exercises" className="nav-link">
+              <Link
+                to="/exercises"
+                className={`nav-link ${
+                  isActiveLink("/exercises") ? "active" : ""
+                }`}
+              >
                 Exercises
               </Link>
             </li>
           )}
           {userId > 0 && (
             <li className="nav-item">
-              <Link to="/exercises/create" className="nav-link">
-                Create Exercise
-              </Link>
-            </li>
-          )}
-          {userId > 0 && (
-            <li className="nav-item">
-              <Link to="/comments" className="nav-link">
+              <Link
+                to="/comments"
+                className={`nav-link ${
+                  isActiveLink("/comments") ? "active" : ""
+                }`}
+              >
                 Comments
-              </Link>
-            </li>
-          )}
-          {userId > 0 && (
-            <li className="nav-item">
-              <Link to="/comments/create" className="nav-link">
-                Create Comment
               </Link>
             </li>
           )}
@@ -103,21 +117,36 @@ export default function NavBar() {
         <ul className="nav-list p-0 m-3">
           {userId > 0 && (
             <li className="nav-item">
-              <Link to={`/accounts/${userId}`} className="nav-link">
+              <Link
+                to={`/accounts/${userId}`}
+                className={`nav-link ${
+                  isActiveLink(`/accounts/${userId}`) ? "active" : ""
+                }`}
+              >
                 Edit Account
               </Link>
             </li>
           )}
           {userId === null && (
             <li className="nav-item">
-              <Link to="/accounts/signup" className="nav-link">
+              <Link
+                to="/accounts/signup"
+                className={`nav-link ${
+                  isActiveLink("/accounts/signup") ? "active" : ""
+                }`}
+              >
                 Sign Up
               </Link>
             </li>
           )}
           {userId === null && (
             <li className="nav-item">
-              <Link to="/accounts/login" className="nav-link">
+              <Link
+                to="/accounts/login"
+                className={`nav-link ${
+                  isActiveLink("/accounts/login") ? "active" : ""
+                }`}
+              >
                 Login
               </Link>
             </li>

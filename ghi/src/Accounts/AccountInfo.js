@@ -87,57 +87,73 @@ function AccountInfo() {
   };
 
   return (
-    <div>
-      <h2>Update Account Information</h2>
-      <form onSubmit={handleUpdate}>
-        <div className="mb-3">
-          <label>Username:</label>
-          <input
-            name="username"
-            type="text"
-            value={userData.username}
-            onChange={handleInputChange}
-          />
+    <div className="container mt-4 content-container">
+      <div className="col-12 col-md-6 mx-auto">
+        <div className="shadow p-4 mt-4">
+          <h1 className="mb-5 mt-5">Update Account</h1>
+          <form onSubmit={handleUpdate}>
+            <div className="form-floating mx-auto col-10 mb-3">
+              <input
+                placeholder=" "
+                className="form-control"
+                name="username"
+                type="text"
+                value={userData.username}
+                onChange={handleInputChange}
+              />
+              <label htmlFor="username">Username</label>
+            </div>
+            <div className="form-floating mx-auto col-10 mb-3">
+              <input
+                placeholder=" "
+                className="form-control"
+                name="password"
+                type="password"
+                value={userData.password}
+                onChange={handleInputChange}
+              />
+              <label htmlFor="password">Password</label>
+            </div>
+            <div className="form-floating mx-auto col-10 mb-3">
+              <input
+                placeholder=" "
+                className="form-control"
+                name="first"
+                type="text"
+                value={userData.first}
+                onChange={handleInputChange}
+              />
+              <label htmlFor="first">First Name</label>
+            </div>
+            <div className="form-floating mx-auto col-10 mb-3">
+              <input
+                placeholder=" "
+                className="form-control"
+                name="last"
+                type="text"
+                value={userData.last}
+                onChange={handleInputChange}
+              />
+              <label htmlFor="last">Last Name</label>
+            </div>
+            <div className="form-floating mx-auto col-10 mb-3">
+              <input
+                placeholder=" "
+                className="form-control"
+                name="email"
+                type="text"
+                value={userData.email}
+                onChange={handleInputChange}
+              />
+              <label htmlFor="email">Email</label>
+            </div>
+            <button type="submit" className="btn btn-primary mt-3 mb-3">
+              Update
+            </button>
+          </form>
+          <p>{message}</p>
         </div>
-        <div className="mb-3">
-          <label>Password:</label>
-          <input
-            name="password"
-            type="password"
-            value={userData.password}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="mb-3">
-          <label>First Name:</label>
-          <input
-            name="first"
-            type="text"
-            value={userData.first}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="mb-3">
-          <label>Last Name:</label>
-          <input
-            name="last"
-            type="text"
-            value={userData.last}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="mb-3">
-          <label>Email:</label>
-          <input
-            name="email"
-            type="text"
-            value={userData.email}
-            onChange={handleInputChange}
-          />
-        </div>
-        <button type="submit">Update Account Info</button>
-      </form>
-      <p>{message}</p>
+      </div>
     </div>
   );
 }

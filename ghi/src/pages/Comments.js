@@ -80,6 +80,9 @@ function Comments() {
       if (response.ok) {
         fetchAllComments();
         setDeleteSuccess(true);
+        setTimeout(() => {
+          setDeleteSuccess(false);
+        }, 1500);
       } else {
         console.error(
           "Failed to delete comment:",
@@ -142,29 +145,33 @@ function Comments() {
     fetchData();
   }, [callbackFetchAllComments]);
 
-  const userComments = comments.filter((comment) => comment.user_id === userId);
+  const userComments = comments.filter(
+    (comment) =>
+      comment.exercise_id === exerciseIdAsNumber && comment.user_id === userId
+  );
+
   const renderCommentForm = () => {
     if (exerciseId) {
       return (
         <div className="row justify-content-center mb-5">
-          <div className="col-8">
-            <div className="p-3">
-              <div className=" d-flex align-items-center">
+          <div className="col-10">
+            <div className="d-flex align-items-center">
+              <div className="form-floating mx-auto col-11 mt-3">
                 <input
                   className="form-control flex-grow-1"
                   onChange={(e) => setNewComment(e.target.value)}
                   value={newComment}
-                  placeholder="Leave a comment..."
+                  placeholder=" "
                   required
                   type="text"
                   name="comment"
                   id="comment"
                 />
-                <button
-                  className="btn btn-primary ml-3"
-                  onClick={handleAddComment}
-                >
-                  Post
+                <label htmlFor="comment">Leave a comment...</label>
+              </div>
+              <div className="col-1 pt-3 m-1">
+                <button className="btn btn-success" onClick={handleAddComment}>
+                  Submit
                 </button>
               </div>
             </div>
@@ -175,44 +182,47 @@ function Comments() {
     return null;
   };
   return (
-    <div className="container mt-5 mb-5">
-      <div className="shadow p-3 mb-5 bg-white rounded">
-        {deleteSuccess && (
-          <div className="alert alert-danger" role="alert">
-            Comment deleted successfully!
-          </div>
-        )}
+    <div className="container content-container">
+      <div className="shadow p-4 mt-5 mb-5">
         <div className={`row${renderCommentForm() ? "" : " mb-5"}`}>
-          <div className="col-10 mt-5 mx-auto">
-            <h1>Comments Log</h1>
+          <div className="col-10 mt-3 mx-auto">
+            {exerciseIdAsNumber && (
+              <h1 className="d-flex justify-content-between">
+                Exercise:{" "}
+                {exerciseNames[exerciseIdAsNumber] || "Unknown Exercise"}
+              </h1>
+            )}
+            <h4 className="d-flex justify-content-between">Comments</h4>
             <div className="row">
               <div className="col-12">
-                <table className="table table-striped mt-4 mb-0">
+                <table className="table table-striped mt-3 mb-0">
                   <thead>
                     <tr>
-                      <th scope="col">Exercise</th>
-                      <th scope="col">Comment</th>
-                      <th scope="col">Date</th>
-                      <th scope="col">Actions</th>
+                      <th scope="col" className="col-6">
+                        Comment
+                      </th>
+                      <th scope="col" className="col-2">
+                        Date
+                      </th>
+                      <th scope="col" className="col-2">
+                        Actions
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {userComments.map((comment) => (
                       <tr key={comment.id}>
-                        <td>
-                          {exerciseNames[comment.exercise_id] || "Unknown"}
-                        </td>
-                        <td>{comment.comment}</td>
-                        <td>{comment.assigned_date}</td>
-                        <td>
+                        <td className="center">{comment.comment}</td>
+                        <td className="center">{comment.assigned_date}</td>
+                        <td className="center">
                           <Link
-                            className="btn btn-primary btn-link"
+                            className="btn btn-primary btn-link m-1"
                             to={`/comments/${comment.exercise_id}/${comment.id}`}
                           >
                             Edit
                           </Link>
                           <button
-                            className="btn btn-danger"
+                            className="btn btn-danger m-1"
                             onClick={() => handleDeleteComment(comment.id)}
                           >
                             Delete
@@ -227,6 +237,11 @@ function Comments() {
           </div>
         </div>
         {renderCommentForm()}
+        {deleteSuccess && (
+          <div className="alert alert-danger mb-0" role="alert">
+            Comment deleted successfully!
+          </div>
+        )}
       </div>
     </div>
   );
