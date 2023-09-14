@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import UpdateComment from "./UpdateComment";
 import CommentForm from "./CreateComment";
+import { useLocation } from "react-router-dom";
 
 function ListComments() {
   const [comments, setComments] = useState([]);
@@ -15,9 +16,9 @@ function ListComments() {
   const [exerciseId, setExerciseId] = useState(null);
   const [commentId, setCommentId] = useState(null);
   const exerciseIdAsNumber = parseInt(exerciseId, 10);
-
   const [isCommentUpdateOpen, setIsCommentUpdateOpen] = useState(false);
   const [selectedCommentId, setSelectedCommentId] = useState(null);
+  const location = useLocation();
 
   const fetchAccount = async () => {
     const response = await fetch(`${process.env.REACT_APP_API_HOST}/token`, {
@@ -127,7 +128,11 @@ function ListComments() {
   };
 
   return (
-    <div className="container content-container mt-3">
+    <div
+      className={`container mt-3 mb-0 ${
+        location.pathname === "/comments" ? "content-container" : ""
+      }`}
+    >
       <div className="shadow p-5 mt-3 mb-3">
         <div className="col-11 mt-3 mx-auto">
           {exerciseId !== null && commentId !== null && (

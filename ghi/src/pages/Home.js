@@ -44,8 +44,13 @@ export default function Home() {
         <>
           {userId !== null && (
             <>
-              <ExerciseList />
-              <ListComments />
+              <h1 className="mt-5 mb-5">Home Page</h1>
+              <div className="">
+                <ExerciseList />
+              </div>
+              <div className="mb-5 pb-5">
+                <ListComments />
+              </div>
             </>
           )}
           {userId === null && (

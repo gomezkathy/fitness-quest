@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ExerciseForm from "./CreateExercise";
 import UpdateExerciseForm from "./UpdateExerciseForm";
+import { useLocation } from "react-router-dom";
 
 function ExerciseList() {
   const [exercises, setExercises] = useState([]);
@@ -10,6 +11,7 @@ function ExerciseList() {
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [isExerciseFormOpen, setIsExerciseFormOpen] = useState(false);
   const [isExerciseUpdateOpen, setIsExerciseUpdateOpen] = useState(false);
+  const location = useLocation();
 
   const fetchExercises = async () => {
     const response = await fetch(
@@ -87,7 +89,11 @@ function ExerciseList() {
   };
 
   return (
-    <div className="container content-container mt-3 mb-0">
+    <div
+      className={`container mt-3 mb-0 ${
+        location.pathname === "/exercises" ? "content-container" : ""
+      }`}
+    >
       <div className="shadow p-5 mt-3 mb-3">
         <div className="col-11 mt-3 mx-auto">
           {isExerciseFormOpen && (

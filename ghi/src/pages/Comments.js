@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { format } from "date-fns";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import UpdateComment from "./UpdateComment";
+import { useLocation } from "react-router-dom";
 
 function Comments() {
   const [comments, setComments] = useState([]);
@@ -13,7 +14,7 @@ function Comments() {
   const exerciseIdAsNumber = parseInt(exerciseId, 10);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const { token } = useToken();
-
+  const location = useLocation();
   const [isCommentUpdateOpen, setIsCommentUpdateOpen] = useState(false);
   const [selectedCommentId, setCommentId] = useState(null);
 
@@ -191,7 +192,13 @@ function Comments() {
     return null;
   };
   return (
-    <div className="container content-container">
+    <div
+      className={`container mt-3 mb-0 ${
+        location.pathname === `/comments/${exerciseId}`
+          ? "content-container"
+          : ""
+      }`}
+    >
       <div className="shadow p-5 mt-3 mb-3">
         <div className={`row${renderCommentForm() ? "" : " mb-"}`}>
           <div className="col-10 mt-3 mx-auto">

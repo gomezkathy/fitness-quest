@@ -38,7 +38,7 @@ export default function NavBar() {
         setTimeout(() => {
           setLogoutSuccess(false);
           window.location.href = "/";
-        }, 3000);
+        }, 0);
       }
     } catch (error) {
       console.error("Error logging out:", error);
@@ -160,13 +160,6 @@ export default function NavBar() {
           )}
         </ul>
       </nav>
-      <div className="custom-alert-bg">
-        {logoutSuccess && (
-          <div className="alert alert-danger px-0 mb-0" role="alert">
-            User logged out successfully.
-          </div>
-        )}
-      </div>
     </div>
   );
 }
