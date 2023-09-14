@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { format } from "date-fns";
 import useToken from "@galvanize-inc/jwtdown-for-react";
+import UpdateComment from "./UpdateComment";
 
 function Comments() {
   const [comments, setComments] = useState([]);
@@ -12,6 +13,9 @@ function Comments() {
   const exerciseIdAsNumber = parseInt(exerciseId, 10);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const { token } = useToken();
+
+  const [isCommentUpdateOpen, setIsCommentUpdateOpen] = useState(false);
+  const [selectedCommentId, setCommentId] = useState(null);
 
   const fetchAccount = async () => {
     const response = await fetch(`${process.env.REACT_APP_API_HOST}/token`, {
@@ -150,10 +154,15 @@ function Comments() {
       comment.exercise_id === exerciseIdAsNumber && comment.user_id === userId
   );
 
+  const toggleCommentUpdate = (commentId, exerciseId) => {
+    setIsCommentUpdateOpen(!isCommentUpdateOpen);
+    setCommentId(commentId);
+  };
+
   const renderCommentForm = () => {
     if (exerciseId) {
       return (
-        <div className="row justify-content-center mb-5">
+        <div className="row justify-content-center mb-3">
           <div className="col-10">
             <div className="d-flex align-items-center">
               <div className="form-floating mx-auto col-11 mt-3">
@@ -183,9 +192,20 @@ function Comments() {
   };
   return (
     <div className="container content-container">
-      <div className="shadow p-4 mt-5 mb-5">
-        <div className={`row${renderCommentForm() ? "" : " mb-5"}`}>
+      <div className="shadow p-5 mt-3 mb-3">
+        <div className={`row${renderCommentForm() ? "" : " mb-"}`}>
           <div className="col-10 mt-3 mx-auto">
+            {isCommentUpdateOpen && selectedCommentId !== null && (
+              <div className="comment-form-overlay">
+                <div className="m-3 comment-form-popup">
+                  <UpdateComment
+                    onClose={toggleCommentUpdate}
+                    commentId={selectedCommentId}
+                    exerciseId={exerciseIdAsNumber}
+                  />
+                </div>
+              </div>
+            )}
             {exerciseIdAsNumber && (
               <h1 className="d-flex justify-content-between">
                 Exercise:{" "}
@@ -215,12 +235,14 @@ function Comments() {
                         <td className="center">{comment.comment}</td>
                         <td className="center">{comment.assigned_date}</td>
                         <td className="center">
-                          <Link
-                            className="btn btn-primary btn-link m-1"
-                            to={`/comments/${comment.exercise_id}/${comment.id}`}
+                          <button
+                            onClick={() =>
+                              toggleCommentUpdate(comment.id, exerciseId)
+                            }
+                            className="btn btn-primary m-1"
                           >
                             Edit
-                          </Link>
+                          </button>
                           <button
                             className="btn btn-danger m-1"
                             onClick={() => handleDeleteComment(comment.id)}

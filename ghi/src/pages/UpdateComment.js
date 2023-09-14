@@ -3,8 +3,7 @@ import { useParams } from "react-router-dom";
 import { format } from "date-fns";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 
-function UpdateComment() {
-  const { exerciseId, commentId } = useParams();
+function UpdateComment({ onClose, commentId, exerciseId }) {
   const [comment, setComment] = useState("");
   const [userId, setUserId] = useState("");
   const [currentComment, setCurrentComment] = useState("");
@@ -58,7 +57,7 @@ function UpdateComment() {
     }
   };
 
-  const callbackfetchCommentData = useCallback(fetchCommentData, [
+  const callbackFetchCommentData = useCallback(fetchCommentData, [
     commentId,
     exerciseId,
     token,
@@ -69,10 +68,14 @@ function UpdateComment() {
   }, []);
 
   useEffect(() => {
+    setComment(currentComment);
+  }, [currentComment]);
+
+  useEffect(() => {
     if (commentId) {
-      callbackfetchCommentData();
+      callbackFetchCommentData();
     }
-  }, [commentId, callbackfetchCommentData]);
+  }, [commentId, callbackFetchCommentData]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -101,6 +104,8 @@ function UpdateComment() {
         setComment("");
         setCurrentComment(comment);
         setSuccessMessage("Comment updated successfully.");
+        window.location.href = `/comments/${exerciseId}`;
+        onClose();
       } else {
         console.error(
           "Failed to update comment:",
@@ -114,36 +119,37 @@ function UpdateComment() {
   };
 
   const handleCommentChange = (event) => {
-    const { comment, value } = event.target.value;
-    setComment((prevComment) => ({
-      ...prevComment,
-    }));
+    const { value } = event.target;
+    setComment(value);
+  };
+
+  const handleClose = () => {
+    onClose();
   };
 
   return (
-    <div className="container mt-4 content-container">
-      <div className="col-12 col-md-8 mx-auto">
-        <div className="shadow p-4 mt-4">
-          <h1 className="mb-5 mt-5">Update Comment</h1>
-          {successMessage && (
-            <div className="alert alert-success mt-3">{successMessage}</div>
-          )}
-          <form onSubmit={handleSubmit} id="update-comment">
-            <div className="form-floating mx-auto col-10 mb-3">
-              <input
-                placeholder=" "
-                className="form-control"
-                name="comment"
-                type="text"
-                value={currentComment}
-                onChange={handleCommentChange}
-              />
-              <label htmlFor="comment">Comment</label>
-            </div>
-            <button className="btn btn-primary mb-3">Submit</button>
-          </form>
+    <div className="shadow p-5 mt-3 mb-3">
+      <h1>Update Comment</h1>
+      {successMessage && (
+        <div className="alert alert-success mt-3">{successMessage}</div>
+      )}
+      <form onSubmit={handleSubmit}>
+        <div className="form-floating mx-auto col-10 mb-3">
+          <input
+            placeholder=" "
+            className="form-control"
+            name="comment"
+            type="text"
+            value={comment}
+            onChange={handleCommentChange}
+          />
+          <label htmlFor="comment">Comment</label>
         </div>
-      </div>
+        <button className="btn btn-primary m-1">Submit</button>
+        <button className="btn btn-secondary m-1" onClick={handleClose}>
+          Cancel
+        </button>
+      </form>
     </div>
   );
 }

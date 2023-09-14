@@ -49,6 +49,19 @@ function AccountInfo() {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+
+    if (!userData.password) {
+      setMessage(
+        <div className="mt-3 alert alert-danger" role="alert">
+          Password is required to update your account.
+        </div>
+      );
+      setTimeout(() => {
+        setMessage("");
+      }, 3000);
+      return;
+    }
+
     try {
       const response = await axios.put(
         `${process.env.REACT_APP_API_HOST}/api/accounts/update/${accountId}`,
@@ -61,16 +74,28 @@ function AccountInfo() {
       );
 
       if (response.status === 200) {
-        setMessage("Account information updated successfully");
+        setMessage(
+          <div className="mt-3 alert alert-success" role="alert">
+            Account information updated successfully
+          </div>
+        );
       } else {
-        setMessage("Error updating account information");
+        setMessage(
+          <div className="mt-3 alert alert-danger" role="alert">
+            Error updating account information
+          </div>
+        );
       }
 
       setTimeout(() => {
         setMessage("");
       }, 3000);
     } catch (error) {
-      setMessage("Error updating account information");
+      setMessage(
+        <div className="mt-3 alert alert-danger" role="alert">
+          Error updating account information
+        </div>
+      );
 
       setTimeout(() => {
         setMessage("");
@@ -87,10 +112,10 @@ function AccountInfo() {
   };
 
   return (
-    <div className="container mt-4 content-container">
+    <div className="content-container">
       <div className="col-12 col-md-6 mx-auto">
-        <div className="shadow p-4 mt-4">
-          <h1 className="mb-5 mt-5">Update Account</h1>
+        <div className="shadow p-5 mt-3 mb-3">
+          <h1 className="mb-3 mt-3">Update Account</h1>
           <form onSubmit={handleUpdate}>
             <div className="form-floating mx-auto col-10 mb-3">
               <input
@@ -147,7 +172,7 @@ function AccountInfo() {
               />
               <label htmlFor="email">Email</label>
             </div>
-            <button type="submit" className="btn btn-primary mt-3 mb-3">
+            <button type="submit" className="btn btn-primary mt-3">
               Update
             </button>
           </form>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Link, useParams } from "react-router-dom";
-import { format } from "date-fns";
+import { useParams } from "react-router-dom";
 import useToken from "@galvanize-inc/jwtdown-for-react";
+import UpdateComment from "./UpdateComment";
 import CommentForm from "./CreateComment";
 
 function ListComments() {
@@ -9,11 +9,15 @@ function ListComments() {
   const [userId, setUserId] = useState("");
   const [exerciseNames, setExerciseNames] = useState([]);
   const [newComment, setNewComment] = useState("");
-  const { exerciseId } = useParams();
-  const exerciseIdAsNumber = parseInt(exerciseId, 10);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const { token } = useToken();
   const [isCommentFormOpen, setIsCommentFormOpen] = useState(false);
+  const [exerciseId, setExerciseId] = useState(null);
+  const [commentId, setCommentId] = useState(null);
+  const exerciseIdAsNumber = parseInt(exerciseId, 10);
+
+  const [isCommentUpdateOpen, setIsCommentUpdateOpen] = useState(false);
+  const [selectedCommentId, setSelectedCommentId] = useState(null);
 
   const fetchAccount = async () => {
     const response = await fetch(`${process.env.REACT_APP_API_HOST}/token`, {
@@ -116,13 +120,33 @@ function ListComments() {
 
   const userComments = comments.filter((comment) => comment.user_id === userId);
 
+  const toggleCommentUpdate = (commentId, exerciseId) => {
+    setIsCommentUpdateOpen(!isCommentUpdateOpen);
+    setCommentId(commentId);
+    setExerciseId(exerciseId);
+  };
+
   return (
-    <div className="container content-container mt-4">
-      <div className="shadow p-4 mt-5 mb-5">
-        <div className="col-11 mt-5 mx-auto">
+    <div className="container content-container mt-3">
+      <div className="shadow p-5 mt-3 mb-3">
+        <div className="col-11 mt-3 mx-auto">
+          {exerciseId !== null && commentId !== null && (
+            <div className="comment-form-overlay">
+              <div className="m-3 comment-form-popup">
+                <UpdateComment
+                  onClose={() => {
+                    setExerciseId(null);
+                    setCommentId(null);
+                  }}
+                  exerciseId={exerciseId}
+                  commentId={commentId}
+                />
+              </div>
+            </div>
+          )}
           {isCommentFormOpen && (
             <div className="comment-form-overlay">
-              <div className="m-5 comment-form-popup">
+              <div className="m-3 comment-form-popup">
                 <CommentForm onClose={toggleCommentForm} />
               </div>
             </div>
@@ -135,7 +159,7 @@ function ListComments() {
           </div>
           <div className="row">
             <div className="col-12">
-              <table className="table table-striped mt-4 mb-0">
+              <table className="table table-striped mt-3 mb-0">
                 <thead>
                   <tr>
                     <th scope="col">Exercise</th>
@@ -155,12 +179,14 @@ function ListComments() {
                       <td className="center">{comment.comment}</td>
                       <td className="center">{comment.assigned_date}</td>
                       <td className="center">
-                        <Link
-                          className="btn btn-primary btn-link m-1"
-                          to={`/comments/${comment.exercise_id}/${comment.id}`}
+                        <button
+                          onClick={() =>
+                            toggleCommentUpdate(comment.id, comment.exercise_id)
+                          }
+                          className="btn btn-primary m-1"
                         >
                           Edit
-                        </Link>
+                        </button>
                         <button
                           className="btn btn-danger m-1"
                           onClick={() => handleDeleteComment(comment.id)}
@@ -174,13 +200,13 @@ function ListComments() {
               </table>
             </div>
           </div>
+          {deleteSuccess && (
+            <div className="alert alert-danger mb-0 mt-3" role="alert">
+              Comment deleted successfully!
+            </div>
+          )}
         </div>
       </div>
-      {deleteSuccess && (
-        <div className="alert alert-danger mb-0" role="alert">
-          Comment deleted successfully!
-        </div>
-      )}
     </div>
   );
 }

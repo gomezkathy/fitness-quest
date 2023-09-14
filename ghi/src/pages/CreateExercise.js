@@ -97,7 +97,7 @@ function ExerciseForm({ onClose }) {
   };
 
   return (
-    <div className="shadow p-4">
+    <div className="shadow p-5 mt-3 mb-3">
       <h1 className="mb-3">Create Exercise</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-floating mx-auto col-10 mb-3">

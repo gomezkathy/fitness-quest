@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
-import { useParams } from "react-router-dom";
 
-function UpdateExerciseForm() {
+function UpdateExerciseForm({ onClose, exerciseId }) {
   const [name, setName] = useState("");
   const [weight, setWeight] = useState("");
   const [sets, setSets] = useState("");
@@ -11,32 +10,33 @@ function UpdateExerciseForm() {
   const [description, setDescription] = useState("");
   const [userId, setUserId] = useState("");
   const { token } = useToken();
-  const { exerciseId } = useParams();
 
   useEffect(() => {
-    const fetchExerciseData = async () => {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_HOST}/api/exercises/${exerciseId}`,
-        {
-          credentials: "include",
-        }
-      );
+    if (exerciseId) {
+      const fetchExerciseData = async () => {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_HOST}/api/exercises/${exerciseId}`,
+          {
+            credentials: "include",
+          }
+        );
 
-      if (response.ok) {
-        const data = await response.json();
-        if (data) {
-          setName(data.name || "");
-          setWeight(data.weight ? data.weight.toString() : "");
-          setSets(data.sets ? data.sets.toString() : "");
-          setReps(data.reps ? data.reps.toString() : "");
-          setPicture(data.picture_url || "");
-          setDescription(data.description || "");
-          setUserId(data.user_id || "");
+        if (response.ok) {
+          const data = await response.json();
+          if (data) {
+            setName(data.name || "");
+            setWeight(data.weight ? data.weight.toString() : "");
+            setSets(data.sets ? data.sets.toString() : "");
+            setReps(data.reps ? data.reps.toString() : "");
+            setPicture(data.picture_url || "");
+            setDescription(data.description || "");
+            setUserId(data.user_id || "");
+          }
         }
-      }
-    };
+      };
 
-    fetchExerciseData();
+      fetchExerciseData();
+    }
   }, [exerciseId]);
 
   const handleNameChange = (event) => {
@@ -94,91 +94,95 @@ function UpdateExerciseForm() {
 
     await fetch(exercisesUrl, fetchConfig);
     window.location.href = `/exercises`;
+    onClose();
+  };
+
+  const handleClose = () => {
+    onClose();
   };
 
   return (
-    <div className="container mt-4 content-container">
-      <div className="col-12 col-md-8 mx-auto">
-        <div className="shadow p-4 mt-4">
-          <h1>Update Exercise</h1>
-          <form onSubmit={handleSubmit} id="update-exercise-form">
-            <div className="form-floating mx-auto col-10 mb-3">
-              <input
-                placeholder=" "
-                value={name}
-                onChange={handleNameChange}
-                required
-                type="text"
-                name="name"
-                id="name"
-                className="form-control"
-              />
-              <label htmlFor="name">Exercise</label>
-            </div>
-            <div className="form-floating mx-auto col-10 mb-3">
-              <input
-                placeholder=" "
-                value={weight}
-                onChange={handleWeightChange}
-                type="number"
-                name="weight"
-                id="weight"
-                className="form-control"
-              />
-              <label htmlFor="weight">Weight</label>
-            </div>
-            <div className="form-floating mx-auto col-10 mb-3">
-              <label htmlFor="sets"># of Sets</label>
-              <input
-                placeholder=" "
-                value={sets}
-                onChange={handleSetsChange}
-                type="number"
-                name="sets"
-                id="sets"
-                className="form-control"
-              />
-            </div>
-            <div className="form-floating mx-auto col-10 mb-3">
-              <input
-                placeholder=" "
-                value={reps}
-                onChange={handleRepsChange}
-                type="number"
-                name="reps"
-                id="reps"
-                className="form-control"
-              />
-              <label htmlFor="reps"># of Reps</label>
-            </div>
-            <div className="form-floating mx-auto col-10 mb-3">
-              <input
-                placeholder=" "
-                value={picture}
-                onChange={handlePictureChange}
-                type="url"
-                name="picture"
-                id="picture"
-                className="form-control"
-              />
-              <label htmlFor="picture">Picture URL</label>
-            </div>
-            <div className="form-floating mx-auto col-10 mb-3">
-              <input
-                placeholder=" "
-                value={description}
-                onChange={handleDescriptionChange}
-                type="text"
-                name="description"
-                id="description"
-                className="form-control"
-              />
-              <label htmlFor="description">Description</label>
-            </div>
-            <button className="btn btn-primary mb-3">Update</button>
-          </form>
+    <div className="shadow p-5 mt-3 mb-3">
+      <h1>Update Exercise</h1>
+      <form onSubmit={handleSubmit} id="update-exercise-form">
+        <div className="form-floating mx-auto col-10 mb-3">
+          <input
+            placeholder=" "
+            value={name}
+            onChange={handleNameChange}
+            required
+            type="text"
+            name="name"
+            id="name"
+            className="form-control"
+          />
+          <label htmlFor="name">Exercise</label>
         </div>
-      </div>
+        <div className="form-floating mx-auto col-10 mb-3">
+          <input
+            placeholder=" "
+            value={weight}
+            onChange={handleWeightChange}
+            type="number"
+            name="weight"
+            id="weight"
+            className="form-control"
+          />
+          <label htmlFor="weight">Weight</label>
+        </div>
+        <div className="form-floating mx-auto col-10 mb-3">
+          <label htmlFor="sets"># of Sets</label>
+          <input
+            placeholder=" "
+            value={sets}
+            onChange={handleSetsChange}
+            type="number"
+            name="sets"
+            id="sets"
+            className="form-control"
+          />
+        </div>
+        <div className="form-floating mx-auto col-10 mb-3">
+          <input
+            placeholder=" "
+            value={reps}
+            onChange={handleRepsChange}
+            type="number"
+            name="reps"
+            id="reps"
+            className="form-control"
+          />
+          <label htmlFor="reps"># of Reps</label>
+        </div>
+        <div className="form-floating mx-auto col-10 mb-3">
+          <input
+            placeholder=" "
+            value={picture}
+            onChange={handlePictureChange}
+            type="url"
+            name="picture"
+            id="picture"
+            className="form-control"
+          />
+          <label htmlFor="picture">Picture URL</label>
+        </div>
+        <div className="form-floating mx-auto col-10 mb-3">
+          <input
+            placeholder=" "
+            value={description}
+            onChange={handleDescriptionChange}
+            type="text"
+            name="description"
+            id="description"
+            className="form-control"
+          />
+          <label htmlFor="description">Description</label>
+        </div>
+        <button className="btn btn-primary m-1">Submit</button>
+        <button className="btn btn-secondary m-1" onClick={handleClose}>
+          Cancel
+        </button>
+      </form>
     </div>
   );
 }

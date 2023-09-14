@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ExerciseForm from "./CreateExercise";
+import UpdateExerciseForm from "./UpdateExerciseForm";
 
 function ExerciseList() {
   const [exercises, setExercises] = useState([]);
+  const [selectedExerciseId, setSelectedExerciseId] = useState(null);
   const [userId, setUserId] = useState("");
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [isExerciseFormOpen, setIsExerciseFormOpen] = useState(false);
+  const [isExerciseUpdateOpen, setIsExerciseUpdateOpen] = useState(false);
 
   const fetchExercises = async () => {
     const response = await fetch(
@@ -78,14 +81,29 @@ function ExerciseList() {
     setIsExerciseFormOpen(!isExerciseFormOpen);
   };
 
+  const toggleExerciseUpdate = (exerciseId) => {
+    setIsExerciseUpdateOpen(!isExerciseUpdateOpen);
+    setSelectedExerciseId(exerciseId);
+  };
+
   return (
-    <div className="container content-container mt-4 mb-0">
-      <div className="shadow p-4 mt-5">
-        <div className="col-11 mt-5 mx-auto">
+    <div className="container content-container mt-3 mb-0">
+      <div className="shadow p-5 mt-3 mb-3">
+        <div className="col-11 mt-3 mx-auto">
           {isExerciseFormOpen && (
             <div className="exercise-form-overlay">
-              <div className="m-5 exercise-form-popup">
+              <div className="m-3 exercise-form-popup">
                 <ExerciseForm onClose={toggleExerciseForm} />
+              </div>
+            </div>
+          )}
+          {isExerciseUpdateOpen && (
+            <div className="exercise-form-overlay">
+              <div className="m-3 exercise-form-popup">
+                <UpdateExerciseForm
+                  onClose={toggleExerciseUpdate}
+                  exerciseId={selectedExerciseId}
+                />
               </div>
             </div>
           )}
@@ -100,7 +118,7 @@ function ExerciseList() {
           </div>
           <div className="row">
             <div className="col-12">
-              <table className="table table-striped mt-5 mb-5">
+              <table className="table table-striped mt-3 mb-3">
                 <thead>
                   <tr>
                     <th scope="col" className="col-1">
@@ -155,9 +173,12 @@ function ExerciseList() {
                         >
                           Delete
                         </button>
-                        <Link to={`/exercises/update/${exercise.id}`}>
-                          <button className="btn btn-primary m-1">Edit</button>
-                        </Link>
+                        <button
+                          onClick={() => toggleExerciseUpdate(exercise.id)}
+                          className="btn btn-primary m-1"
+                        >
+                          Edit
+                        </button>
                       </td>
                     </tr>
                   ))}

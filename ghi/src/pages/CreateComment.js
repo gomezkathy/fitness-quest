@@ -106,7 +106,7 @@ function CreateComment({ onClose }) {
   };
 
   return (
-    <div className="shadow p-4">
+    <div className="shadow p-5 mt-3 mb-3">
       <h1 className="text-center">Create Comment</h1>
       {successMessage && (
         <div className="alert alert-success" role="alert">
@@ -117,7 +117,7 @@ function CreateComment({ onClose }) {
         <div className="form-floating mx-auto col-10 mb-3">
           <select
             placeholder=" "
-            className="form-select mt-4 mb-3 pt-2 pb-2 pl-2"
+            className="form-select mt-3 mb-3 pt-2 pb-2 pl-2"
             value={selectedExerciseId}
             onChange={(e) => setSelectedExerciseId(parseInt(e.target.value))}
             required

@@ -40,10 +40,10 @@ const LoginForm = () => {
   }, [fetchAccount]);
 
   return (
-    <div className="container mt-4 content-container">
+    <div className="container mt-3 content-container">
       <div className="col-12 col-md-6 mx-auto">
-        <div className="shadow p-4 mt-4">
-          <h1 className="mb-5 mt-5">Login</h1>
+        <div className="shadow p-5 mt-3 mb-3">
+          <h1 className="mb-3 mt-3">Login</h1>
           <div className="card-body">
             <form onSubmit={(e) => handleSubmit(e)}>
               <div className="form-floating mx-auto col-10 mb-3">

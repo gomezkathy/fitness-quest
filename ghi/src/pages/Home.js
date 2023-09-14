@@ -97,7 +97,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="customer-reviews mb-5">
-                <div className="mb-5">
+                <div>
                   <h2 className="home-page-text">Customer Reviews</h2>
                   <p className="home-page-text">
                     "This app redefined how I approach my fitness goals,
