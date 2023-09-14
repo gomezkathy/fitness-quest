@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
+
 function ExerciseForm() {
   const [name, setName] = useState("");
   const [weight, setWeight] = useState("");
@@ -8,8 +9,10 @@ function ExerciseForm() {
   const [picture, setPicture] = useState("");
   const [description, setDescription] = useState("");
   const [userId, setUserId] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const { token } = useToken();
+
   const fetchAccount = async () => {
     const response = await fetch(`${process.env.REACT_APP_API_HOST}/token`, {
       credentials: "include",
@@ -55,6 +58,13 @@ function ExerciseForm() {
     setDescription(value);
   };
 
+  const showSuccessMessage = () => {
+    setSuccessMessage("Exercise created!");
+    setTimeout(() => {
+      setSuccessMessage("");
+    }, 3000);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -86,84 +96,92 @@ function ExerciseForm() {
       setReps("");
       setPicture("");
       setDescription("");
+
+      showSuccessMessage();
     }
   };
 
   return (
     <div className="row content-container">
-      <div className="offset-3 col-6">
-        <div className="shadow p-4 mt-4">
-          <h1>create an exercise</h1>
-          <form onSubmit={handleSubmit} id="create-exercise-form">
-            <div className="mb-3">
-              <label htmlFor="name">exercise name:</label>
-              <input
-                value={name}
-                onChange={handleNameChange}
-                required
-                type="text"
-                name="name"
-                id="name"
-                className="form-control"
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="weight">weight used:</label>
-              <input
-                value={weight}
-                onChange={handleWeightChange}
-                type="number"
-                name="weight"
-                id="weight"
-                className="form-control"
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="sets"># of sets:</label>
-              <input
-                value={sets}
-                onChange={handleSetsChange}
-                type="number"
-                name="sets"
-                id="sets"
-                className="form-control"
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="reps"># of reps:</label>
-              <input
-                value={reps}
-                onChange={handleRepsChange}
-                type="number"
-                name="reps"
-                id="reps"
-                className="form-control"
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="picture">picture url:</label>
-              <input
-                value={picture}
-                onChange={handlePictureChange}
-                type="url"
-                name="picture"
-                id="picture"
-                className="form-control"
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="description">description:</label>
-              <input
-                value={description}
-                onChange={handleDescriptionChange}
-                type="text"
-                name="description"
-                id="description"
-                className="form-control"
-              />
-            </div>
-            <button className="btn btn-primary">CREATE</button>
-          </form>
+      <div className="shadow p-4 mt-4 exercise-form">
+        <div className="offset-3 col-6">
+          <div className="shadow p-4 mt-4">
+            <h1>create an exercise</h1>
+            {successMessage && (
+              <div className="alert alert-success">{successMessage}</div>
+            )}
+
+            <form onSubmit={handleSubmit} id="create-exercise-form">
+              <div className="mb-3">
+                <label htmlFor="name">exercise name:</label>
+                <input
+                  value={name}
+                  onChange={handleNameChange}
+                  required
+                  type="text"
+                  name="name"
+                  id="name"
+                  className="form-control"
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="weight">weight used:</label>
+                <input
+                  value={weight}
+                  onChange={handleWeightChange}
+                  type="number"
+                  name="weight"
+                  id="weight"
+                  className="form-control"
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="sets"># of sets:</label>
+                <input
+                  value={sets}
+                  onChange={handleSetsChange}
+                  type="number"
+                  name="sets"
+                  id="sets"
+                  className="form-control"
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="reps"># of reps:</label>
+                <input
+                  value={reps}
+                  onChange={handleRepsChange}
+                  type="number"
+                  name="reps"
+                  id="reps"
+                  className="form-control"
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="picture">picture url:</label>
+                <input
+                  value={picture}
+                  onChange={handlePictureChange}
+                  type="url"
+                  name="picture"
+                  id="picture"
+                  className="form-control"
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="description">description:</label>
+                <input
+                  value={description}
+                  onChange={handleDescriptionChange}
+                  type="text"
+                  name="description"
+                  id="description"
+                  className="form-control"
+                />
+              </div>
+              <button className="btn btn-primary">CREATE</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>

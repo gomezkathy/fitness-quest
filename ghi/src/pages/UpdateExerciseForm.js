@@ -10,6 +10,7 @@ function UpdateExerciseForm() {
   const [picture, setPicture] = useState("");
   const [description, setDescription] = useState("");
   const [userId, setUserId] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const { token } = useToken();
   const { exerciseId } = useParams();
 
@@ -69,6 +70,13 @@ function UpdateExerciseForm() {
     setDescription(value);
   };
 
+  const showSuccessMessage = () => {
+    setSuccessMessage("Exercise was updated!");
+    setTimeout(() => {
+      setSuccessMessage("");
+    }, 3000);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -95,6 +103,7 @@ function UpdateExerciseForm() {
     const response = await fetch(exercisesUrl, fetchConfig);
 
     if (response.ok) {
+      showSuccessMessage();
     }
   };
 
@@ -103,6 +112,9 @@ function UpdateExerciseForm() {
       <div className="offset-3 col-6">
         <div className="shadow p-4 mt-4">
           <h1>update your exercise</h1>
+          {successMessage && (
+            <div className="alert alert-success">{successMessage}</div>
+          )}
           <form onSubmit={handleSubmit} id="update-exercise-form">
             <div className="mb-3">
               <label htmlFor="name">exercise name:</label>
