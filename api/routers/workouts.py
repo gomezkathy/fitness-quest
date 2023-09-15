@@ -1,6 +1,7 @@
+import logging as log
 from fastapi import APIRouter, Depends, HTTPException
 from typing import List, Optional
-from models.workouts import WorkoutIn, WorkoutOut
+from models.workouts import WorkoutIn, WorkoutOut, WorkoutUpdate
 from queries.workouts import WorkoutRepository
 from authenticator import authenticator
 
@@ -40,7 +41,7 @@ def get_all_workouts(
     repo: WorkoutRepository = Depends(),
 ):
     if user:
-        workouts = repo.get_all()
+        workouts = repo.get_all_workouts()
         return workouts
     else:
         raise HTTPException(
@@ -68,10 +69,11 @@ def get_one_workout(
 @router.put("/api/workouts/{workout_id}", response_model=WorkoutOut)
 def update_workout(
     workout_id: int,
-    workout: WorkoutIn,
+    workout: WorkoutUpdate,
     user: dict = Depends(authenticator.get_current_account_data),
     repo: WorkoutRepository = Depends(),
 ):
+    log.info
     if user:
         updated_workout = repo.update_workout(workout_id, workout)
         if updated_workout is None:

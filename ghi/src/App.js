@@ -14,8 +14,8 @@ import UpdateExerciseForm from "./pages/UpdateExerciseForm";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import UpdateComment from "./pages/UpdateComment";
 import Workouts from "./pages/Workouts";
-import WorkoutList from "./pages/WorkoutList";
 import CreateWorkout from "./pages/CreateWorkout";
+import UpdateWorkouts from "./pages/UpdateWorkouts";
 import NavBar from "./components/NavBar";
 import "./App.css";
 
@@ -39,7 +39,7 @@ function App() {
             <Route path="/workouts">
               <Route index element={<Workouts />} />
               <Route path="create" element={<CreateWorkout />} />
-              <Route path="list" element={<WorkoutList />} />
+              <Route path="update/:workoutId" element={<UpdateWorkouts />} />
             </Route>
             <Route path="/comments">
               <Route index element={<Comments />} />

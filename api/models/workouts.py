@@ -15,3 +15,7 @@ class WorkoutOut(BaseModel):
 
 class Error(BaseModel):
     message: str
+
+
+class WorkoutUpdate(BaseModel):
+    workout_name: str

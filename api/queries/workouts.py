@@ -27,7 +27,7 @@ class WorkoutRepository:
                     return WorkoutOut(id=new_id, **workout.dict())
         except Exception as e:
             print(
-                "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT:",
+                "TTTT:",
                 e,
             )
             raise HTTPException(
@@ -43,7 +43,7 @@ class WorkoutRepository:
                         SELECT
                             w.id,
                             w.user_id,
-                            w.workout_name,
+                            w.workout_name
                         FROM workouts w
                         LEFT JOIN accounts a ON w.user_id = a.id
                         """
@@ -98,14 +98,16 @@ class WorkoutRepository:
                     db.execute(
                         """
                         UPDATE workouts
-                        SET user_id = %s,
-                            workout_name = %s,
+                        SET
+                            workout_name = %s
                         WHERE id = %s
-                        RETURNING user_id,
-                            workout_name,
+                        RETURNING
+                            id,
+                            user_id,
+                            workout_name
+
                         """,
                         [
-                            workout.user_id,
                             workout.workout_name,
                             workout_id,
                         ],
@@ -114,8 +116,8 @@ class WorkoutRepository:
                     if record:
                         return WorkoutOut(
                             id=workout_id,
-                            user_id=record[0],
-                            workout_name=record[1],
+                            user_id=record[1],
+                            workout_name=record[2],
                         )
                     return None
         except Exception as e:
@@ -130,10 +132,10 @@ class WorkoutRepository:
                 with conn.cursor() as db:
                     db.execute(
                         """
-                        DELETE FROM workouts
-                        WHERE id = %s
-                        RETURNING id;
-                        """,
+                            DELETE FROM workouts
+                            WHERE id = %s
+                            RETURNING id;
+                            """,
                         [workout_id],
                     )
                     record = db.fetchone()
