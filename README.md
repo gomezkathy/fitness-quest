@@ -1,5 +1,3 @@
-# This is a test for verifying authentication
-
 # Module3 Project Gamma
 
 ## Getting started
