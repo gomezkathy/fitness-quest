@@ -68,30 +68,6 @@ export default function NavBar() {
           {userId > 0 && (
             <li className="nav-item">
               <Link
-                to="/workouts"
-                className={`nav-link ${
-                  isActiveLink("/workouts") ? "active" : ""
-                }`}
-              >
-                Workouts
-              </Link>
-            </li>
-          )}
-          {userId > 0 && (
-            <li className="nav-item">
-              <Link
-                to="/workouts/create"
-                className={`nav-link ${
-                  isActiveLink("/workouts/create") ? "active" : ""
-                }`}
-              >
-                Create Workout
-              </Link>
-            </li>
-          )}
-          {userId > 0 && (
-            <li className="nav-item">
-              <Link
                 to="/exercises"
                 className={`nav-link ${
                   isActiveLink("/exercises") ? "active" : ""

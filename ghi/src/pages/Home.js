@@ -44,7 +44,7 @@ export default function Home() {
         <>
           {userId !== null && (
             <>
-              <h1 className="mt-5 mb-5">Home Page</h1>
+              <h1 className="mt-5 mb-5">Dashboard</h1>
               <div className="">
                 <ExerciseList />
               </div>

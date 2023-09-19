@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 
@@ -9,6 +9,10 @@ function CreateComment({ onClose }) {
   const [exercises, setExercises] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
   const { token } = useToken();
+  const [details, setDetails] = useState({
+    comment: "",
+    exercise_id: "",
+  });
 
   const fetchAccount = async (token, setUserId, setExercises) => {
     try {
@@ -26,12 +30,10 @@ function CreateComment({ onClose }) {
           credentials: "include",
         }),
       ]);
-
       if (accountResponse.ok && exercisesResponse.ok) {
         const accountData = await accountResponse.json();
         const userId = accountData.account;
         setUserId(userId);
-
         const exercisesData = await exercisesResponse.json();
         setExercises(exercisesData);
       }
@@ -56,9 +58,10 @@ function CreateComment({ onClose }) {
     const fetchConfig = {
       method: "post",
       body: JSON.stringify({
-        user_id: userId,
-        exercise_id: selectedExerciseId,
-        comment,
+        ...details,
+        user_id: details.userId,
+        exercise_id: details.selectedExerciseId,
+        comment: details.comment,
         assigned_date: format(new Date(), "yyyy-MM-dd"),
       }),
       headers: {
@@ -67,32 +70,27 @@ function CreateComment({ onClose }) {
       },
       credentials: "include",
     };
-
-    try {
-      const response = await fetch(commentUrl, fetchConfig);
-
-      if (response.ok) {
-        setSuccessMessage("Comment submitted successfully.");
-        setTimeout(() => {
-          setSuccessMessage("");
-        }, 2000);
-        window.location.href = `/comments`;
-        onClose();
-      } else {
-        console.error(
-          "Failed to create comment:",
-          response.status,
-          response.statusText
-        );
-      }
-    } catch (error) {
-      console.error("Error while creating comment:", error);
+    const response = await fetch(commentUrl, fetchConfig);
+    if (response.ok) {
+      setDetails({
+        ...details,
+        exercise_id: "",
+        comment: "",
+      });
+      setSuccessMessage("Comment submitted successfully.");
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 2000);
+      window.location.href = `/comments`;
+      onClose();
     }
   };
 
-  const handleCommentChange = (event) => {
-    const value = event.target.value;
-    setComment(value);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setDetails((prev) => {
+      return { ...prev, [name]: value };
+    });
   };
 
   const handleClose = () => {
@@ -109,15 +107,16 @@ function CreateComment({ onClose }) {
       )}
       <form onSubmit={handleSubmit} id="create-comment">
         <div className="form-floating mx-auto col-10 mb-3">
+          <label htmlFor="select">Select Exercise</label>
           <select
-            placeholder=" "
+            id="select"
+            placeholder="Select Exercise"
             className="form-select mt-3 mb-3 pt-2 pb-2 pl-2"
-            value={selectedExerciseId}
-            onChange={(e) => setSelectedExerciseId(parseInt(e.target.value))}
+            value={details.exercise_id}
+            onChange={handleChange}
             required
             name="select"
           >
-            <label htmlFor="select">Select Exercise</label>
             <option value={0}>Exercise</option>
             {exercises
               .filter((exercise) => exercise.user_id === userId)
@@ -131,8 +130,8 @@ function CreateComment({ onClose }) {
         <div className="form-floating mx-auto col-10 mb-3">
           <input
             className="form-control"
-            onChange={handleCommentChange}
-            value={comment}
+            onChange={handleChange}
+            value={details.comment}
             placeholder=" "
             required
             type="text"

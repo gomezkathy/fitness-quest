@@ -2,15 +2,17 @@ import React, { useEffect, useState } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 
 function ExerciseForm({ onClose }) {
-  const [name, setName] = useState("");
-  const [weight, setWeight] = useState("");
-  const [sets, setSets] = useState("");
-  const [reps, setReps] = useState("");
-  const [picture, setPicture] = useState("");
-  const [description, setDescription] = useState("");
-  const [userId, setUserId] = useState("");
-
   const { token } = useToken();
+  const [userId, setUserId] = useState("");
+  const [details, setDetails] = useState({
+    name: "",
+    weight: "",
+    sets: "",
+    reps: "",
+    picture: "",
+    description: "",
+  });
+
   const fetchAccount = async () => {
     const response = await fetch(`${process.env.REACT_APP_API_HOST}/token`, {
       credentials: "include",
@@ -22,54 +24,25 @@ function ExerciseForm({ onClose }) {
     }
   };
 
-  useEffect(() => {
-    fetchAccount();
-  }, []);
-
-  const handleNameChange = (event) => {
-    const value = event.target.value;
-    setName(value);
-  };
-
-  const handleWeightChange = (event) => {
-    const value = event.target.value;
-    setWeight(value);
-  };
-
-  const handleSetsChange = (event) => {
-    const value = event.target.value;
-    setSets(value);
-  };
-
-  const handleRepsChange = (event) => {
-    const value = event.target.value;
-    setReps(value);
-  };
-
-  const handlePictureChange = (event) => {
-    const value = event.target.value;
-    setPicture(value);
-  };
-
-  const handleDescriptionChange = (event) => {
-    const value = event.target.value;
-    setDescription(value);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setDetails((prev) => {
+      return { ...prev, [name]: value };
+    });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     const exercisesUrl = `${process.env.REACT_APP_API_HOST}/api/exercises/`;
-
     const fetchConfig = {
       method: "post",
       body: JSON.stringify({
-        name,
-        weight: parseInt(weight),
-        sets: parseInt(sets),
-        reps: parseInt(reps),
-        picture_url: picture,
-        description,
+        ...details,
+        weight: parseInt(details.weight),
+        sets: parseInt(details.sets),
+        reps: parseInt(details.reps),
+        picture_url: details.picture,
+        description: details.description,
         user_id: userId,
       }),
       headers: {
@@ -78,15 +51,17 @@ function ExerciseForm({ onClose }) {
       },
       credentials: "include",
     };
-
     const response = await fetch(exercisesUrl, fetchConfig);
     if (response.ok) {
-      setWeight("");
-      setName("");
-      setSets("");
-      setReps("");
-      setPicture("");
-      setDescription("");
+      setDetails({
+        ...details,
+        name: "",
+        weight: "",
+        sets: "",
+        reps: "",
+        picture: "",
+        description: "",
+      });
       window.location.href = `/exercises`;
       onClose();
     }
@@ -96,14 +71,18 @@ function ExerciseForm({ onClose }) {
     onClose();
   };
 
+  useEffect(() => {
+    fetchAccount();
+  }, []);
+
   return (
     <div className="shadow p-5 mt-3 mb-3">
       <h1 className="mb-3">Create Exercise</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-floating mx-auto col-10 mb-3">
           <input
-            value={name}
-            onChange={handleNameChange}
+            value={details.name}
+            onChange={handleChange}
             required
             type="text"
             placeholder=" "
@@ -115,8 +94,8 @@ function ExerciseForm({ onClose }) {
         </div>
         <div className="form-floating mx-auto col-10 mb-3">
           <input
-            value={weight}
-            onChange={handleWeightChange}
+            value={details.weight}
+            onChange={handleChange}
             type="number"
             placeholder=" "
             name="weight"
@@ -127,8 +106,8 @@ function ExerciseForm({ onClose }) {
         </div>
         <div className="form-floating mx-auto col-10 mb-3">
           <input
-            value={sets}
-            onChange={handleSetsChange}
+            value={details.sets}
+            onChange={handleChange}
             type="number"
             placeholder=" "
             name="sets"
@@ -139,8 +118,8 @@ function ExerciseForm({ onClose }) {
         </div>
         <div className="form-floating mx-auto col-10 mb-3">
           <input
-            value={reps}
-            onChange={handleRepsChange}
+            value={details.reps}
+            onChange={handleChange}
             type="number"
             placeholder=" "
             name="reps"
@@ -151,8 +130,8 @@ function ExerciseForm({ onClose }) {
         </div>
         <div className="form-floating mx-auto col-10 mb-3">
           <input
-            value={picture}
-            onChange={handlePictureChange}
+            value={details.picture}
+            onChange={handleChange}
             type="url"
             placeholder=" "
             name="picture"
@@ -163,8 +142,8 @@ function ExerciseForm({ onClose }) {
         </div>
         <div className="form-floating mx-auto col-10 mb-3">
           <input
-            value={description}
-            onChange={handleDescriptionChange}
+            value={details.description}
+            onChange={handleChange}
             type="text"
             placeholder=" "
             name="description"

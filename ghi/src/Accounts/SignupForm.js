@@ -27,7 +27,6 @@ const SignUpForm = () => {
         `${process.env.REACT_APP_API_HOST}/api/accounts`
       );
       e.target.reset();
-      navigate("/");
     } catch (error) {
       console.error(error);
     }
